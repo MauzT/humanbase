@@ -1,33 +1,37 @@
-
----
-
-# 13. docs/development/coding-standards.md
-
-```md
 # Coding Standards
 
 ## Ziel
 
-Diese Datei beschreibt Coding-Standards für Humanbase.
-
-Der Code soll klar, wartbar und für Codex gut verständlich sein.
+Der Code soll klar, wartbar und gut verständlich sein.
 
 ## Sprache
 
-Das Projekt verwendet TypeScript.
-
-Kein JavaScript für neue Dateien, wenn TypeScript möglich ist.
+- Neue Dateien verwenden TypeScript, wenn möglich.
+- React-Komponenten verwenden `.tsx`.
+- Utilities und Datentypen verwenden `.ts`.
 
 ## Benennung
 
-### Dateien
+- Dateien verwenden `kebab-case`.
+- React-Komponenten verwenden `PascalCase`.
+- Variablen und Funktionen verwenden `camelCase`.
+- Typen verwenden `PascalCase`.
 
-Dateinamen in kebab-case.
-
-Gut:
+Beispiele:
 
 ```text
 note-card.tsx
 notes-timeline.tsx
-create-note-dialog.tsx
+timeline-filters.tsx
 filter-notes.ts
+```
+
+## Komponenten
+
+- Komponenten bleiben klein und auf eine Aufgabe fokussiert.
+- Datenlogik wird nach Möglichkeit von Darstellung getrennt.
+- Wiederverwendbare UI-Bausteine liegen unter `components/ui/`.
+
+## State
+
+Für Phase 1 reicht lokaler React State. Eine externe State-Management-Bibliothek wird erst eingeführt, wenn konkrete Anforderungen dies nötig machen.

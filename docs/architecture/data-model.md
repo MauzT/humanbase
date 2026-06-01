@@ -1,36 +1,16 @@
-
----
-
-# 9. docs/architecture/data-model.md
-
-```md
 # Data Model
 
 ## Überblick
 
 Humanbase basiert im Kern auf drei Hauptentitäten:
 
-- Note
-- Contact
-- Tag
+- `Note`
+- `Contact`
+- `Tag`
 
 Eine Note kann mehrere Contacts und mehrere Tags haben.
 
-## Note
-
-Eine Note ist ein einzelner Eintrag in Humanbase.
-
-Beispiele:
-
-- Gesprächsnotiz
-- Gedanke
-- Idee
-- Meeting-Notiz
-- Projektentscheidung
-- Erinnerung
-- Tagesnotiz
-
-### Felder
+## Typen
 
 ```ts
 export type Note = {
@@ -62,51 +42,11 @@ export type Tag = {
   createdAt: string
   updatedAt: string
 }
+```
 
-export type User = {
-  id: string
-  email: string
-  name?: string
-  createdAt: string
-  updatedAt: string
-}
+## Hinweise für Phase 1
 
-
-### Mock-Daten
-
-Für den MVP sollen Mock-Daten verwendet werden.
-
-Beispiel:
-
-export const mockContacts: Contact[] = [
-  {
-    id: 'contact_1',
-    displayName: 'Max Mustermann',
-    email: 'max@example.com',
-    source: 'manual',
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
-
-export const mockTags: Tag[] = [
-  {
-    id: 'tag_1',
-    name: 'Humanbase',
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
-
-export const mockNotes: Note[] = [
-  {
-    id: 'note_1',
-    title: 'Gespräch über Humanbase MVP',
-    content: 'Wir haben entschieden, zuerst eine einfache Timeline mit Kontakten und Tags zu bauen.',
-    date: '2026-06-01',
-    contactIds: ['contact_1'],
-    tagIds: ['tag_1'],
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
+- Daten werden als statische Mock-Daten in `apps/web/data/` abgelegt.
+- `date` verwendet das Format `YYYY-MM-DD`.
+- Verknüpfungen werden zunächst über `contactIds` und `tagIds` abgebildet.
+- Ein `User`-Modell wird erst mit der Authentifizierung benötigt.

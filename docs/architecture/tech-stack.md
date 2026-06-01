@@ -1,38 +1,44 @@
-Mock-Daten
+# Tech Stack
 
-Für den MVP sollen Mock-Daten verwendet werden.
+## Phase 1: Web MVP
 
-Beispiel:
+Für den ersten klickbaren Prototyp wird folgender Stack verwendet:
 
-export const mockContacts: Contact[] = [
-  {
-    id: 'contact_1',
-    displayName: 'Max Mustermann',
-    email: 'max@example.com',
-    source: 'manual',
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
+- Next.js mit App Router
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui-Struktur für wiederverwendbare UI-Komponenten
+- statische Mock-Daten
+- lokaler React State für Suche und Filter
 
-export const mockTags: Tag[] = [
-  {
-    id: 'tag_1',
-    name: 'Humanbase',
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
+## Projektstruktur
 
-export const mockNotes: Note[] = [
-  {
-    id: 'note_1',
-    title: 'Gespräch über Humanbase MVP',
-    content: 'Wir haben entschieden, zuerst eine einfache Timeline mit Kontakten und Tags zu bauen.',
-    date: '2026-06-01',
-    contactIds: ['contact_1'],
-    tagIds: ['tag_1'],
-    createdAt: '2026-06-01T10:00:00.000Z',
-    updatedAt: '2026-06-01T10:00:00.000Z'
-  }
-]
+Die Web-App liegt unter `apps/web`.
+
+```text
+apps/web/
+  app/
+  components/
+    ui/
+  data/
+  lib/
+  types/
+```
+
+## Nicht Teil von Phase 1
+
+- Datenbank
+- ORM
+- Authentifizierung
+- Google API
+- externe State-Management-Bibliothek
+
+## Spätere mögliche Ergänzungen
+
+- PostgreSQL
+- Prisma oder Drizzle
+- Next.js Server Actions oder Route Handlers
+- Auth.js, Clerk oder Supabase Auth
+- Google People API
+- Expo und React Native

@@ -1,16 +1,8 @@
-
----
-
-# 12. docs/development/codex-guidelines.md
-
-```md
 # Codex Guidelines
 
 ## Ziel
 
-Diese Datei beschreibt, wie Codex beim Entwickeln von Humanbase eingesetzt werden soll.
-
-Codex soll helfen, schneller zu entwickeln, aber nicht unkontrolliert große Änderungen machen.
+Codex soll beim Entwickeln von Humanbase helfen, ohne unkontrolliert große Änderungen vorzunehmen.
 
 ## Grundregel
 
@@ -37,9 +29,18 @@ Codex hilft bei:
 
 ## Arbeitsweise
 
-### Gute Aufgaben für Codex
+- Vor Änderungen relevante Produkt- und Architekturdocs lesen.
+- Kleine, klar abgegrenzte Schritte umsetzen.
+- Bestehende Strukturen und Benennungen respektieren.
+- Keine späteren Phasen vorziehen, wenn sie für die aktuelle Aufgabe nicht nötig sind.
+- Nach Änderungen betroffene Dateien und Verifikation erklären.
 
-Gut:
+## Gute Aufgaben für Codex
 
 ```text
 Create a NoteCard component that receives a Note, related Contacts and Tags as props.
+```
+
+```text
+Add contact and tag filters to the mock-data timeline without adding external state management.
+```

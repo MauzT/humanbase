@@ -4,42 +4,42 @@
 
 Das MVP soll zeigen, ob die Grundidee von Humanbase funktioniert:
 
-> Nutzer können Notizen erstellen, diese in einer Timeline sehen und sie mit Kontakten und Tags verknüpfen.
+> Nutzer können Notizen in einer Timeline sehen und über Kontakte, Tags und Suchtext wiederfinden.
 
-Der MVP soll noch keine vollständige produktionsreife App sein. Er soll die zentrale Produktlogik testbar machen.
+Der erste MVP-Schritt ist bewusst ein klickbarer Web-Prototyp mit statischen Mock-Daten. Er validiert die zentrale Darstellung und Navigation ohne Backend.
 
-## MVP-Fokus
+## Phase 1: Web MVP mit Mock-Daten
 
-Die erste Version konzentriert sich auf:
+Die erste Version enthält:
 
 1. Timeline-Ansicht
 2. Notizen mit Datum
-3. Kontakte an Notizen
-4. Tags an Notizen
+3. Note Cards mit Titel, Vorschau, Kontakten und Tags
+4. statische Mock-Daten für Notizen, Kontakte und Tags
 5. Filter nach Kontakt
 6. Filter nach Tag
 7. einfache Suche
-8. Notiz erstellen
-9. Notiz ansehen
-10. Notiz bearbeiten
 
-## MVP-Screens
+Nicht enthalten:
 
-### 1. Timeline View
+- Notiz erstellen oder bearbeiten
+- Datenbank und Persistenz
+- Authentifizierung
+- Google Contacts Integration
+- externe State-Management-Bibliothek
+- Mobile App
 
-Die Timeline ist die Hauptansicht.
+## Hauptscreen: Timeline View
 
-Sie zeigt Notizen gruppiert nach Datum.
+Die Timeline ist die Hauptansicht. Sie zeigt Notizen gruppiert nach Datum, neuere Einträge zuerst.
 
-Eine Notizkarte zeigt:
+Eine Note Card zeigt:
 
 - Titel
 - kurze Vorschau des Inhalts
 - Datum
 - Kontakte
 - Tags
-- optional: Uhrzeit
-- optional: Typ der Notiz
 
 Beispiel:
 
@@ -49,4 +49,15 @@ Heute
 Gespräch über Humanbase MVP
 Mit: Max
 Tags: Humanbase, MVP, Produkt
-Preview: Wir haben entschieden, zuerst eine einfache Timeline...
+Preview: Wir haben entschieden, zuerst eine einfache Timeline ...
+```
+
+## Nächste Phase
+
+Nach dem klickbaren Prototyp folgt lokale Interaktion:
+
+- Notiz erstellen
+- Notiz bearbeiten
+- Notiz löschen
+- lokaler React State
+- einfache Validierung

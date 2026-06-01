@@ -1,18 +1,10 @@
-
----
-
-# 11. docs/architecture/project-structure.md
-
-```md
 # Project Structure
 
 ## Ziel
 
-Diese Datei beschreibt die geplante Projektstruktur für Humanbase.
+Humanbase startet als einfache Web-App, lässt aber Raum für spätere Shared Packages und eine Mobile App.
 
-Die Struktur soll einfach starten, aber später Web, Mobile und Shared Packages ermöglichen.
-
-## Geplante Struktur
+## Aktuelle Struktur
 
 ```text
 humanbase/
@@ -20,14 +12,10 @@ humanbase/
     web/
       app/
       components/
-      lib/
+        ui/
       data/
+      lib/
       types/
-  packages/
-    shared/
-      src/
-        types/
-        utils/
   docs/
     product/
     architecture/
@@ -35,3 +23,18 @@ humanbase/
   README.md
   .gitignore
   .env.example
+```
+
+## Spätere Erweiterung
+
+Gemeinsam genutzte Typen und Utilities können bei Bedarf in ein Shared Package verschoben werden:
+
+```text
+packages/
+  shared/
+    src/
+      types/
+      utils/
+```
+
+Das Shared Package wird erst ergänzt, wenn mindestens zwei Apps dieselben Module verwenden.

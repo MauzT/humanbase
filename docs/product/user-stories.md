@@ -1,31 +1,10 @@
-
----
-
-# 6. docs/product/user-stories.md
-
-```md
 # User Stories
 
 ## Ziel
 
-Diese Datei beschreibt typische Nutzerbedürfnisse für Humanbase.
+Diese Datei beschreibt typische Nutzerbedürfnisse für Humanbase. Die User Stories helfen dabei, Features sinnvoll zu priorisieren.
 
-Die User Stories helfen dabei, Features sinnvoll zu priorisieren und Codex klare Aufgaben zu geben.
-
-## Grundlegende User Stories
-
-### Notiz erstellen
-
-Als Nutzer möchte ich eine neue Notiz erstellen, damit ich Gedanken, Gespräche oder Informationen festhalten kann.
-
-Akzeptanzkriterien:
-
-- Ich kann einen Titel eingeben
-- Ich kann Inhalt eingeben
-- Ich kann ein Datum setzen
-- Ich kann Kontakte hinzufügen
-- Ich kann Tags hinzufügen
-- Die Notiz erscheint danach in der Timeline
+## Phase 1: Web MVP mit Mock-Daten
 
 ### Timeline sehen
 
@@ -34,9 +13,9 @@ Als Nutzer möchte ich meine Notizen nach Datum sortiert sehen, damit ich nachvo
 Akzeptanzkriterien:
 
 - Notizen sind nach Datum gruppiert
-- Neuere Notizen stehen oben
-- Jede Notiz zeigt Titel, Vorschau, Kontakte und Tags
-- Leere Tage müssen nicht angezeigt werden
+- neuere Notizen stehen oben
+- jede Note Card zeigt Titel, Vorschau, Kontakte und Tags
+- leere Tage werden nicht angezeigt
 
 ### Nach Kontakt filtern
 
@@ -44,10 +23,10 @@ Als Nutzer möchte ich auf einen Kontakt klicken können, damit ich alle Notizen
 
 Akzeptanzkriterien:
 
-- Kontakte werden in Notizkarten angezeigt
-- Klick auf Kontakt filtert die Timeline
-- Ich sehe nur relevante Notizen
-- Ich kann den Filter wieder entfernen
+- Kontakte werden in Note Cards angezeigt
+- Klick auf einen Kontakt filtert die Timeline
+- nur relevante Notizen werden angezeigt
+- der Filter kann wieder entfernt werden
 
 ### Nach Tag filtern
 
@@ -55,32 +34,10 @@ Als Nutzer möchte ich auf einen Tag klicken können, damit ich alle Notizen zu 
 
 Akzeptanzkriterien:
 
-- Tags werden in Notizkarten angezeigt
-- Klick auf Tag filtert die Timeline
-- Ich sehe nur passende Notizen
-- Ich kann den Filter wieder entfernen
-
-### Notizdetails anzeigen
-
-Als Nutzer möchte ich eine Notiz öffnen können, damit ich den vollständigen Inhalt sehe.
-
-Akzeptanzkriterien:
-
-- Klick auf eine Notiz öffnet Detailansicht
-- Titel, Inhalt, Datum, Kontakte und Tags sind sichtbar
-- Ich kann zurück zur Timeline
-
-### Notiz bearbeiten
-
-Als Nutzer möchte ich eine bestehende Notiz bearbeiten können, falls sich Inhalt, Tags oder Kontakte ändern.
-
-Akzeptanzkriterien:
-
-- Ich kann Titel bearbeiten
-- Ich kann Inhalt bearbeiten
-- Ich kann Tags ändern
-- Ich kann Kontakte ändern
-- Änderungen werden gespeichert
+- Tags werden in Note Cards angezeigt
+- Klick auf einen Tag filtert die Timeline
+- nur passende Notizen werden angezeigt
+- der Filter kann wieder entfernt werden
 
 ### Suche verwenden
 
@@ -88,61 +45,42 @@ Als Nutzer möchte ich meine Notizen durchsuchen können, damit ich Informatione
 
 Akzeptanzkriterien:
 
-- Suche durchsucht Titel
-- Suche durchsucht Inhalt
-- Suche durchsucht Tags
-- Suche durchsucht Kontakte
-- Ergebnisse aktualisieren sich schnell
+- Suche durchsucht Titel und Inhalt
+- Suche durchsucht Tags und Kontakte
+- Ergebnisse aktualisieren sich direkt
 
-## Spätere User Stories
+## Phase 2: Lokale Interaktion
 
-### Google Kontakte importieren
+### Notiz erstellen
 
-Als Nutzer möchte ich meine Google Kontakte verwenden können, damit ich Personen nicht manuell anlegen muss.
+Als Nutzer möchte ich eine neue Notiz erstellen, damit ich Gedanken, Gespräche oder Informationen festhalten kann.
 
-Nicht Teil des ersten MVP.
+Akzeptanzkriterien:
 
-### Gesprächshistorie pro Kontakt
+- Titel, Inhalt und Datum können eingegeben werden
+- Kontakte und Tags können hinzugefügt werden
+- die Notiz erscheint danach in der Timeline
 
-Als Nutzer möchte ich auf einer Kontaktseite sehen, was ich mit dieser Person besprochen habe.
+### Notiz bearbeiten
 
-Teil eines späteren Ausbaus.
+Als Nutzer möchte ich eine bestehende Notiz bearbeiten können, falls sich Inhalt, Tags oder Kontakte ändern.
 
-### KI-Zusammenfassung
+Akzeptanzkriterien:
 
-Als Nutzer möchte ich eine automatische Zusammenfassung meiner Notizen zu einer Person oder einem Thema erhalten.
+- Titel und Inhalt können bearbeitet werden
+- Tags und Kontakte können geändert werden
+- Änderungen werden lokal gespeichert
 
-Nicht Teil des ersten MVP.
+### Notiz löschen
 
-### Erinnerungen
+Als Nutzer möchte ich eine Notiz löschen können, wenn sie nicht mehr benötigt wird.
 
-Als Nutzer möchte ich aus einer Notiz eine Erinnerung erstellen können.
+## Später
 
-Nicht Teil des ersten MVP.
-
-## Priorisierung
-
-### Muss im MVP enthalten sein
-
-- Notizen anzeigen
-- Timeline
-- Kontakte als Mock-Daten
-- Tags als Mock-Daten
-- Filter nach Kontakt
-- Filter nach Tag
-- einfache Suche
-
-### Sollte bald folgen
-
-- Notiz erstellen
-- Notiz bearbeiten
-- Persistenz in Datenbank
+- persistente Speicherung in einer Datenbank
 - bessere Detailansicht
-
-### Später
-
-- Google Kontakte
-- Auth
+- Google Contacts Integration
+- Authentifizierung
 - Mobile App
 - KI-Funktionen
 - Erinnerungen
