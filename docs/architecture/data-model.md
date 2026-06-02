@@ -2,51 +2,88 @@
 
 ## Überblick
 
-Humanbase basiert im Kern auf drei Hauptentitäten:
+Humanbase basiert langfristig auf vier Kernentitäten:
 
+- `User`
 - `Note`
 - `Contact`
 - `Tag`
 
-Eine Note kann mehrere Contacts und mehrere Tags haben.
+Eine `Note` kann mehrere `Contact`- und mehrere `Tag`-Datensätze haben. Diese Beziehungen werden in PostgreSQL über explizite Join-Tabellen modelliert:
 
-## Typen
+- `NoteContact`
+- `NoteTag`
 
-```ts
-export type Note = {
-  id: string
-  title: string
-  content: string
-  date: string
-  contactIds: string[]
-  tagIds: string[]
-  createdAt: string
-  updatedAt: string
-}
+## Mandantengrenze für Cloud-Bereitschaft
 
-export type Contact = {
-  id: string
-  displayName: string
-  email?: string
-  phone?: string
-  avatarUrl?: string
-  source: 'manual' | 'google'
-  createdAt: string
-  updatedAt: string
-}
+Das `User`-Modell wird bereits in Phase 3A ergänzt, obwohl Authentifizierung erst in Phase 5 folgt. Jede `Note`, jeder `Contact` und jeder `Tag` gehört von Anfang an zu genau einem `User`.
 
-export type Tag = {
-  id: string
-  name: string
-  color?: string
-  createdAt: string
-  updatedAt: string
-}
+Für die lokale Entwicklung kann ein definierter persönlicher Default-User verwendet werden. Damit muss das Datenmodell bei der späteren Cloud-Nutzung nicht grundlegend umgebaut werden.
+
+## Prisma-Modelle in Phase 3A
+
+Das Prisma-Schema liegt unter `apps/web/prisma/schema.prisma`. Die Kernentitäten verwenden UUIDs. Beziehungen zwischen Notizen, Kontakten und Tags bleiben als explizite Join-Tabellen sichtbar.
+
+```text
+User
+  id
+  createdAt
+  updatedAt
+
+Note
+  id
+  userId
+  title
+  content
+  date
+  createdAt
+  updatedAt
+
+Contact
+  id
+  userId
+  displayName
+  email?
+  phone?
+  avatarUrl?
+  source
+  externalProvider?
+  externalId?
+  lastSyncedAt?
+  createdAt
+  updatedAt
+
+Tag
+  id
+  userId
+  name
+  color?
+  createdAt
+  updatedAt
+
+NoteContact
+  noteId
+  contactId
+
+NoteTag
+  noteId
+  tagId
 ```
 
-## Hinweise für Phase 1
+## Kontakte und späterer Google-Import
 
-- Daten werden als statische Mock-Daten in `apps/web/data/` abgelegt.
+`Contact` wird in Phase 3A so vorbereitet, dass später importierte Kontakte normale Humanbase-Kontakte bleiben:
+
+- `source`: zum Beispiel `manual` oder `google`
+- `externalProvider`: zum Beispiel `google`
+- `externalId`: ID des Kontakts beim externen Anbieter
+- `lastSyncedAt`: Zeitpunkt des letzten Imports oder Abgleichs
+
+Phase 3 enthält keinen Google OAuth Flow und speichert keine Google Tokens. Der read-only Import aus der Google People API folgt erst in Phase 7 nach stabiler Cloud-Persistenz und Authentifizierung.
+
+## Hinweise zu Phase 1 und Phase 2
+
+- Daten liegen aktuell als Mock-Daten in `apps/web/data/`.
 - `date` verwendet das Format `YYYY-MM-DD`.
-- Verknüpfungen werden zunächst über `contactIds` und `tagIds` abgebildet.
-- Ein `User`-Modell wird erst mit der Authentifizierung benötigt.
+- Beziehungen werden im lokalen Prototyp über `contactIds` und `tagIds` dargestellt.
+- Die Umstellung auf SQL-Relationen erfolgt schrittweise in Phase 3.

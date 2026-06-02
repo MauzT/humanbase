@@ -30,17 +30,37 @@ Codex hilft bei:
 ## Arbeitsweise
 
 - Vor Änderungen relevante Produkt- und Architekturdocs lesen.
-- Kleine, klar abgegrenzte Schritte umsetzen.
+- Vor der Implementierung den aktuellen Repo-Stand prüfen.
+- Kleine, klar abgegrenzte und reviewbare Schritte umsetzen.
 - Bestehende Strukturen und Benennungen respektieren.
-- Keine späteren Phasen vorziehen, wenn sie für die aktuelle Aufgabe nicht nötig sind.
+- Das funktionierende UI möglichst stabil halten.
 - Nach Änderungen betroffene Dateien und Verifikation erklären.
+
+## Architekturleitlinien
+
+Codex soll erhalten:
+
+- Datenportabilität über PostgreSQL, Prisma und normale SQL-Relationen
+- einfache Architektur, die durch eine Person wartbar bleibt
+- Export-, Backup- und Restore-Fähigkeit
+- geringe operative Komplexität
+- austauschbare Cloud-Anbieter und möglichst wenig Vendor Lock-in
+
+Codex soll nicht verfrüht ergänzen:
+
+- Google OAuth oder Google Contacts Import
+- Authentifizierung
+- Cloud-Deployment
+- native Mobile App
+- KI-Funktionen
+- SaaS-Skalierungsarchitektur ohne konkreten Bedarf
 
 ## Gute Aufgaben für Codex
 
 ```text
-Create a NoteCard component that receives a Note, related Contacts and Tags as props.
+Inspect the repository and propose a small plan for adding the Phase 3A Prisma schema. Do not change files until the plan is reviewed.
 ```
 
 ```text
-Add contact and tag filters to the mock-data timeline without adding external state management.
+Add JSON export for notes, contacts, tags and relationships without introducing provider-specific dependencies.
 ```

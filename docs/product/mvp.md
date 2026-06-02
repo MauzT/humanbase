@@ -2,15 +2,17 @@
 
 ## Ziel des MVP
 
-Das MVP soll zeigen, ob die Grundidee von Humanbase funktioniert:
+Das MVP zeigt, ob die Grundidee von Humanbase funktioniert:
 
 > Nutzer können Notizen in einer Timeline sehen und über Kontakte, Tags und Suchtext wiederfinden.
 
-Der erste MVP-Schritt ist bewusst ein klickbarer Web-Prototyp mit statischen Mock-Daten. Er validiert die zentrale Darstellung und Navigation ohne Backend.
+Humanbase wird schrittweise zu einem langlebigen persönlichen Notizsystem ausgebaut. Der klickbare Prototyp und die lokale Interaktion sind bereits umgesetzt. Datenbank, Cloud und Authentifizierung folgen getrennt, damit jeder Schritt klein und überprüfbar bleibt.
 
-## Phase 1: Web MVP mit Mock-Daten
+## Phase 1: Klickbarer Mock-Daten-Prototyp
 
-Die erste Version enthält:
+Status: abgeschlossen.
+
+Enthalten:
 
 1. Timeline-Ansicht
 2. Notizen mit Datum
@@ -20,14 +22,18 @@ Die erste Version enthält:
 6. Filter nach Tag
 7. einfache Suche
 
-Nicht enthalten:
+## Phase 2: Lokale Interaktion
 
-- Notiz erstellen oder bearbeiten
-- Datenbank und Persistenz
-- Authentifizierung
-- Google Contacts Integration
-- externe State-Management-Bibliothek
-- Mobile App
+Status: abgeschlossen.
+
+Enthalten:
+
+- Notiz erstellen
+- Notiz bearbeiten
+- Notiz löschen
+- lokaler React State
+- einfache Validierung
+- noch keine Datenbankpersistenz
 
 ## Hauptscreen: Timeline View
 
@@ -41,23 +47,23 @@ Eine Note Card zeigt:
 - Kontakte
 - Tags
 
-Beispiel:
+## Phase 3A: Lokale PostgreSQL- und Prisma-Grundlage
 
-```text
-Heute
+Status: abgeschlossen.
 
-Gespräch über Humanbase MVP
-Mit: Max
-Tags: Humanbase, MVP, Produkt
-Preview: Wir haben entschieden, zuerst eine einfache Timeline ...
-```
+- Prisma-Abhängigkeiten und Prisma-Konfiguration
+- PostgreSQL als lokaler Datenbankanbieter
+- ein `User`-Modell bereits vor echter Authentifizierung
+- Zuordnung von `Note`, `Contact` und `Tag` zu einem `User`
+- `NoteContact` und `NoteTag` als Join-Tabellen
+- Kontaktfelder für einen späteren Google-Import
+- angewendete initiale Prisma-Migration
 
-## Nächste Phase
+Als Nächstes folgt Phase 3B mit Seed-Daten und datenbankgestütztem CRUD.
 
-Nach dem klickbaren Prototyp folgt lokale Interaktion:
+Noch nicht enthalten:
 
-- Notiz erstellen
-- Notiz bearbeiten
-- Notiz löschen
-- lokaler React State
-- einfache Validierung
+- Authentifizierung
+- Google OAuth
+- Cloud-Deployment
+- Migration der UI auf Datenbank-CRUD

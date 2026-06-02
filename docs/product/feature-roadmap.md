@@ -1,152 +1,131 @@
 # Feature Roadmap
 
-## Phase 0: Projektsetup
+## Grundrichtung
 
-Ziel: Repository und Dokumentation vorbereiten.
+Humanbase ist zuerst ein langlebiges persönliches Notiz- und Wissenssystem. Die Roadmap priorisiert Datenhoheit, Wartbarkeit, geringe operative Komplexität, sichere Speicherung und Portabilität. Sie optimiert nicht für SaaS-Skalierung mit Millionen von Nutzern.
 
-Aufgaben:
+## Phase 1: Klickbarer Mock-Daten-Prototyp
 
-- README erstellen
-- Produktdocs erstellen
-- Architekturdocs erstellen
-- GitHub Repository einrichten
-- VS Code als Entwicklungsumgebung nutzen
-- Codex Guidelines festlegen
+Status: abgeschlossen.
 
-## Phase 1: Web MVP mit Mock-Daten
-
-Ziel: Erste klickbare Version ohne Backend.
-
-Features:
-
-- Next.js App
-- Tailwind Styling
-- shadcn/ui Komponenten
-- statische Mock-Daten
-- Timeline View
-- Note Cards
-- Tags
-- Kontakte
-- Filter
-- Suche
-
-Nicht enthalten:
-
-- Login
-- Datenbank
-- Google API
-- Mobile App
+- Timeline
+- Mock-Notizen
+- Mock-Kontakte
+- Mock-Tags
+- Kontakt- und Tag-Filter
+- Textsuche
 
 ## Phase 2: Lokale Interaktion
 
-Ziel: Nutzer kann mit der App interagieren.
+Status: abgeschlossen.
 
-Features:
-
+- lokaler React State
 - Notiz erstellen
 - Notiz bearbeiten
 - Notiz löschen
-- lokaler State
 - einfache Validierung
-- bessere Such- und Filterlogik
+- noch keine Datenbank
 
-## Phase 3: Datenbank
+## Phase 3A: Lokale PostgreSQL- und Prisma-Grundlage
 
-Ziel: Notizen dauerhaft speichern.
+Ziel: Das portable Datenfundament anlegen, ohne das bestehende UI unnötig zu verändern.
 
-Mögliche Tools:
+Status: abgeschlossen. Schema, Abhängigkeiten, lokale Datenbankeinrichtung, Setup-Dokumentation und initiale Migration sind vorhanden.
 
-- PostgreSQL
-- Prisma oder Drizzle
-- Next.js API Routes oder Server Actions
+- Prisma ergänzen
+- lokales PostgreSQL einrichten
+- `User` bereits vor echter Authentifizierung modellieren
+- jede `Note`, jeder `Contact` und jeder `Tag` gehört zu einem `User`
+- `NoteContact` und `NoteTag` als explizite Join-Tabellen ergänzen
+- `Contact` für einen späteren Google-Import vorbereiten:
+  - `source`
+  - `externalProvider`
+  - `externalId`
+  - `lastSyncedAt`
 
-Features:
+Nicht enthalten:
 
-- Datenbank-Schema
-- CRUD für Notes
-- CRUD für Tags
-- CRUD für Contacts
-- Migrationen
-- Seed-Daten
+- Google OAuth
+- Authentifizierung
+- Cloud-Deployment
 
-## Phase 4: Authentifizierung
+## Phase 3B: Seed-Daten und datenbankgestütztes CRUD
 
-Ziel: Nutzerkonten einführen.
+Ziel: Die vorhandene UI auf PostgreSQL umstellen und stabil halten.
 
-Mögliche Tools:
+- Datenbank aus den aktuellen Mock-Daten seeden
+- lokale Notizpersistenz durch datenbankgestütztes CRUD ersetzen
+- Kontakte und Tags aus der Datenbank laden
+- Timeline und Filter erhalten
+- Erstellen, Bearbeiten und Löschen erhalten
+- bestehendes UI möglichst wenig verändern
 
-- Auth.js
-- Clerk
-- Supabase Auth
+## Phase 3C: Export- und Backup-Grundlage
 
-Features:
+Ziel: Datenverlust vermeiden und einen Anbieterwechsel ermöglichen, bevor Humanbase wichtige persönliche Daten enthält.
 
-- Login
-- Logout
-- Nutzerbezogene Daten
-- geschützte Routen
+- JSON-Export für Notizen, Kontakte, Tags und Beziehungen
+- CSV-Export optional für später vorbereiten
+- manuellen Datenbank-Dump dokumentieren
+- Restore-Prozess dokumentieren
+- Restore testweise durchführen
+- sicherstellen, dass Nutzer die App verlassen und ihre Daten behalten können
 
-## Phase 5: Google Contacts Integration
+## Phase 4: Persönliche Cloud-Datenbank
 
-Ziel: Google Kontakte verwenden.
+Ziel: PostgreSQL verwaltet hosten, ohne den Anbieter tief in das Kernmodell einzubauen.
 
-Mögliche Tools:
+- Managed-PostgreSQL-Anbieter wählen
+- Supabase als wahrscheinlichen ersten Kandidaten prüfen
+- Google Cloud SQL oder anderen Managed-PostgreSQL-Anbieter als spätere Migrationsoption offenhalten
+- EU-Region verwenden, wenn relevant
+- Sicherheitsfunktionen des Anbieters aktivieren
+- Prisma- und PostgreSQL-Portabilität erhalten
+- anbieterspezifische Kopplung möglichst vermeiden
+- Umgebungsvariablen und Migrationsprozess dokumentieren
 
-- Google People API
-- OAuth
+## Phase 5: Authentifizierung für persönliche Cloud-Nutzung
 
-Features:
+Ziel: Cloud-Daten erst nach stabiler Persistenz absichern.
 
-- Google Verbindung herstellen
-- Kontakte importieren
-- Kontakte synchronisieren
-- Notizen mit Google Kontakten verknüpfen
+- Authentifizierung ergänzen
+- zunächst Single-User- oder Limited-User-Nutzung unterstützen
+- jeden Datensatz über `userId` abgrenzen
+- keine öffentliche Registrierung, außer sie wird ausdrücklich aktiviert
+- starke Passwörter und 2FA verwenden, soweit verfügbar
 
-## Phase 6: Mobile App
+## Phase 6: Responsive Web und PWA/Mobile-Zugriff
 
-Ziel: Humanbase als mobile App verfügbar machen.
+Ziel: Humanbase zunächst im mobilen Browser gut nutzbar machen.
 
-Mögliche Tools:
+- Web-App responsiv gestalten
+- mobile Browser-Nutzung prüfen
+- optional PWA-Unterstützung ergänzen
+- Expo oder React Native erst später erwägen
+- native Mobile App nicht verfrüht bauen
 
-- Expo
-- React Native
-- shared TypeScript packages
+## Phase 7: Google Contacts Import
 
-Features:
+Ziel: Kontakte kontrolliert und mit minimalen Berechtigungen importieren.
 
-- Timeline mobil
-- Notiz erstellen
-- Filter
-- Suche
-- später Offline Support
+- Google OAuth erst nach stabiler Authentifizierung und Cloud-Speicherung ergänzen
+- read-only Import aus der Google People API starten
+- zunächst keine Zwei-Wege-Synchronisation
+- zunächst keine Änderungen an Google zurückschreiben
+- minimale Google Scopes verwenden
+- importierte Kontakte als normale `Contact`-Datensätze speichern
+- `source`, `externalProvider`, `externalId` und `lastSyncedAt` pflegen
 
-## Phase 7: KI-Funktionen
+## Phase 8: Optionale erweiterte Funktionen
 
-Ziel: Humanbase intelligenter machen.
+Ziel: Komfortfunktionen erst nach stabilem Kern und erprobten Backups ergänzen.
 
-Mögliche Features:
-
-- automatische Tag-Vorschläge
-- Zusammenfassungen pro Kontakt
-- Zusammenfassungen pro Thema
+- KI-Zusammenfassungen
 - semantische Suche
+- Erinnerungen
 - Gesprächsvorbereitung
-- offene Punkte erkennen
-
-## Phase 8: Teamfähigkeit
-
-Ziel: Zusammenarbeit ermöglichen.
-
-Mögliche Features:
-
-- Workspaces
-- geteilte Notizen
-- Rollen und Rechte
-- Kommentare
-- Activity Feed
+- umfangreichere Kontakthistorie
 
 ## Grundregel
 
-Jede Phase soll einzeln funktionieren.
-
-Keine spätere Phase darf die erste einfache Nutzung unnötig blockieren.
+Jede Phase soll einzeln funktionieren. Neue Funktionen dürfen Datenportabilität, Backups und die einfache Wartbarkeit durch eine Person nicht gefährden.

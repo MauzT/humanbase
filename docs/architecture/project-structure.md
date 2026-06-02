@@ -2,7 +2,7 @@
 
 ## Ziel
 
-Humanbase startet als einfache Web-App, lässt aber Raum für spätere Shared Packages und eine Mobile App.
+Humanbase startet als einfache Web-App, lässt aber Raum für spätere Shared Packages und optionalen mobilen Zugriff.
 
 ## Aktuelle Struktur
 
@@ -14,15 +14,20 @@ humanbase/
       components/
         ui/
       data/
+      prisma/
+        migrations/
+        schema.prisma
       lib/
       types/
+      .env.example
+      prisma.config.ts
   docs/
     product/
     architecture/
+      data-safety.md
     development/
   README.md
   .gitignore
-  .env.example
 ```
 
 ## Spätere Erweiterung
@@ -38,3 +43,5 @@ packages/
 ```
 
 Das Shared Package wird erst ergänzt, wenn mindestens zwei Apps dieselben Module verwenden.
+
+Prisma-Dateien und versionierte Migrationen liegen neben der Web-App unter `apps/web`. Der generierte Prisma Client wird unter `apps/web/generated/prisma/` erzeugt und nicht in Git eingecheckt.

@@ -4,7 +4,7 @@
 
 Diese Datei beschreibt typische Nutzerbedürfnisse für Humanbase. Die User Stories helfen dabei, Features sinnvoll zu priorisieren.
 
-## Phase 1: Web MVP mit Mock-Daten
+## Phase 1: Klickbarer Mock-Daten-Prototyp
 
 ### Timeline sehen
 
@@ -77,10 +77,10 @@ Als Nutzer möchte ich eine Notiz löschen können, wenn sie nicht mehr benötig
 
 ## Später
 
-- persistente Speicherung in einer Datenbank
-- bessere Detailansicht
-- Google Contacts Integration
+- persistente Speicherung mit PostgreSQL und Prisma
+- Export, Backup und Restore
+- persönliche Cloud-Datenbank
 - Authentifizierung
-- Mobile App
-- KI-Funktionen
-- Erinnerungen
+- responsive Web-App und optional PWA
+- read-only Google Contacts Import
+- optionale KI-Funktionen und Erinnerungen

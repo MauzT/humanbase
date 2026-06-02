@@ -32,6 +32,9 @@ filter-notes.ts
 - Datenlogik wird nach Möglichkeit von Darstellung getrennt.
 - Wiederverwendbare UI-Bausteine liegen unter `components/ui/`.
 
-## State
+## State und Persistenz
 
-Für Phase 1 reicht lokaler React State. Eine externe State-Management-Bibliothek wird erst eingeführt, wenn konkrete Anforderungen dies nötig machen.
+- Phase 2 verwendet lokalen React State für Interaktionen.
+- Ab Phase 3 wird Persistenz schrittweise über PostgreSQL und Prisma ergänzt.
+- Eine externe State-Management-Bibliothek wird erst eingeführt, wenn konkrete Anforderungen dies nötig machen.
+- Das Datenmodell bleibt portabel und vermeidet unnötige Anbieterabhängigkeit.

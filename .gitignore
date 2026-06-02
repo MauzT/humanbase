@@ -42,5 +42,8 @@ coverage/
 *.sqlite
 *.sqlite3
 
+# Generated Prisma client
+apps/web/generated/prisma/
+
 # Misc
 .cache/

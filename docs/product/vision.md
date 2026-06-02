@@ -2,7 +2,7 @@
 
 ## Kurzbeschreibung
 
-Humanbase ist eine datumsbasierte Notiz-App mit Kontakt- und Themenbezug.
+Humanbase ist eine datumsbasierte Notiz-App mit Kontakt- und Themenbezug. Das Projekt ist zuerst ein langlebiges persönliches Notiz- und Wissenssystem, nicht ein hochskalierendes SaaS-Produkt.
 
 Die App soll helfen, Gedanken, Gespräche, Aufgaben und Informationen so zu speichern, dass sie später über Datum, Kontakte, Tags und Themen wiedergefunden werden können.
 
@@ -56,53 +56,31 @@ Von dort aus können Nutzer in andere Perspektiven wechseln:
 
 ### 1. Datum zuerst
 
-Jede Notiz hat ein Datum.
-
-Die Timeline ist die zentrale Ansicht. Nutzer sollen sehen können, was an welchem Tag passiert ist.
+Jede Notiz hat ein Datum. Die Timeline ist die zentrale Ansicht.
 
 ### 2. Kontakte als Kontext
 
-Notizen können mit Kontakten verknüpft werden.
-
-Langfristig sollen Google Kontakte integriert werden. In der ersten Version können Kontakte als einfache Mock-Daten oder lokale Kontakte existieren.
+Notizen können mit Kontakten verknüpft werden. Später soll ein read-only Import aus Google Contacts möglich sein. Zunächst bleiben Kontakte normale Humanbase-Datensätze.
 
 ### 3. Tags statt Ordner
 
-Notizen werden nicht in Ordner einsortiert.
-
-Stattdessen können mehrere Tags vergeben werden. Eine Notiz kann dadurch gleichzeitig mehreren Themen und Kontexten zugeordnet werden.
+Notizen werden nicht in Ordner einsortiert. Mehrere Tags erlauben verschiedene Themen und Kontexte gleichzeitig.
 
 ### 4. Mehrere Ansichten auf dieselben Daten
 
-Die gleiche Notiz soll in verschiedenen Ansichten auftauchen können:
-
-- in der Timeline
-- auf der Kontaktseite einer Person
-- unter einem Tag
-- in Suchergebnissen
-- in einer Themenansicht
+Die gleiche Notiz soll in Timeline, Kontaktansicht, Tagansicht, Suchergebnissen und Themenansicht auftauchen können.
 
 ### 5. Einfachheit vor Vollständigkeit
 
-Die erste Version soll bewusst einfach sein.
+Humanbase soll durch eine Person verständlich und wartbar bleiben. Funktionen werden nur ergänzt, wenn der Kern stabil ist.
 
-Nicht sofort bauen:
+### 6. Datenhoheit und Langlebigkeit
 
-- komplexes Rechtesystem
-- Teamfunktionen
-- Mobile-App
-- Offline-Sync
-- KI-Auswertung
-- Volltextsuche mit eigener Suchmaschine
-- automatische Google-Contact-Synchronisation
-
-Diese Funktionen können später folgen.
+Persönliche Daten müssen gesichert, exportiert und zu einem anderen Anbieter migriert werden können. Das Kernmodell verwendet PostgreSQL, Prisma und normale SQL-Relationen. Proprietäre Plattformfunktionen dürfen den Wechsel des Datenbankanbieters nicht unnötig erschweren.
 
 ## Langfristige Vision
 
-Humanbase soll zu einem persönlichen Beziehungsgedächtnis werden.
-
-Nutzer sollen auf einen Blick sehen können:
+Humanbase soll zu einem persönlichen Beziehungsgedächtnis werden. Nutzer sollen auf einen Blick sehen können:
 
 - wann sie mit einer Person zuletzt gesprochen haben
 - welche Themen mit einer Person verbunden sind
@@ -110,19 +88,20 @@ Nutzer sollen auf einen Blick sehen können:
 - welche Ideen sich über Zeit entwickelt haben
 - welche Menschen mit welchen Projekten, Themen oder Entscheidungen verbunden sind
 
-Langfristig könnte Humanbase auch KI-Funktionen enthalten:
-
-- automatische Zusammenfassungen
-- Gesprächsverläufe pro Kontakt
-- Vorschläge für Tags
-- Erinnerung an offene Themen
-- Suche in natürlicher Sprache
-- Vorbereitung auf nächste Gespräche
+Später sind optionale Funktionen wie Zusammenfassungen, semantische Suche, Erinnerungen und Gesprächsvorbereitung denkbar.
 
 ## Nicht-Ziele für den Anfang
 
-Humanbase soll am Anfang nicht versuchen, Notion, Obsidian, Apple Notes oder Google Keep vollständig zu ersetzen.
+Humanbase optimiert zunächst nicht für:
 
-Die erste Version konzentriert sich auf den einzigartigen Kern:
+- Millionen von Nutzern
+- Teamfunktionen und komplexe Rechte
+- eine native Mobile App
+- Offline-Sync
+- KI-Auswertung
+- automatische Zwei-Wege-Synchronisation mit Google Contacts
+- tiefe Kopplung an einen proprietären Backend-Anbieter
 
-> Notizen nach Datum, Kontakten und Tags organisieren.
+Der Kern bleibt:
+
+> Notizen langlebig nach Datum, Kontakten und Tags organisieren.
