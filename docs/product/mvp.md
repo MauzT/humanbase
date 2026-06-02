@@ -59,11 +59,19 @@ Status: abgeschlossen.
 - Kontaktfelder für einen späteren Google-Import
 - angewendete initiale Prisma-Migration
 
-Als Nächstes folgt Phase 3B mit Seed-Daten und datenbankgestütztem CRUD.
+## Phase 3B: Seed-Daten und datenbankgestütztes CRUD
+
+Status: abgeschlossen.
+
+- Default-Entwicklungsnutzer
+- Seed-Daten aus dem bisherigen Mock-Datenbestand
+- datenbankgestütztes Laden von Notizen, Kontakten und Tags
+- erhaltene Kontakt-, Tag- und Textfilter
+- datenbankgestütztes Erstellen, Bearbeiten und Löschen von Notizen
+- lokale Verifikation über `npm.cmd run verify:phase3b`
 
 Noch nicht enthalten:
 
 - Authentifizierung
 - Google OAuth
 - Cloud-Deployment
-- Migration der UI auf Datenbank-CRUD

@@ -10,6 +10,7 @@ type NoteCardProps = {
   onTagClick: (tagId: string) => void;
   onEditClick: (note: Note) => void;
   onDeleteClick: (note: Note) => void;
+  isDeleting?: boolean;
 };
 
 export function NoteCard({
@@ -20,6 +21,7 @@ export function NoteCard({
   onTagClick,
   onEditClick,
   onDeleteClick,
+  isDeleting = false,
 }: NoteCardProps) {
   const noteContacts = contacts.filter((contact) =>
     note.contactIds.includes(contact.id),
@@ -36,6 +38,7 @@ export function NoteCard({
             title="Bearbeiten"
             variant="ghost"
             size="sm"
+            disabled={isDeleting}
             onClick={() => onEditClick(note)}
           >
             <svg
@@ -57,6 +60,7 @@ export function NoteCard({
             title="Löschen"
             variant="ghost"
             size="sm"
+            disabled={isDeleting}
             onClick={() => onDeleteClick(note)}
             className="text-[#9b4f4f] hover:bg-[#f4e5e5]"
           >

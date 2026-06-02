@@ -53,12 +53,15 @@ Nicht enthalten:
 
 Ziel: Die vorhandene UI auf PostgreSQL umstellen und stabil halten.
 
+Status: abgeschlossen.
+
 - Datenbank aus den aktuellen Mock-Daten seeden
 - lokale Notizpersistenz durch datenbankgestütztes CRUD ersetzen
 - Kontakte und Tags aus der Datenbank laden
 - Timeline und Filter erhalten
 - Erstellen, Bearbeiten und Löschen erhalten
 - bestehendes UI möglichst wenig verändern
+- wiederholbare lokale Verifikation über `npm.cmd run verify:phase3b`
 
 ## Phase 3C: Export- und Backup-Grundlage
 

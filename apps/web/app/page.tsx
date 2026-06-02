@@ -1,6 +1,11 @@
 import { HumanbaseTimeline } from "@/components/humanbase-timeline";
+import { getTimelineDataForDefaultDevelopmentUser } from "@/lib/humanbase-data";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const timelineData = await getTimelineDataForDefaultDevelopmentUser();
+
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 py-8 sm:px-8 lg:px-12">
       <header className="mb-8 flex flex-col gap-4 border-b border-[var(--border)] pb-7 sm:flex-row sm:items-end sm:justify-between">
@@ -15,10 +20,10 @@ export default function Home() {
             Gedanken, Gespräche und Entscheidungen in einer ruhigen Timeline.
           </p>
         </div>
-        <p className="text-sm text-[var(--muted)]">Web MVP · Mock-Daten</p>
+        <p className="text-sm text-[var(--muted)]">Web MVP | PostgreSQL</p>
       </header>
 
-      <HumanbaseTimeline />
+      <HumanbaseTimeline {...timelineData} />
     </main>
   );
 }

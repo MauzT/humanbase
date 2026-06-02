@@ -10,6 +10,7 @@ type NotesTimelineProps = {
   onTagClick: (tagId: string) => void;
   onEditClick: (note: Note) => void;
   onDeleteClick: (note: Note) => void;
+  deletingNoteId?: string;
 };
 
 function formatDate(date: string) {
@@ -29,6 +30,7 @@ export function NotesTimeline({
   onTagClick,
   onEditClick,
   onDeleteClick,
+  deletingNoteId,
 }: NotesTimelineProps) {
   if (notes.length === 0) {
     return (
@@ -72,6 +74,7 @@ export function NotesTimeline({
                 onTagClick={onTagClick}
                 onEditClick={onEditClick}
                 onDeleteClick={onDeleteClick}
+                isDeleting={note.id === deletingNoteId}
               />
             ))}
           </div>

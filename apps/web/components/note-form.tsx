@@ -15,8 +15,10 @@ type NoteFormProps = {
   contacts: Contact[];
   tags: Tag[];
   note?: Note;
-  onSubmit: (note: NoteFormInput) => void;
+  onSubmit: (note: NoteFormInput) => void | Promise<void>;
   onCancel: () => void;
+  submitError?: string;
+  isSubmitting?: boolean;
 };
 
 const inputClasses =
@@ -28,6 +30,8 @@ export function NoteForm({
   note,
   onSubmit,
   onCancel,
+  submitError,
+  isSubmitting = false,
 }: NoteFormProps) {
   const [title, setTitle] = useState(note?.title ?? "");
   const [content, setContent] = useState(note?.content ?? "");
@@ -50,7 +54,7 @@ export function NoteForm({
     );
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!title.trim() || !content.trim() || !date) {
@@ -58,7 +62,7 @@ export function NoteForm({
       return;
     }
 
-    onSubmit({
+    await onSubmit({
       title: title.trim(),
       content: content.trim(),
       date,
@@ -185,11 +189,17 @@ export function NoteForm({
             </div>
           </fieldset>
 
-          {error && <p className="text-sm text-[#9b4f4f]">{error}</p>}
+          {(error || submitError) && (
+            <p className="text-sm text-[#9b4f4f]">{error || submitError}</p>
+          )}
 
           <div className="flex flex-wrap gap-2">
-            <Button type="submit">
-              {note ? "Änderungen speichern" : "Notiz erstellen"}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? "Wird gespeichert..."
+                : note
+                  ? "Aenderungen speichern"
+                  : "Notiz erstellen"}
             </Button>
             <Button variant="outline" onClick={onCancel}>
               Abbrechen

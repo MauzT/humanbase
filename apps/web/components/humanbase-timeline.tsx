@@ -2,33 +2,50 @@
 
 import { useMemo, useState } from "react";
 
+import {
+  createNoteForDefaultDevelopmentUser,
+  deleteNoteForDefaultDevelopmentUser,
+  updateNoteForDefaultDevelopmentUser,
+} from "@/app/actions";
 import { NoteForm, type NoteFormInput } from "@/components/note-form";
 import { NotesTimeline } from "@/components/notes-timeline";
 import { TimelineFilters } from "@/components/timeline-filters";
 import { Button } from "@/components/ui/button";
-import { mockContacts, mockNotes, mockTags } from "@/data/mock-data";
 import { filterNotes } from "@/lib/filter-notes";
-import type { Note } from "@/types/humanbase";
+import type { Contact, Note, Tag } from "@/types/humanbase";
 
-export function HumanbaseTimeline() {
-  const [notes, setNotes] = useState(mockNotes);
+type HumanbaseTimelineProps = {
+  notes: Note[];
+  contacts: Contact[];
+  tags: Tag[];
+};
+
+export function HumanbaseTimeline({
+  notes: initialNotes,
+  contacts,
+  tags,
+}: HumanbaseTimelineProps) {
+  const [notes, setNotes] = useState(initialNotes);
   const [query, setQuery] = useState("");
   const [selectedContactId, setSelectedContactId] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [saveError, setSaveError] = useState("");
+  const [isSavingNote, setIsSavingNote] = useState(false);
+  const [deletingNoteId, setDeletingNoteId] = useState("");
 
   const filteredNotes = useMemo(
     () =>
       filterNotes({
         notes,
-        contacts: mockContacts,
-        tags: mockTags,
+        contacts,
+        tags,
         query,
         contactId: selectedContactId,
         tagId: selectedTagId,
       }),
-    [notes, query, selectedContactId, selectedTagId],
+    [notes, contacts, tags, query, selectedContactId, selectedTagId],
   );
 
   function clearFilters() {
@@ -37,71 +54,114 @@ export function HumanbaseTimeline() {
     setSelectedTagId("");
   }
 
-  function createNote(note: NoteFormInput) {
-    const timestamp = new Date().toISOString();
+  async function createNote(note: NoteFormInput) {
+    setSaveError("");
+    setIsSavingNote(true);
 
-    setNotes((currentNotes) => [
-      {
-        ...note,
-        id: crypto.randomUUID(),
-        createdAt: timestamp,
-        updatedAt: timestamp,
-      },
-      ...currentNotes,
-    ]);
+    try {
+      const result = await createNoteForDefaultDevelopmentUser(note);
+
+      if (!result.ok) {
+        setSaveError(result.error);
+        return;
+      }
+
+      setNotes((currentNotes) => [result.note, ...currentNotes]);
+      closeNoteForm();
+    } catch {
+      setSaveError(
+        "Die Notiz konnte nicht gespeichert werden. Pruefe PostgreSQL und DATABASE_URL.",
+      );
+    } finally {
+      setIsSavingNote(false);
+    }
   }
 
-  function updateNote(note: NoteFormInput) {
+  async function updateNote(note: NoteFormInput) {
     if (!editingNote) {
       return;
     }
 
-    setNotes((currentNotes) =>
-      currentNotes.map((currentNote) =>
-        currentNote.id === editingNote.id
-          ? {
-              ...currentNote,
-              ...note,
-              updatedAt: new Date().toISOString(),
-            }
-          : currentNote,
-      ),
-    );
+    setSaveError("");
+    setIsSavingNote(true);
+
+    try {
+      const result = await updateNoteForDefaultDevelopmentUser({
+        id: editingNote.id,
+        ...note,
+      });
+
+      if (!result.ok) {
+        setSaveError(result.error);
+        return;
+      }
+
+      setNotes((currentNotes) =>
+        currentNotes.map((currentNote) =>
+          currentNote.id === result.note.id ? result.note : currentNote,
+        ),
+      );
+      closeNoteForm();
+    } catch {
+      setSaveError(
+        "Die Notiz konnte nicht gespeichert werden. Pruefe PostgreSQL und DATABASE_URL.",
+      );
+    } finally {
+      setIsSavingNote(false);
+    }
   }
 
   function openCreateForm() {
+    setSaveError("");
     setEditingNote(null);
     setIsNoteFormOpen(true);
   }
 
   function openEditForm(note: Note) {
+    setSaveError("");
     setEditingNote(note);
     setIsNoteFormOpen(true);
   }
 
   function closeNoteForm() {
+    setSaveError("");
     setEditingNote(null);
     setIsNoteFormOpen(false);
   }
 
-  function saveNote(note: NoteFormInput) {
+  async function saveNote(note: NoteFormInput) {
     if (editingNote) {
-      updateNote(note);
+      await updateNote(note);
     } else {
-      createNote(note);
+      await createNote(note);
     }
-
-    closeNoteForm();
   }
 
-  function deleteNote(note: Note) {
+  async function deleteNote(note: Note) {
+    if (deletingNoteId) {
+      return;
+    }
+
     if (!window.confirm(`Notiz "${note.title}" wirklich löschen?`)) {
       return;
     }
 
-    setNotes((currentNotes) =>
-      currentNotes.filter((currentNote) => currentNote.id !== note.id),
-    );
+    setDeletingNoteId(note.id);
+
+    try {
+      const result = await deleteNoteForDefaultDevelopmentUser(note.id);
+
+      if (!result.ok) {
+        window.alert(result.error);
+        return;
+      }
+
+      setNotes((currentNotes) =>
+        currentNotes.filter((currentNote) => currentNote.id !== note.id),
+      );
+    } finally {
+      setDeletingNoteId("");
+    }
   }
 
   return (
@@ -109,11 +169,13 @@ export function HumanbaseTimeline() {
       {isNoteFormOpen ? (
         <NoteForm
           key={editingNote?.id ?? "new"}
-          contacts={mockContacts}
-          tags={mockTags}
+          contacts={contacts}
+          tags={tags}
           note={editingNote ?? undefined}
           onSubmit={saveNote}
           onCancel={closeNoteForm}
+          submitError={saveError}
+          isSubmitting={isSavingNote}
         />
       ) : (
         <div className="mb-6 flex justify-end">
@@ -122,8 +184,8 @@ export function HumanbaseTimeline() {
       )}
 
       <TimelineFilters
-        contacts={mockContacts}
-        tags={mockTags}
+        contacts={contacts}
+        tags={tags}
         query={query}
         selectedContactId={selectedContactId}
         selectedTagId={selectedTagId}
@@ -142,12 +204,13 @@ export function HumanbaseTimeline() {
 
       <NotesTimeline
         notes={filteredNotes}
-        contacts={mockContacts}
-        tags={mockTags}
+        contacts={contacts}
+        tags={tags}
         onContactClick={setSelectedContactId}
         onTagClick={setSelectedTagId}
         onEditClick={openEditForm}
         onDeleteClick={deleteNote}
+        deletingNoteId={deletingNoteId}
       />
     </>
   );

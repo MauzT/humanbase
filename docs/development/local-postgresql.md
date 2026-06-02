@@ -2,7 +2,7 @@
 
 ## Ziel
 
-Phase 3A richtet PostgreSQL und Prisma lokal ein. Die bestehende Web-App verwendet weiterhin Mock-Daten und lokalen React State. Seed-Daten und datenbankgestütztes CRUD folgen in Phase 3B.
+Phase 3A richtet PostgreSQL und Prisma lokal ein. Phase 3B verwendet diese lokale Datenbank für Seed-Daten und datenbankgestütztes Note-CRUD.
 
 ## Voraussetzungen
 
@@ -55,4 +55,20 @@ Die initiale Migration liegt versioniert unter `apps/web/prisma/migrations/` und
 npx.cmd prisma migrate dev
 ```
 
-Seed-Daten und datenbankgestütztes CRUD sind nicht Teil von Phase 3A.
+## Seed-Daten
+
+Phase 3B seedet einen Default-Entwicklungsnutzer sowie Kontakte, Tags, Notizen und Beziehungen aus dem bisherigen Mock-Datenbestand:
+
+```powershell
+npx.cmd prisma db seed
+```
+
+## Phase 3B verifizieren
+
+Die datenbankgestützten Reads und Note-CRUD-Funktionen können lokal mit folgendem Befehl geprüft werden:
+
+```powershell
+npm.cmd run verify:phase3b
+```
+
+Der Befehl erstellt, bearbeitet und löscht eine temporäre Notiz und räumt sie danach wieder auf.

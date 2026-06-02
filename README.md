@@ -21,10 +21,17 @@ Phase 3A ist abgeschlossen:
 - portable Datenbankmodelle inklusive `User`, `Note`, `Contact`, `Tag`, `NoteContact` und `NoteTag`
 - angewendete initiale Prisma-Migration
 
+Phase 3B ist abgeschlossen:
+
+- Seed-Daten aus dem bisherigen Mock-Datenbestand
+- Default-Entwicklungsnutzer
+- datenbankgestütztes Laden von Notizen, Kontakten und Tags
+- datenbankgestütztes Erstellen, Bearbeiten und Löschen von Notizen
+- erhaltene Timeline-Filter nach Kontakt, Tag und Suchtext
+- lokale Verifikation über `npm.cmd run verify:phase3b`
+
 Noch nicht enthalten:
 
-- Datenbankpersistenz
-- Seed-Daten
 - Authentifizierung
 - Cloud-Deployment
 - Google Contacts Import
@@ -49,10 +56,18 @@ Voraussetzung: Node.js 20.9 oder neuer.
 ```bash
 cd apps/web
 npm install
+npx.cmd prisma migrate dev
+npx.cmd prisma db seed
 npm run dev
 ```
 
 Danach ist die App unter `http://localhost:3000` erreichbar.
+
+Phase 3B kann lokal mit folgendem Befehl geprüft werden:
+
+```powershell
+npm.cmd run verify:phase3b
+```
 
 Für die lokale PostgreSQL- und Prisma-Einrichtung siehe [Lokales PostgreSQL](docs/development/local-postgresql.md).
 
