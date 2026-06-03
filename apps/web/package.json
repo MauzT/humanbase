@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "verify:phase3b": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3b.ts"
+    "export:json": "node --conditions=react-server --import dotenv/config --import tsx scripts/export-default-user-json.ts",
+    "verify:phase3b": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3b.ts",
+    "verify:phase3c": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3c.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

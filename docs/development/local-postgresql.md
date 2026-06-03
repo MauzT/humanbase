@@ -72,3 +72,16 @@ npm.cmd run verify:phase3b
 ```
 
 Der Befehl erstellt, bearbeitet und löscht eine temporäre Notiz und räumt sie danach wieder auf.
+
+## Backup und Restore
+
+Phase 3C ergänzt JSON-Export, PostgreSQL-Dump, Restore-Dokumentation und eine
+read-only Export-Verifikation:
+
+```powershell
+npm.cmd run export:json
+npm.cmd run verify:phase3c
+```
+
+Der vollständige Backup- und Restore-Prozess ist unter
+[Backup and Restore](backup-and-restore.md) dokumentiert.

@@ -30,6 +30,14 @@ Phase 3B ist abgeschlossen:
 - erhaltene Timeline-Filter nach Kontakt, Tag und Suchtext
 - lokale Verifikation über `npm.cmd run verify:phase3b`
 
+Phase 3C ist abgeschlossen:
+
+- JSON-Export für Notizen, Kontakte, Tags und Beziehungen
+- lokale Exportdateien unter `apps/web/exports/`
+- PostgreSQL-Dump- und Restore-Prozess dokumentiert
+- read-only Verifikation über `npm.cmd run verify:phase3c`
+- lokaler Restore-Test gegen eine temporäre PostgreSQL-Datenbank durchgeführt
+
 Noch nicht enthalten:
 
 - Authentifizierung
@@ -69,7 +77,20 @@ Phase 3B kann lokal mit folgendem Befehl geprüft werden:
 npm.cmd run verify:phase3b
 ```
 
+Phase 3C kann lokal mit folgendem Befehl geprüft werden:
+
+```powershell
+npm.cmd run verify:phase3c
+```
+
+Ein manueller JSON-Export kann so erstellt werden:
+
+```powershell
+npm.cmd run export:json
+```
+
 Für die lokale PostgreSQL- und Prisma-Einrichtung siehe [Lokales PostgreSQL](docs/development/local-postgresql.md).
+Für Backup und Restore siehe [Backup and Restore](docs/development/backup-and-restore.md).
 
 ## Struktur
 

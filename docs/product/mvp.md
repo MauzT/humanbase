@@ -75,3 +75,13 @@ Noch nicht enthalten:
 - Authentifizierung
 - Google OAuth
 - Cloud-Deployment
+
+## Phase 3C: Export- und Backup-Grundlage
+
+Status: abgeschlossen.
+
+- JSON-Export für Notizen, Kontakte, Tags und Beziehungen
+- lokale Export-Verifikation über `npm.cmd run verify:phase3c`
+- manueller PostgreSQL-Dump dokumentiert
+- Restore-Prozess dokumentiert
+- lokaler Restore-Test gegen eine temporäre PostgreSQL-Datenbank durchgeführt

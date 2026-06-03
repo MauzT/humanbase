@@ -45,5 +45,11 @@ coverage/
 # Generated Prisma client
 apps/web/generated/prisma/
 
+# Generated exports
+apps/web/exports/
+
+# Generated database backups
+apps/web/backups/
+
 # Misc
 .cache/

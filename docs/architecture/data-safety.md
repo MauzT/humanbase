@@ -46,4 +46,4 @@ Humanbase reduziert Lock-in durch:
 
 ## Phasen
 
-Phase 3C ergänzt Export, Dumps und Restore-Dokumentation. Erst danach soll Humanbase für wichtige persönliche Daten genutzt werden. Phase 4 ergänzt automatische Anbieter-Backups und dokumentiert die Cloud-Migration.
+Phase 3C ergänzt Export, Dumps, Restore-Dokumentation und eine lokale Restore-Verifikation. Erst danach soll Humanbase für wichtige persönliche Daten genutzt werden. Phase 4 ergänzt automatische Anbieter-Backups und dokumentiert die Cloud-Migration.

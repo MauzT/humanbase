@@ -67,6 +67,8 @@ Status: abgeschlossen.
 
 Ziel: Datenverlust vermeiden und einen Anbieterwechsel ermöglichen, bevor Humanbase wichtige persönliche Daten enthält.
 
+Status: abgeschlossen. JSON-Export, PostgreSQL-Dump-Dokumentation, Restore-Dokumentation, Phase-3C-Verifikation und ein lokaler Restore-Test sind vorhanden.
+
 - JSON-Export für Notizen, Kontakte, Tags und Beziehungen
 - CSV-Export optional für später vorbereiten
 - manuellen Datenbank-Dump dokumentieren
