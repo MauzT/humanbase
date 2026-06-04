@@ -80,14 +80,17 @@ Status: abgeschlossen. JSON-Export, PostgreSQL-Dump-Dokumentation, Restore-Dokum
 
 Ziel: PostgreSQL verwaltet hosten, ohne den Anbieter tief in das Kernmodell einzubauen.
 
+Status: abgeschlossen. Supabase wird als erster Managed-PostgreSQL-Anbieter verwendet, `DIRECT_URL` ist für Prisma CLI und Admin-Werkzeuge vorbereitet, die Prisma-Migration wurde gegen Supabase PostgreSQL angewendet, Seed-Daten und Verifikationsskripte wurden ausgeführt und ein öffentlicher PostgreSQL-Schema-Dump wurde erstellt.
+
 - Managed-PostgreSQL-Anbieter wählen
-- Supabase als wahrscheinlichen ersten Kandidaten prüfen
+- Supabase als ersten Managed-PostgreSQL-Anbieter verwenden
 - Google Cloud SQL oder anderen Managed-PostgreSQL-Anbieter als spätere Migrationsoption offenhalten
 - EU-Region verwenden, wenn relevant
 - Sicherheitsfunktionen des Anbieters aktivieren
 - Prisma- und PostgreSQL-Portabilität erhalten
 - anbieterspezifische Kopplung möglichst vermeiden
 - Umgebungsvariablen und Migrationsprozess dokumentieren
+- Cloud-CRUD, JSON-Export und öffentlichen PostgreSQL-Schema-Dump gegen die Cloud-Datenbank verifizieren
 
 ## Phase 5: Authentifizierung für persönliche Cloud-Nutzung
 

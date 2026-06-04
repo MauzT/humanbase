@@ -30,9 +30,13 @@ Erstelle `apps/web/.env` auf Basis von `apps/web/.env.example` und ersetze `YOUR
 
 ```env
 DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/humanbase?schema=public"
+DIRECT_URL=""
 ```
 
 Die Datei `.env` bleibt lokal und wird nicht in Git eingecheckt.
+
+`DIRECT_URL` ist fuer Phase 4 optional. Lokal kann der Wert leer bleiben, weil
+`DATABASE_URL` bereits direkt auf PostgreSQL zeigt.
 
 ## Prisma-Befehle
 

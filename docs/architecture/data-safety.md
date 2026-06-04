@@ -47,3 +47,10 @@ Humanbase reduziert Lock-in durch:
 ## Phasen
 
 Phase 3C ergänzt Export, Dumps, Restore-Dokumentation und eine lokale Restore-Verifikation. Erst danach soll Humanbase für wichtige persönliche Daten genutzt werden. Phase 4 ergänzt automatische Anbieter-Backups und dokumentiert die Cloud-Migration.
+
+## Phase-4-Sicherheitsnotiz
+
+Fuer Phase 4 sind mindestens SSL fuer PostgreSQL-Verbindungen, starke
+Account-Sicherheit, gepruefte Anbieter-Backups und eine eigene Backup-Kopie
+ausserhalb des aktiven Cloud-Anbieters erforderlich. Details stehen unter
+[Cloud PostgreSQL](../development/cloud-postgresql.md).

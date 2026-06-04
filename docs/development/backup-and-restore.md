@@ -76,6 +76,32 @@ Hinweise:
 - Bewahre mindestens eine Kopie getrennt vom aktiven Rechner oder Anbieter auf.
 - Fuer regelmaessige Backups sollte der Dateiname einen Zeitstempel enthalten.
 
+## Cloud-PostgreSQL-Dump
+
+Phase 4 verwendet optional `DIRECT_URL` fuer Prisma CLI, `pg_dump` und
+`pg_restore`. Wenn `DIRECT_URL` gesetzt ist, sollte ein Cloud-Dump gegen diese
+Admin-Verbindung erstellt werden:
+
+```powershell
+cd apps/web
+New-Item -ItemType Directory -Force backups
+$env:PG_DATABASE_URL = $env:DIRECT_URL -replace '\?.*$', ''
+pg_dump --dbname "$env:PG_DATABASE_URL" --schema=public --format custom --file "backups\humanbase-cloud.dump"
+```
+
+Hinweise:
+
+- Supabase enthaelt verwaltete Schemas wie `auth`, `storage` und `realtime`.
+  Fuer Humanbase wird deshalb nur das portable `public`-Schema gedumpt.
+- Nutze fuer Dumps nach Moeglichkeit eine direkte oder Session-Pooler-Verbindung,
+  nicht eine transaktionsgepoolte Runtime-Verbindung.
+- Stelle sicher, dass SSL-Anforderungen des Cloud-Anbieters in der URL enthalten
+  sind, wenn der Anbieter sie verlangt.
+- Anbieter-Backups ersetzen keine eigenen Exporte. Erstelle weiterhin
+  regelmaessige JSON-Exporte und PostgreSQL-Dumps.
+- Bewahre mindestens eine Backup-Kopie ausserhalb des aktiven Cloud-Anbieters
+  auf.
+
 ## Restore-Test
 
 Ein Backup ist erst vertrauenswuerdig, wenn ein Restore erfolgreich getestet

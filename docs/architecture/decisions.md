@@ -101,3 +101,29 @@ Google Contacts Import folgt erst nach stabiler Cloud-Persistenz und Authentifiz
 ### Begründung
 
 Minimale Scopes und ein begrenzter Import reduzieren Sicherheitsrisiken und Komplexität.
+
+## ADR-011: Supabase als erster Managed-PostgreSQL-Anbieter
+
+### Entscheidung
+
+Supabase wird fuer Phase 4 als erster Anbieter fuer eine persoenliche
+Managed-PostgreSQL-Datenbank verwendet. Humanbase nutzt Supabase in dieser Phase
+nur als PostgreSQL-Anbieter. Das Kernmodell bleibt Prisma ueber normale
+PostgreSQL-Relationen.
+
+### Begründung
+
+Supabase bietet einen schnellen Einstieg in verwaltetes PostgreSQL inklusive
+Backups, SSL-Optionen und EU-Regionen. Gleichzeitig bleiben Google Cloud SQL
+oder ein anderer Managed-PostgreSQL-Anbieter als spaetere Migrationsoption
+offen, solange Humanbase keine anbieterspezifischen Kernfunktionen verwendet.
+
+### Konsequenzen
+
+- Die App verwendet weiterhin `DATABASE_URL` zur Laufzeit.
+- Prisma CLI und Admin-Werkzeuge koennen optional `DIRECT_URL` verwenden.
+- Supabase Auth, Storage, Realtime und Client-SDK-Zugriff bleiben ausserhalb
+  von Phase 4.
+- Dumps beschraenken sich auf das portable `public`-Schema, nicht auf
+  Supabase-verwaltete Schemas wie `auth`, `storage` oder `realtime`.
+- Backup, Restore und Anbieterwechsel muessen dokumentiert und testbar bleiben.

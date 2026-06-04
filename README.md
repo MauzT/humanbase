@@ -38,10 +38,20 @@ Phase 3C ist abgeschlossen:
 - read-only Verifikation über `npm.cmd run verify:phase3c`
 - lokaler Restore-Test gegen eine temporäre PostgreSQL-Datenbank durchgeführt
 
+Phase 4 ist abgeschlossen:
+
+- Supabase als erster Managed-PostgreSQL-Anbieter verwendet
+- Google Cloud SQL oder anderer Managed-PostgreSQL-Anbieter als Migrationspfad offengehalten
+- optionale `DIRECT_URL` für Prisma CLI und Admin-Werkzeuge ergänzt
+- Cloud-Migrations-, Sicherheits- und Verifikationsprozess dokumentiert
+- Prisma-Migrationen gegen Supabase PostgreSQL angewendet
+- Seed-Daten und Verifikationsskripte gegen Supabase PostgreSQL ausgeführt
+- JSON-Export und öffentlicher PostgreSQL-Schema-Dump erstellt
+
 Noch nicht enthalten:
 
 - Authentifizierung
-- Cloud-Deployment
+- Cloud-Deployment der Web-App
 - Google Contacts Import
 - Mobile App
 
@@ -90,6 +100,7 @@ npm.cmd run export:json
 ```
 
 Für die lokale PostgreSQL- und Prisma-Einrichtung siehe [Lokales PostgreSQL](docs/development/local-postgresql.md).
+Für Phase 4 und Cloud PostgreSQL siehe [Cloud PostgreSQL](docs/development/cloud-postgresql.md).
 Für Backup und Restore siehe [Backup and Restore](docs/development/backup-and-restore.md).
 
 ## Struktur
