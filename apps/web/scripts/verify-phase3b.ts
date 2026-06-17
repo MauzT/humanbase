@@ -2,7 +2,7 @@ import {
   createNoteForDefaultDevelopmentUser,
   deleteNoteForDefaultDevelopmentUser,
   updateNoteForDefaultDevelopmentUser,
-} from "../app/actions";
+} from "../lib/note-service";
 import {
   getNoteContactsForDefaultDevelopmentUser,
   getNotesForDefaultDevelopmentUser,

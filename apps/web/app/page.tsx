@@ -1,10 +1,57 @@
+import Link from "next/link";
+
 import { HumanbaseTimeline } from "@/components/humanbase-timeline";
-import { getTimelineDataForDefaultDevelopmentUser } from "@/lib/humanbase-data";
+import { SignInForm } from "@/components/sign-in-form";
+import { SignOutButton } from "@/components/sign-out-button";
+import { getCurrentAuthState } from "@/lib/auth/supabase-user";
+import { getTimelineDataForUser } from "@/lib/humanbase-data";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const timelineData = await getTimelineDataForDefaultDevelopmentUser();
+  const authState = await getCurrentAuthState();
+
+  if (authState.status === "unauthenticated") {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-8 sm:px-8">
+        <div className="mb-6">
+          <p className="mb-2 text-xs font-bold tracking-[0.22em] text-[var(--accent)] uppercase">
+            Personal context, protected
+          </p>
+          <h1 className="text-4xl font-semibold tracking-tight">Humanbase</h1>
+          <p className="mt-3 text-sm leading-6 text-[var(--muted)] sm:text-base">
+            Melde dich an, um deine persoenliche Timeline zu oeffnen.
+          </p>
+        </div>
+        <SignInForm />
+      </main>
+    );
+  }
+
+  if (authState.status === "denied") {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-8 sm:px-8">
+        <div className="mb-6">
+          <p className="mb-2 text-xs font-bold tracking-[0.22em] text-[var(--accent)] uppercase">
+            Personal context, protected
+          </p>
+          <h1 className="text-4xl font-semibold tracking-tight">Humanbase</h1>
+          <p className="mt-3 text-sm leading-6 text-[var(--muted)] sm:text-base">
+            Dieses Google-Konto ist nicht fuer Humanbase freigeschaltet.
+          </p>
+          {authState.email ? (
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Angemeldet als {authState.email}
+            </p>
+          ) : null}
+        </div>
+        <SignOutButton />
+      </main>
+    );
+  }
+
+  const { user } = authState;
+  const timelineData = await getTimelineDataForUser(user.id);
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 py-8 sm:px-8 lg:px-12">
@@ -20,7 +67,16 @@ export default async function Home() {
             Gedanken, Gespräche und Entscheidungen in einer ruhigen Timeline.
           </p>
         </div>
-        <p className="text-sm text-[var(--muted)]">Web MVP | PostgreSQL</p>
+        <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
+          <span>{user.email}</span>
+          <Link
+            href="/export/json"
+            className="rounded-lg border border-[var(--border)] px-3 py-2 font-semibold text-[var(--foreground)] transition hover:border-[var(--accent)]"
+          >
+            JSON export
+          </Link>
+          <SignOutButton />
+        </div>
       </header>
 
       <HumanbaseTimeline {...timelineData} />

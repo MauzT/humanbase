@@ -10,11 +10,14 @@
     "lint:fix": "eslint --fix",
     "export:json": "node --conditions=react-server --import dotenv/config --import tsx scripts/export-default-user-json.ts",
     "verify:phase3b": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3b.ts",
-    "verify:phase3c": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3c.ts"
+    "verify:phase3c": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase3c.ts",
+    "verify:phase5": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase5.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
     "clsx": "latest",
     "dotenv": "^17.4.2",
     "next": "latest",

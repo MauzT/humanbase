@@ -31,6 +31,10 @@ Erstelle `apps/web/.env` auf Basis von `apps/web/.env.example` und ersetze `YOUR
 ```env
 DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/humanbase?schema=public"
 DIRECT_URL=""
+NEXT_PUBLIC_SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_..."
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+HUMANBASE_ALLOWED_EMAILS="you@example.com"
 ```
 
 Die Datei `.env` bleibt lokal und wird nicht in Git eingecheckt.
@@ -67,6 +71,9 @@ Phase 3B seedet einen Default-Entwicklungsnutzer sowie Kontakte, Tags, Notizen u
 npx.cmd prisma db seed
 ```
 
+Wenn `HUMANBASE_ALLOWED_EMAILS` gesetzt ist, kann der Seed die erste erlaubte
+E-Mail dem Default-Entwicklungsnutzer zuordnen.
+
 ## Phase 3B verifizieren
 
 Die datenbankgestützten Reads und Note-CRUD-Funktionen können lokal mit folgendem Befehl geprüft werden:
@@ -85,7 +92,10 @@ read-only Export-Verifikation:
 ```powershell
 npm.cmd run export:json
 npm.cmd run verify:phase3c
+npm.cmd run verify:phase5
 ```
 
 Der vollständige Backup- und Restore-Prozess ist unter
 [Backup and Restore](backup-and-restore.md) dokumentiert.
+Die Phase-5-Anmeldung ist unter [Authentication](authentication.md)
+dokumentiert.

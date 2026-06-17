@@ -4,6 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 import { mockContacts, mockNotes, mockTags } from "../data/mock-data";
 import { PrismaClient } from "../generated/prisma/client";
+import { getPrimaryAllowedEmail } from "../lib/auth/allowlist";
 import { DEFAULT_DEVELOPMENT_USER_ID } from "../lib/default-user";
 
 const connectionString = process.env.DATABASE_URL;
@@ -47,11 +48,20 @@ function getSeedId(ids: Record<string, string>, mockId: string) {
 }
 
 async function main() {
+  const primaryAllowedEmail = getPrimaryAllowedEmail();
+
   await prisma.$transaction(async (tx) => {
     await tx.user.upsert({
       where: { id: DEFAULT_DEVELOPMENT_USER_ID },
-      update: {},
-      create: { id: DEFAULT_DEVELOPMENT_USER_ID },
+      update: primaryAllowedEmail
+        ? {
+            email: primaryAllowedEmail,
+          }
+        : {},
+      create: {
+        id: DEFAULT_DEVELOPMENT_USER_ID,
+        email: primaryAllowedEmail,
+      },
     });
 
     for (const contact of mockContacts) {
@@ -139,6 +149,12 @@ async function main() {
   console.log(
     `Seeded 1 user, ${mockContacts.length} contacts, ${mockTags.length} tags and ${mockNotes.length} notes.`,
   );
+
+  if (primaryAllowedEmail) {
+    console.log(
+      `Linked the default user to allowed email ${primaryAllowedEmail}.`,
+    );
+  }
 }
 
 main()

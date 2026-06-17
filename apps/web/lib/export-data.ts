@@ -63,41 +63,42 @@ function toDateString(value: Date) {
   return value.toISOString().slice(0, 10);
 }
 
-export async function buildDefaultDevelopmentUserJsonExport(): Promise<HumanbaseJsonExport> {
+export async function buildUserJsonExport(
+  userId: string,
+  missingUserMessage = "The user is missing.",
+): Promise<HumanbaseJsonExport> {
   const user = await prisma.user.findUnique({
-    where: { id: DEFAULT_DEVELOPMENT_USER_ID },
+    where: { id: userId },
   });
 
   if (!user) {
-    throw new Error(
-      "The default development user is missing. Run npx.cmd prisma db seed first.",
-    );
+    throw new Error(missingUserMessage);
   }
 
   const [notes, contacts, tags, noteContacts, noteTags] = await Promise.all([
     prisma.note.findMany({
-      where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      where: { userId },
       orderBy: [{ date: "desc" }, { createdAt: "desc" }, { id: "asc" }],
     }),
     prisma.contact.findMany({
-      where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      where: { userId },
       orderBy: [{ displayName: "asc" }, { id: "asc" }],
     }),
     prisma.tag.findMany({
-      where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      where: { userId },
       orderBy: [{ name: "asc" }, { id: "asc" }],
     }),
     prisma.noteContact.findMany({
       where: {
-        note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-        contact: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+        note: { userId },
+        contact: { userId },
       },
       orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
     }),
     prisma.noteTag.findMany({
       where: {
-        note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-        tag: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+        note: { userId },
+        tag: { userId },
       },
       orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
     }),
@@ -156,4 +157,11 @@ export async function buildDefaultDevelopmentUserJsonExport(): Promise<Humanbase
       tagId,
     })),
   };
+}
+
+export async function buildDefaultDevelopmentUserJsonExport(): Promise<HumanbaseJsonExport> {
+  return buildUserJsonExport(
+    DEFAULT_DEVELOPMENT_USER_ID,
+    "The default development user is missing. Run npx.cmd prisma db seed first.",
+  );
 }

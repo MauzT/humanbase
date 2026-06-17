@@ -96,6 +96,10 @@ Status: abgeschlossen. Supabase wird als erster Managed-PostgreSQL-Anbieter verw
 
 Ziel: Cloud-Daten erst nach stabiler Persistenz absichern.
 
+Status: abgeschlossen. Supabase Auth mit Google OAuth, App-level Allowlist,
+geschützter Timeline-Zugriff, geschützter JSON-Export, explizite Zuordnung zum
+Humanbase-`User` und Phase-5-Verifikation sind vorhanden.
+
 - Authentifizierung ergänzen
 - zunächst Single-User- oder Limited-User-Nutzung unterstützen
 - jeden Datensatz über `userId` abgrenzen

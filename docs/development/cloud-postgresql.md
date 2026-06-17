@@ -100,6 +100,7 @@ bestehenden Datenzugriff:
 ```powershell
 npm.cmd run verify:phase3b
 npm.cmd run verify:phase3c
+npm.cmd run verify:phase5
 npm.cmd run export:json
 ```
 
@@ -119,8 +120,10 @@ Pruefe beim Anbieter mindestens:
 - Point-in-Time Recovery, wenn wichtige persoenliche Daten gespeichert werden
 - regelmaessige Passwortrotation bei Verdacht auf Zugriff
 
-Humanbase verwendet in Phase 4 noch keine Authentifizierung. Die Cloud-Datenbank
-ist daher nur fuer kontrollierte persoenliche Nutzung geeignet.
+Phase 5 ergaenzt Supabase Auth mit Google OAuth und App-level Allowlist.
+Details stehen unter [Authentication](authentication.md). Der Humanbase-Kern
+bleibt weiterhin Prisma/PostgreSQL und koppelt App-Daten nicht an
+Supabase-verwaltete Auth-Tabellen.
 
 ## Backup vor und nach der Migration
 
@@ -159,7 +162,8 @@ PostgreSQL-Anbieter sollte so ablaufen:
 3. Prisma-Migrationen mit `npx.cmd prisma migrate deploy` anwenden oder den
    Dump in die Zieldatenbank einspielen.
 4. `DATABASE_URL` und optional `DIRECT_URL` auf den Zielanbieter umstellen.
-5. `npm.cmd run verify:phase3b` und `npm.cmd run verify:phase3c` ausfuehren.
+5. `npm.cmd run verify:phase3b`, `npm.cmd run verify:phase3c` und
+   `npm.cmd run verify:phase5` ausfuehren.
 6. Erst nach erfolgreicher Verifikation den alten Anbieter stilllegen.
 
 ## Phase-4-Abnahmekriterien

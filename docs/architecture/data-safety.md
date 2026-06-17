@@ -48,6 +48,11 @@ Humanbase reduziert Lock-in durch:
 
 Phase 3C ergänzt Export, Dumps, Restore-Dokumentation und eine lokale Restore-Verifikation. Erst danach soll Humanbase für wichtige persönliche Daten genutzt werden. Phase 4 ergänzt automatische Anbieter-Backups und dokumentiert die Cloud-Migration.
 
+Phase 5 ergaenzt Supabase Auth, Google OAuth und `userId`-Scoping fuer alle
+normalen App-Zugriffe. Oeffentliche Registrierung bleibt fuer Humanbase durch
+eine App-level Allowlist blockiert. Google Contacts/People API Scopes werden
+erst in Phase 7 betrachtet.
+
 ## Phase-4-Sicherheitsnotiz
 
 Fuer Phase 4 sind mindestens SSL fuer PostgreSQL-Verbindungen, starke

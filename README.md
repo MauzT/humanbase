@@ -48,9 +48,17 @@ Phase 4 ist abgeschlossen:
 - Seed-Daten und Verifikationsskripte gegen Supabase PostgreSQL ausgeführt
 - JSON-Export und öffentlicher PostgreSQL-Schema-Dump erstellt
 
+Phase 5 ist abgeschlossen:
+
+- Supabase Auth als Authentifizierungsanbieter
+- Google OAuth als erster Login-Weg
+- keine öffentliche Registrierung für Humanbase
+- App-level Allowlist über `HUMANBASE_ALLOWED_EMAILS`
+- Timeline, CRUD und JSON-Export auf den angemeldeten `userId` begrenzt
+- lokale Verifikation über `npm.cmd run verify:phase5`
+
 Noch nicht enthalten:
 
-- Authentifizierung
 - Cloud-Deployment der Web-App
 - Google Contacts Import
 - Mobile App
@@ -93,6 +101,12 @@ Phase 3C kann lokal mit folgendem Befehl geprüft werden:
 npm.cmd run verify:phase3c
 ```
 
+Phase 5 kann lokal mit folgendem Befehl geprüft werden:
+
+```powershell
+npm.cmd run verify:phase5
+```
+
 Ein manueller JSON-Export kann so erstellt werden:
 
 ```powershell
@@ -102,6 +116,7 @@ npm.cmd run export:json
 Für die lokale PostgreSQL- und Prisma-Einrichtung siehe [Lokales PostgreSQL](docs/development/local-postgresql.md).
 Für Phase 4 und Cloud PostgreSQL siehe [Cloud PostgreSQL](docs/development/cloud-postgresql.md).
 Für Backup und Restore siehe [Backup and Restore](docs/development/backup-and-restore.md).
+Für Authentifizierung siehe [Authentication](docs/development/authentication.md).
 
 ## Struktur
 

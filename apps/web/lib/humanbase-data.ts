@@ -58,16 +58,16 @@ export function getDefaultDevelopmentUser() {
   });
 }
 
-export async function getNotesForDefaultDevelopmentUser(): Promise<Note[]> {
+export async function getNotesForUser(userId: string): Promise<Note[]> {
   const notes = await prisma.note.findMany({
-    where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+    where: { userId },
     include: {
       contacts: {
-        where: { contact: { userId: DEFAULT_DEVELOPMENT_USER_ID } },
+        where: { contact: { userId } },
         select: { contactId: true },
       },
       tags: {
-        where: { tag: { userId: DEFAULT_DEVELOPMENT_USER_ID } },
+        where: { tag: { userId } },
         select: { tagId: true },
       },
     },
@@ -77,11 +77,13 @@ export async function getNotesForDefaultDevelopmentUser(): Promise<Note[]> {
   return notes.map(toUiNote);
 }
 
-export async function getContactsForDefaultDevelopmentUser(): Promise<
-  Contact[]
-> {
+export function getNotesForDefaultDevelopmentUser(): Promise<Note[]> {
+  return getNotesForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export async function getContactsForUser(userId: string): Promise<Contact[]> {
   const contacts = await prisma.contact.findMany({
-    where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+    where: { userId },
     orderBy: { displayName: "asc" },
   });
 
@@ -97,9 +99,13 @@ export async function getContactsForDefaultDevelopmentUser(): Promise<
   }));
 }
 
-export async function getTagsForDefaultDevelopmentUser(): Promise<Tag[]> {
+export function getContactsForDefaultDevelopmentUser(): Promise<Contact[]> {
+  return getContactsForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export async function getTagsForUser(userId: string): Promise<Tag[]> {
   const tags = await prisma.tag.findMany({
-    where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+    where: { userId },
     orderBy: { name: "asc" },
   });
 
@@ -112,40 +118,62 @@ export async function getTagsForDefaultDevelopmentUser(): Promise<Tag[]> {
   }));
 }
 
-export function getNoteContactsForDefaultDevelopmentUser(): Promise<
-  NoteContactRelationship[]
-> {
+export function getTagsForDefaultDevelopmentUser(): Promise<Tag[]> {
+  return getTagsForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export function getNoteContactsForUser(
+  userId: string,
+): Promise<NoteContactRelationship[]> {
   return prisma.noteContact.findMany({
     where: {
-      note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-      contact: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      note: { userId },
+      contact: { userId },
     },
     select: { noteId: true, contactId: true },
     orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
   });
 }
 
-export function getNoteTagsForDefaultDevelopmentUser(): Promise<
-  NoteTagRelationship[]
+export function getNoteContactsForDefaultDevelopmentUser(): Promise<
+  NoteContactRelationship[]
 > {
+  return getNoteContactsForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export function getNoteTagsForUser(
+  userId: string,
+): Promise<NoteTagRelationship[]> {
   return prisma.noteTag.findMany({
     where: {
-      note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-      tag: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      note: { userId },
+      tag: { userId },
     },
     select: { noteId: true, tagId: true },
     orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
   });
 }
 
-export async function getTimelineDataForDefaultDevelopmentUser(): Promise<
-  TimelineData
+export function getNoteTagsForDefaultDevelopmentUser(): Promise<
+  NoteTagRelationship[]
 > {
+  return getNoteTagsForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export async function getTimelineDataForUser(
+  userId: string,
+): Promise<TimelineData> {
   const [notes, contacts, tags] = await Promise.all([
-    getNotesForDefaultDevelopmentUser(),
-    getContactsForDefaultDevelopmentUser(),
-    getTagsForDefaultDevelopmentUser(),
+    getNotesForUser(userId),
+    getContactsForUser(userId),
+    getTagsForUser(userId),
   ]);
 
   return { notes, contacts, tags };
+}
+
+export function getTimelineDataForDefaultDevelopmentUser(): Promise<
+  TimelineData
+> {
+  return getTimelineDataForUser(DEFAULT_DEVELOPMENT_USER_ID);
 }

@@ -20,13 +20,27 @@ Das `User`-Modell wird bereits in Phase 3A ergänzt, obwohl Authentifizierung er
 
 Für die lokale Entwicklung kann ein definierter persönlicher Default-User verwendet werden. Damit muss das Datenmodell bei der späteren Cloud-Nutzung nicht grundlegend umgebaut werden.
 
-## Prisma-Modelle in Phase 3A
+## Authentifizierung in Phase 5
+
+Phase 5 ergaenzt das bestehende `User`-Modell um optionale Mapping-Felder:
+
+- `email`
+- `supabaseAuthUserId`
+
+Supabase Auth verwaltet Login und Sessions. Humanbase speichert keine eigenen
+Passwort-Hashes und keine eigene Auth-Session-Tabelle mehr. Die
+Kernentitaeten `Note`, `Contact` und `Tag` bleiben weiterhin durch `userId` vom
+aktiven Humanbase-Nutzer abgegrenzt.
+
+## Prisma-Modelle
 
 Das Prisma-Schema liegt unter `apps/web/prisma/schema.prisma`. Die Kernentitäten verwenden UUIDs. Beziehungen zwischen Notizen, Kontakten und Tags bleiben als explizite Join-Tabellen sichtbar.
 
 ```text
 User
   id
+  email?
+  supabaseAuthUserId?
   createdAt
   updatedAt
 

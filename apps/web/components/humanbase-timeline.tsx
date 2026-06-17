@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 
 import {
-  createNoteForDefaultDevelopmentUser,
-  deleteNoteForDefaultDevelopmentUser,
-  updateNoteForDefaultDevelopmentUser,
+  createNoteForCurrentUser,
+  deleteNoteForCurrentUser,
+  updateNoteForCurrentUser,
 } from "@/app/actions";
 import { NoteForm, type NoteFormInput } from "@/components/note-form";
 import { NotesTimeline } from "@/components/notes-timeline";
@@ -59,7 +59,7 @@ export function HumanbaseTimeline({
     setIsSavingNote(true);
 
     try {
-      const result = await createNoteForDefaultDevelopmentUser(note);
+      const result = await createNoteForCurrentUser(note);
 
       if (!result.ok) {
         setSaveError(result.error);
@@ -86,7 +86,7 @@ export function HumanbaseTimeline({
     setIsSavingNote(true);
 
     try {
-      const result = await updateNoteForDefaultDevelopmentUser({
+      const result = await updateNoteForCurrentUser({
         id: editingNote.id,
         ...note,
       });
@@ -149,7 +149,7 @@ export function HumanbaseTimeline({
     setDeletingNoteId(note.id);
 
     try {
-      const result = await deleteNoteForDefaultDevelopmentUser(note.id);
+      const result = await deleteNoteForCurrentUser(note.id);
 
       if (!result.ok) {
         window.alert(result.error);
