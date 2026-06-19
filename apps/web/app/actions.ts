@@ -47,6 +47,45 @@ export async function signInWithGoogle() {
   redirect(data.url);
 }
 
+export async function startGoogleContactsImport() {
+  try {
+    await requireAllowedHumanbaseUser();
+  } catch {
+    redirect("/?contacts_error=authentication_required");
+  }
+
+  const requestHeaders = await headers();
+  const origin =
+    process.env.NEXT_PUBLIC_APP_URL ?? requestHeaders.get("origin");
+
+  if (!origin) {
+    redirect("/?contacts_error=missing_origin");
+  }
+
+  const importPath = "/contacts/import";
+  const callbackUrl = new URL("/auth/callback", origin);
+  callbackUrl.searchParams.set("next", importPath);
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: callbackUrl.toString(),
+      scopes: "https://www.googleapis.com/auth/contacts.readonly",
+      queryParams: {
+        prompt: "consent",
+        include_granted_scopes: "true",
+      },
+    },
+  });
+
+  if (error || !data.url) {
+    redirect("/?contacts_error=oauth_start_failed");
+  }
+
+  redirect(data.url);
+}
+
 export async function signOutCurrentUser() {
   const supabase = await createSupabaseServerClient();
 

@@ -136,6 +136,11 @@ vertrauenswürdigen Humanbase-Domain bereitstellen.
 
 Ziel: Kontakte kontrolliert und mit minimalen Berechtigungen importieren.
 
+Status: abgeschlossen. Ein expliziter, read-only Google-OAuth-Flow liest
+Kontakte paginiert aus der People API, speichert keine Google-Tokens und
+erstellt oder aktualisiert lokale Kontakte idempotent anhand ihrer
+Google-Identitaet.
+
 - Google OAuth erst nach stabiler Authentifizierung und Cloud-Speicherung ergänzen
 - read-only Import aus der Google People API starten
 - zunächst keine Zwei-Wege-Synchronisation

@@ -50,8 +50,9 @@ Phase 3C ergänzt Export, Dumps, Restore-Dokumentation und eine lokale Restore-V
 
 Phase 5 ergaenzt Supabase Auth, Google OAuth und `userId`-Scoping fuer alle
 normalen App-Zugriffe. Oeffentliche Registrierung bleibt fuer Humanbase durch
-eine App-level Allowlist blockiert. Google Contacts/People API Scopes werden
-erst in Phase 7 betrachtet.
+eine App-level Allowlist blockiert. Phase 7 fordert den
+`contacts.readonly`-Scope nur bei einem expliziten Import an, schreibt nichts zu
+Google zurueck und speichert keine Google-Provider-Tokens.
 
 ## Phase-4-Sicherheitsnotiz
 

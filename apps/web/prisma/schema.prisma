@@ -50,7 +50,7 @@ model Contact {
   updatedAt        DateTime      @updatedAt
 
   @@index([userId, displayName])
-  @@index([userId, externalProvider, externalId])
+  @@unique([userId, externalProvider, externalId])
 }
 
 model Tag {

@@ -84,16 +84,18 @@ NoteTag
   tagId
 ```
 
-## Kontakte und späterer Google-Import
+## Kontakte und Google-Import
 
-`Contact` wird in Phase 3A so vorbereitet, dass später importierte Kontakte normale Humanbase-Kontakte bleiben:
+`Contact` wurde in Phase 3A so vorbereitet, dass importierte Kontakte normale Humanbase-Kontakte bleiben:
 
 - `source`: zum Beispiel `manual` oder `google`
 - `externalProvider`: zum Beispiel `google`
 - `externalId`: ID des Kontakts beim externen Anbieter
 - `lastSyncedAt`: Zeitpunkt des letzten Imports oder Abgleichs
 
-Phase 3 enthält keinen Google OAuth Flow und speichert keine Google Tokens. Der read-only Import aus der Google People API folgt erst in Phase 7 nach stabiler Cloud-Persistenz und Authentifizierung.
+Phase 7 verwendet einen expliziten read-only Import aus der Google People API.
+Google-Tokens werden nicht dauerhaft gespeichert. Wiederholte Importe
+aktualisieren Kontakte anhand von `userId`, `externalProvider` und `externalId`.
 
 ## Hinweise zu Phase 1 und Phase 2
 

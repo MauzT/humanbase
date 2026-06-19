@@ -16,6 +16,9 @@ export type Contact = {
   phone?: string;
   avatarUrl?: string;
   source: "manual" | "google";
+  externalProvider?: string;
+  externalId?: string;
+  lastSyncedAt?: string;
   createdAt: string;
   updatedAt: string;
 };

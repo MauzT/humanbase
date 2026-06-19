@@ -66,10 +66,17 @@ Phase 6 ist abgeschlossen:
 - leichtgewichtiges Web-App-Manifest ohne Offline-Sync
 - dokumentierte Breakpoint- und Flow-Prüfung
 
+Phase 7 ist abgeschlossen:
+
+- expliziter Google-Kontakte-Import mit read-only People-API-Scope
+- paginierter Import ohne gespeicherte Google-Tokens
+- idempotente lokale Aktualisierung über die Google-Kontakt-ID
+- Herkunft und Importzeitpunkt in `Contact` dokumentiert
+- lokale Verifikation über `npm.cmd run verify:phase7`
+
 Noch nicht enthalten:
 
 - Cloud-Deployment der Web-App
-- Google Contacts Import
 - Mobile App
 
 ## Langfristige technische Richtung
