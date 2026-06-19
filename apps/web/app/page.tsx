@@ -13,12 +13,14 @@ export default async function Home() {
 
   if (authState.status === "unauthenticated") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-8 sm:px-8">
+      <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-6 sm:px-8 sm:py-8">
         <div className="mb-6">
           <p className="mb-2 text-xs font-bold tracking-[0.22em] text-[var(--accent)] uppercase">
             Personal context, protected
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight">Humanbase</h1>
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Humanbase
+          </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--muted)] sm:text-base">
             Melde dich an, um deine persoenliche Timeline zu oeffnen.
           </p>
@@ -30,12 +32,14 @@ export default async function Home() {
 
   if (authState.status === "denied") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5 py-8 sm:px-8">
+      <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-4 py-6 sm:px-8 sm:py-8">
         <div className="mb-6">
           <p className="mb-2 text-xs font-bold tracking-[0.22em] text-[var(--accent)] uppercase">
             Personal context, protected
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight">Humanbase</h1>
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Humanbase
+          </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--muted)] sm:text-base">
             Dieses Google-Konto ist nicht fuer Humanbase freigeschaltet.
           </p>
@@ -54,28 +58,33 @@ export default async function Home() {
   const timelineData = await getTimelineDataForUser(user.id);
 
   return (
-    <main className="mx-auto min-h-screen max-w-6xl px-5 py-8 sm:px-8 lg:px-12">
-      <header className="mb-8 flex flex-col gap-4 border-b border-[var(--border)] pb-7 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+    <main className="mx-auto min-h-[100dvh] max-w-6xl px-4 py-5 sm:px-8 sm:py-8 lg:px-12">
+      <header className="mb-6 flex flex-col gap-5 border-b border-[var(--border)] pb-6 sm:mb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-7">
+        <div className="min-w-0">
           <p className="mb-2 text-xs font-bold tracking-[0.22em] text-[var(--accent)] uppercase">
             Personal context, by date
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Humanbase
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
             Gedanken, Gespräche und Entscheidungen in einer ruhigen Timeline.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
-          <span>{user.email}</span>
-          <Link
-            href="/export/json"
-            className="rounded-lg border border-[var(--border)] px-3 py-2 font-semibold text-[var(--foreground)] transition hover:border-[var(--accent)]"
+        <div className="grid w-full min-w-0 gap-3 text-sm text-[var(--muted)] sm:w-auto sm:justify-items-end">
+          <span className="max-w-full break-all">{user.email}</span>
+          <nav
+            aria-label="Konto und Daten"
+            className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-end"
           >
-            JSON export
-          </Link>
-          <SignOutButton />
+            <Link
+              href="/export/json"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] px-4 py-2 font-semibold text-[var(--foreground)] transition-colors hover:border-[var(--accent)]"
+            >
+              JSON export
+            </Link>
+            <SignOutButton />
+          </nav>
         </div>
       </header>
 

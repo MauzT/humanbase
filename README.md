@@ -57,6 +57,15 @@ Phase 5 ist abgeschlossen:
 - Timeline, CRUD und JSON-Export auf den angemeldeten `userId` begrenzt
 - lokale Verifikation über `npm.cmd run verify:phase5`
 
+Phase 6 ist abgeschlossen:
+
+- responsive Timeline, Filter, Suche und Kontrollen ab 320 px Viewport-Breite
+- mobil optimierter Notiz-Editor für Erstellen und Bearbeiten
+- größere Touch-Ziele und robuster Umbruch langer Inhalte
+- mobil erreichbare Authentifizierungs-, Export- und Abmeldeaktionen
+- leichtgewichtiges Web-App-Manifest ohne Offline-Sync
+- dokumentierte Breakpoint- und Flow-Prüfung
+
 Noch nicht enthalten:
 
 - Cloud-Deployment der Web-App
@@ -117,6 +126,7 @@ Für die lokale PostgreSQL- und Prisma-Einrichtung siehe [Lokales PostgreSQL](do
 Für Phase 4 und Cloud PostgreSQL siehe [Cloud PostgreSQL](docs/development/cloud-postgresql.md).
 Für Backup und Restore siehe [Backup and Restore](docs/development/backup-and-restore.md).
 Für Authentifizierung siehe [Authentication](docs/development/authentication.md).
+Für mobile Browser- und Responsive-Tests siehe [Responsive Web](docs/development/responsive-web.md).
 
 ## Struktur
 

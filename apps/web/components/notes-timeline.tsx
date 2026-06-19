@@ -54,11 +54,11 @@ export function NotesTimeline({
   );
 
   return (
-    <div className="grid gap-8">
+    <div className="grid min-w-0 gap-7 sm:gap-8">
       {sortedDates.map((date) => (
         <section key={date}>
-          <div className="mb-4 flex items-center gap-3">
-            <h2 className="text-sm font-bold tracking-wider text-[var(--accent)] uppercase">
+          <div className="mb-3 flex min-w-0 items-center gap-3 sm:mb-4">
+            <h2 className="min-w-0 text-xs leading-5 font-bold tracking-wider text-[var(--accent)] uppercase sm:text-sm">
               {formatDate(date)}
             </h2>
             <div className="h-px flex-1 bg-[var(--border)]" />

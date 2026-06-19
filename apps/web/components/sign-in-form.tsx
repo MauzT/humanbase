@@ -7,7 +7,7 @@ export function SignInForm() {
       className="grid gap-4 rounded-xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm"
       action={signInWithGoogle}
     >
-      <Button type="submit">
+      <Button type="submit" className="w-full">
         Sign in with Google
       </Button>
     </form>

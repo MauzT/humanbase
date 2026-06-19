@@ -110,11 +110,27 @@ Humanbase-`User` und Phase-5-Verifikation sind vorhanden.
 
 Ziel: Humanbase zunächst im mobilen Browser gut nutzbar machen.
 
+Status: abgeschlossen. Timeline, Filter, Suche, Notiz-Dialog,
+Authentifizierungsansichten und Export-Zugriff sind für schmale Viewports
+optimiert. Touch-Ziele, Textumbruch und mobile Formularbedienung wurden
+verbessert. Ein leichtgewichtiges Web-App-Manifest ist vorhanden; Offline-Sync
+und Service Worker bleiben bewusst ausgeschlossen.
+
 - Web-App responsiv gestalten
 - mobile Browser-Nutzung prüfen
 - optional PWA-Unterstützung ergänzen
 - Expo oder React Native erst später erwägen
 - native Mobile App nicht verfrüht bauen
+
+## Phase 6.5: Domain und OAuth Branding
+
+Ziel: Die produktive Web- und Login-Erfahrung unter einer stabilen,
+vertrauenswürdigen Humanbase-Domain bereitstellen.
+
+- eigene Domain verbinden
+- Google Consent Screen Branding konfigurieren
+- optional eine eigene Supabase Auth Domain konfigurieren
+- produktive OAuth-Flows verifizieren
 
 ## Phase 7: Google Contacts Import
 

@@ -17,8 +17,8 @@ const variantClasses = {
 };
 
 const sizeClasses = {
-  default: "h-10 px-4 py-2",
-  sm: "h-8 px-3 text-xs",
+  default: "min-h-11 px-4 py-2",
+  sm: "size-11 p-0 text-xs sm:size-10",
 };
 
 export function Button({

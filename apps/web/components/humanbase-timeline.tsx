@@ -178,8 +178,10 @@ export function HumanbaseTimeline({
           isSubmitting={isSavingNote}
         />
       ) : (
-        <div className="mb-6 flex justify-end">
-          <Button onClick={openCreateForm}>Neue Notiz</Button>
+        <div className="mb-5 flex sm:mb-6 sm:justify-end">
+          <Button className="w-full sm:w-auto" onClick={openCreateForm}>
+            Neue Notiz
+          </Button>
         </div>
       )}
 
@@ -195,9 +197,14 @@ export function HumanbaseTimeline({
         onClear={clearFilters}
       />
 
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold tracking-tight">Timeline</h2>
-        <p className="text-sm text-[var(--muted)]">
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+          Timeline
+        </h2>
+        <p
+          aria-live="polite"
+          className="text-xs text-[var(--muted)] sm:text-sm"
+        >
           {filteredNotes.length} von {notes.length} Notizen
         </p>
       </div>

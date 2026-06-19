@@ -15,18 +15,49 @@
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+  background: var(--background);
+}
+
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(199, 222, 211, 0.5), transparent 30rem),
     var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

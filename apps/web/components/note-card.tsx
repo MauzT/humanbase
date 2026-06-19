@@ -29,10 +29,12 @@ export function NoteCard({
   const noteTags = tags.filter((tag) => note.tagIds.includes(tag.id));
 
   return (
-    <article className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-6">
+    <article className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-6">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-xl font-semibold tracking-tight">{note.title}</h3>
-        <div className="flex gap-1">
+        <h3 className="min-w-0 break-words text-lg font-semibold tracking-tight sm:text-xl">
+          {note.title}
+        </h3>
+        <div className="-mr-2 -mt-2 flex shrink-0 gap-0 sm:mr-0 sm:mt-0 sm:gap-1">
           <Button
             aria-label={`${note.title} bearbeiten`}
             title="Bearbeiten"
@@ -83,7 +85,9 @@ export function NoteCard({
           </Button>
         </div>
       </div>
-      <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{note.content}</p>
+      <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-6 text-[var(--muted)]">
+        {note.content}
+      </p>
 
       <div className="mt-5 flex flex-wrap gap-2">
         {noteContacts.map((contact) => (
@@ -91,7 +95,7 @@ export function NoteCard({
             key={contact.id}
             type="button"
             onClick={() => onContactClick(contact.id)}
-            className="cursor-pointer rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent)] transition hover:bg-[#cfe3db]"
+            className="inline-flex min-h-11 max-w-full cursor-pointer items-center rounded-full bg-[var(--accent-soft)] px-3 py-2 text-left text-xs font-semibold text-[var(--accent)] transition hover:bg-[#cfe3db]"
           >
             {contact.displayName}
           </button>
@@ -104,7 +108,7 @@ export function NoteCard({
             key={tag.id}
             type="button"
             onClick={() => onTagClick(tag.id)}
-            className="cursor-pointer rounded-full border border-[var(--border)] px-3 py-1 text-xs font-semibold transition hover:border-[var(--accent)]"
+            className="inline-flex min-h-11 max-w-full cursor-pointer items-center rounded-full border border-[var(--border)] px-3 py-2 text-left text-xs font-semibold transition hover:border-[var(--accent)]"
             style={{ color: tag.color }}
           >
             #{tag.name}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Contact, Note, Tag } from "@/types/humanbase";
 
@@ -22,7 +22,7 @@ type NoteFormProps = {
 };
 
 const inputClasses =
-  "w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-soft)]";
+  "min-h-12 w-full min-w-0 rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-base outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-soft)] sm:min-h-11 sm:text-sm";
 
 export function NoteForm({
   contacts,
@@ -41,6 +41,25 @@ export function NoteForm({
   );
   const [tagIds, setTagIds] = useState<string[]>(note?.tagIds ?? []);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && !isSubmitting) {
+        onCancel();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isSubmitting, onCancel]);
 
   function toggleSelection(
     id: string,
@@ -72,14 +91,14 @@ export function NoteForm({
   }
 
   return (
-    <div className="fixed inset-0 z-10 flex items-start justify-center overflow-y-auto bg-[rgba(30,41,37,0.45)] px-4 py-8 sm:py-12">
+    <div className="fixed inset-0 z-10 flex items-stretch justify-center bg-[rgba(30,41,37,0.45)] sm:items-center sm:px-4 sm:py-8">
       <section
         aria-labelledby="note-form-title"
         aria-modal="true"
         role="dialog"
-        className="w-full max-w-3xl rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-xl sm:p-5"
+        className="flex h-[100dvh] w-full max-w-3xl flex-col overflow-hidden bg-[var(--card)] shadow-xl sm:h-auto sm:max-h-[calc(100dvh-4rem)] sm:rounded-2xl sm:border sm:border-[var(--border)]"
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[var(--border)] px-4 py-3 sm:px-5">
           <h2 id="note-form-title" className="text-lg font-semibold">
             {note ? "Notiz bearbeiten" : "Neue Notiz"}
           </h2>
@@ -88,6 +107,7 @@ export function NoteForm({
             title="Schließen"
             variant="ghost"
             size="sm"
+            disabled={isSubmitting}
             onClick={onCancel}
           >
             <svg
@@ -106,12 +126,17 @@ export function NoteForm({
           </Button>
         </div>
 
-        <form className="mt-4 grid gap-4" onSubmit={handleSubmit}>
+        <form
+          className="grid flex-1 gap-5 overflow-y-auto px-4 py-5 sm:px-5"
+          onSubmit={handleSubmit}
+        >
           <label className="grid gap-2">
             <span className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase">
               Titel
             </span>
             <input
+              autoFocus
+              autoComplete="off"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               className={inputClasses}
@@ -126,12 +151,12 @@ export function NoteForm({
             <textarea
               value={content}
               onChange={(event) => setContent(event.target.value)}
-              className={`${inputClasses} min-h-28 resize-y`}
+              className={`${inputClasses} min-h-40 resize-y sm:min-h-32`}
               required
             />
           </label>
 
-          <label className="grid max-w-52 gap-2">
+          <label className="grid w-full gap-2 sm:max-w-52">
             <span className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase">
               Datum
             </span>
@@ -152,10 +177,11 @@ export function NoteForm({
               {contacts.map((contact) => (
                 <label
                   key={contact.id}
-                  className="flex cursor-pointer items-center gap-2 rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent)]"
+                  className="flex min-h-11 max-w-full cursor-pointer items-center gap-2 rounded-full bg-[var(--accent-soft)] px-3 py-2 text-xs font-semibold text-[var(--accent)]"
                 >
                   <input
                     type="checkbox"
+                    className="size-5 shrink-0 accent-[var(--accent)]"
                     checked={contactIds.includes(contact.id)}
                     onChange={() =>
                       toggleSelection(contact.id, contactIds, setContactIds)
@@ -175,11 +201,12 @@ export function NoteForm({
               {tags.map((tag) => (
                 <label
                   key={tag.id}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs font-semibold"
+                  className="flex min-h-11 max-w-full cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] px-3 py-2 text-xs font-semibold"
                   style={{ color: tag.color }}
                 >
                   <input
                     type="checkbox"
+                    className="size-5 shrink-0 accent-[var(--accent)]"
                     checked={tagIds.includes(tag.id)}
                     onChange={() => toggleSelection(tag.id, tagIds, setTagIds)}
                   />
@@ -190,18 +217,29 @@ export function NoteForm({
           </fieldset>
 
           {(error || submitError) && (
-            <p className="text-sm text-[#9b4f4f]">{error || submitError}</p>
+            <p role="alert" className="text-sm text-[#9b4f4f]">
+              {error || submitError}
+            </p>
           )}
 
-          <div className="flex flex-wrap gap-2">
-            <Button type="submit" disabled={isSubmitting}>
+          <div className="sticky bottom-0 -mx-4 -mb-5 grid grid-cols-2 gap-2 border-t border-[var(--border)] bg-[var(--card)] px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:-mx-5 sm:grid-cols-[auto_auto] sm:justify-start sm:px-5 sm:pb-3">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full sm:w-auto"
+            >
               {isSubmitting
                 ? "Wird gespeichert..."
                 : note
                   ? "Aenderungen speichern"
                   : "Notiz erstellen"}
             </Button>
-            <Button variant="outline" onClick={onCancel}>
+            <Button
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={onCancel}
+              className="w-full sm:w-auto"
+            >
               Abbrechen
             </Button>
           </div>
