@@ -187,6 +187,26 @@ Status: abgeschlossen.
 - Aktionsleiste des Notizdialogs vom scrollbaren Inhalt trennen
 - Datum über einen zusätzlichen „Heute“-Button setzen
 
+## Phase 8.3: Notizdialog komfortabler schließen
+
+Status: abgeschlossen.
+
+- neue Notizen standardmäßig mit dem heutigen lokalen Datum vorbelegen
+- leeren Notizdialog per Klick außerhalb schließen
+- ausgefüllte Notiz beim Klick außerhalb speichern
+- bestehende Pflichtfeldvalidierung beim automatischen Speichern beibehalten
+
+## Phase 8.4: Lange Notizen in der Timeline einklappen
+
+Status: abgeschlossen.
+
+- lange Notizinhalte auf der Hauptseite auf sechs Zeilen begrenzen
+- nur bei tatsächlich überlaufendem Inhalt eine Ausklappfunktion anzeigen
+- vollständigen Inhalt über einen kompakten Chevron öffnen und wieder einklappen
+- Chevron platzsparend rechts direkt unter dem Notizinhalt anordnen
+- Karten nicht auf die Höhe benachbarter Notizen strecken
+- leere Kontakt- und Tag-Bereiche ohne zusätzlichen Abstand ausblenden
+
 ## Weitere mögliche Phase-8-Funktionen
 
 - KI-Zusammenfassungen
@@ -200,7 +220,6 @@ Status: abgeschlossen.
 - Wiederherstellung durch JSON ermöglichen
 - Kalender neben der Timeline anzeigen, der beim Scrollen den zugehörigen
   Monat zeigt und in den Einstellungen deaktiviert werden kann
-- Lange Notizen abschneiden und ausklappbar machen
 - Filtern auch nach mehreren Kontakten und Tags gleichzeitig ermöglichen
 - Erinnerungen
 - Gesprächsvorbereitung

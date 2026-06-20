@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { Contact, Note, Tag } from "@/types/humanbase";
 
@@ -53,7 +53,9 @@ export function NoteForm({
 }: NoteFormProps) {
   const [title, setTitle] = useState(note?.title ?? "");
   const [content, setContent] = useState(note?.content ?? "");
-  const [date, setDate] = useState(note?.date ?? "");
+  const [date, setDate] = useState(
+    () => note?.date ?? getLocalDateString(),
+  );
   const [contactIds, setContactIds] = useState<string[]>(
     note?.contactIds ?? [],
   );
@@ -62,6 +64,7 @@ export function NoteForm({
   const [tagQuery, setTagQuery] = useState("");
   const [isCreatingTag, setIsCreatingTag] = useState(false);
   const [error, setError] = useState("");
+  const isSubmittingRef = useRef(false);
 
   const selectedContacts = useMemo(
     () => contacts.filter((contact) => contactIds.includes(contact.id)),
@@ -188,8 +191,10 @@ export function NoteForm({
     }
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function submitNote() {
+    if (isSubmitting || isSubmittingRef.current) {
+      return;
+    }
 
     if (isCreatingTag) {
       setError("Bitte warte, bis der neue Tag erstellt wurde.");
@@ -201,17 +206,57 @@ export function NoteForm({
       return;
     }
 
-    await onSubmit({
-      title: title.trim(),
-      content: content.trim(),
-      date,
-      contactIds,
-      tagIds,
-    });
+    setError("");
+    isSubmittingRef.current = true;
+
+    try {
+      await onSubmit({
+        title: title.trim(),
+        content: content.trim(),
+        date,
+        contactIds,
+        tagIds,
+      });
+    } finally {
+      isSubmittingRef.current = false;
+    }
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await submitNote();
+  }
+
+  function handleBackdropPointerDown(
+    event: React.PointerEvent<HTMLDivElement>,
+  ) {
+    if (
+      event.target !== event.currentTarget ||
+      isSubmitting ||
+      isCreatingTag
+    ) {
+      return;
+    }
+
+    const hasNoteData =
+      Boolean(title.trim()) ||
+      Boolean(content.trim()) ||
+      contactIds.length > 0 ||
+      tagIds.length > 0;
+
+    if (!note && !hasNoteData) {
+      onCancel();
+      return;
+    }
+
+    void submitNote();
   }
 
   return (
-    <div className="fixed inset-0 z-10 flex items-stretch justify-center bg-[rgba(30,41,37,0.45)] sm:items-center sm:px-4 sm:py-8">
+    <div
+      className="fixed inset-0 z-10 flex items-stretch justify-center bg-[rgba(30,41,37,0.45)] sm:items-center sm:px-4 sm:py-8"
+      onPointerDown={handleBackdropPointerDown}
+    >
       <section
         aria-labelledby="note-form-title"
         aria-modal="true"

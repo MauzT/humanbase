@@ -63,7 +63,7 @@ export function NotesTimeline({
             </h2>
             <div className="h-px flex-1 bg-[var(--border)]" />
           </div>
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid items-start gap-4 lg:grid-cols-2">
             {groupedNotes[date].map((note) => (
               <NoteCard
                 key={note.id}
