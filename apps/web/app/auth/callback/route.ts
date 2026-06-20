@@ -13,7 +13,10 @@ export async function GET(request: NextRequest) {
 
   if (!code && next === "/contacts/import") {
     return NextResponse.redirect(
-      new URL("/?contacts_error=oauth_callback_failed", requestUrl.origin),
+      new URL(
+        "/settings?contacts_error=oauth_callback_failed",
+        requestUrl.origin,
+      ),
     );
   }
 
@@ -28,7 +31,12 @@ export async function GET(request: NextRequest) {
           : "auth_error=oauth_callback_failed";
 
       return NextResponse.redirect(
-        new URL(`/?${errorParam}`, requestUrl.origin),
+        new URL(
+          next === "/contacts/import"
+            ? `/settings?${errorParam}`
+            : `/?${errorParam}`,
+          requestUrl.origin,
+        ),
       );
     }
   }

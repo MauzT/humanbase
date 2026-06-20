@@ -127,6 +127,8 @@ und Service Worker bleiben bewusst ausgeschlossen.
 Ziel: Die produktive Web- und Login-Erfahrung unter einer stabilen,
 vertrauenswürdigen Humanbase-Domain bereitstellen.
 
+Status: Auf später verschoben, da Humanbase erstmal nur zu persönlichen Zwecken und nicht für Dritte genutzt werden soll.
+
 - eigene Domain verbinden
 - Google Consent Screen Branding konfigurieren
 - optional eine eigene Supabase Auth Domain konfigurieren
@@ -136,10 +138,7 @@ vertrauenswürdigen Humanbase-Domain bereitstellen.
 
 Ziel: Kontakte kontrolliert und mit minimalen Berechtigungen importieren.
 
-Status: abgeschlossen. Ein expliziter, read-only Google-OAuth-Flow liest
-Kontakte paginiert aus der People API, speichert keine Google-Tokens und
-erstellt oder aktualisiert lokale Kontakte idempotent anhand ihrer
-Google-Identitaet.
+Status: abgeschlossen.
 
 - Google OAuth erst nach stabiler Authentifizierung und Cloud-Speicherung ergänzen
 - read-only Import aus der Google People API starten
@@ -155,6 +154,16 @@ Ziel: Komfortfunktionen erst nach stabilem Kern und erprobten Backups ergänzen.
 
 - KI-Zusammenfassungen
 - semantische Suche
+- Einstellungen hinzufügen mit Dark Mode
+- Kontaktsuche erleichtern
+- Kontakte mit hinterlegten Profilbildern importieren
+- Login mit Email Konto ohne Google ermöglichen über supabase (inclusive Passwort vergessen)
+- Notizvorlage erstellen
+- Widerherstellung durch JSON ermöglichen
+- Verknüpfung zu Kalender: Beim Scrollen durch die Timeline soll auf der linken Seite immer ein Kalender sein, der den zugehörigen Monat anzeigt (personalisierbar absdchaltbar in Einstellungen)
+- Lange Notizen abschneiden und ausklappbar machen
+- Filtern auch nach mehreren Kontakten und Tags gleichzeitig ermöglichen
+- Tags und Kontakte hinzufügen erleichtern
 - Erinnerungen
 - Gesprächsvorbereitung
 - umfangreichere Kontakthistorie

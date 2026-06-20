@@ -51,7 +51,7 @@ export async function startGoogleContactsImport() {
   try {
     await requireAllowedHumanbaseUser();
   } catch {
-    redirect("/?contacts_error=authentication_required");
+    redirect("/settings?contacts_error=authentication_required");
   }
 
   const requestHeaders = await headers();
@@ -59,7 +59,7 @@ export async function startGoogleContactsImport() {
     process.env.NEXT_PUBLIC_APP_URL ?? requestHeaders.get("origin");
 
   if (!origin) {
-    redirect("/?contacts_error=missing_origin");
+    redirect("/settings?contacts_error=missing_origin");
   }
 
   const importPath = "/contacts/import";
@@ -80,7 +80,7 @@ export async function startGoogleContactsImport() {
   });
 
   if (error || !data.url) {
-    redirect("/?contacts_error=oauth_start_failed");
+    redirect("/settings?contacts_error=oauth_start_failed");
   }
 
   redirect(data.url);

@@ -5,10 +5,9 @@
 Phase 6 keeps Humanbase as a single responsive Next.js application. It does
 not add a native app, React Native, Expo, or offline synchronization.
 
-The existing single-page navigation remains appropriate: the authenticated
-screen contains the account actions, note creation, filters, and timeline in
-one short hierarchy. On narrow screens the account actions use a two-column
-touch-friendly row, while note creation and filter actions expand to the
+The authenticated timeline keeps note creation, filters, and notes in one short
+hierarchy. Data, contact, and account actions live on a separate settings page.
+On narrow screens its action controls and the timeline controls expand to the
 available width.
 
 ## Responsive behavior
@@ -26,7 +25,9 @@ available width.
   dialog on larger screens.
 - The editor keeps its heading and actions reachable while its fields scroll,
   locks background scrolling, and can be closed with Escape on keyboards.
-- JSON export and sign-out remain visible in the authenticated header.
+- The authenticated header opens a compact settings menu with a gear button.
+- Google Contacts import, JSON export, and sign-out remain easy to reach in
+  both the menu and settings.
 
 ## Manual breakpoint matrix
 
@@ -46,16 +47,19 @@ At each narrow breakpoint verify:
 
 1. No page-level horizontal scrollbar appears.
 2. Login and denied-account screens fit and the primary action is easy to tap.
-3. The authenticated email, JSON export, and sign-out actions wrap cleanly.
+3. The gear menu opens without overflowing the viewport and closes by outside
+   click or Escape.
 4. Search accepts text without unwanted page zoom.
 5. Contact and tag filters can be selected and reset.
 6. Contact and tag chips are easy to tap and update filtering.
 7. A note can be created, edited, and deleted.
 8. The note editor remains usable with the software keyboard visible.
 9. Long titles, content, names, tags, and emails do not overflow.
-10. JSON export downloads while authenticated and remains denied without an
+10. Settings redirect unauthenticated users to login.
+11. Google Contacts import feedback returns to settings.
+12. JSON export downloads while authenticated and remains denied without an
     allowed session.
-11. Login, OAuth callback, logout, and protected timeline access still work.
+13. Login, OAuth callback, logout, and protected timeline access still work.
 
 ## Lightweight PWA setup
 

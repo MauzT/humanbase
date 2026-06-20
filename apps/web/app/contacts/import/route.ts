@@ -7,7 +7,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  const redirectUrl = new URL("/", request.url);
+  const redirectUrl = new URL("/settings", request.url);
 
   try {
     const user = await requireAllowedHumanbaseUser();

@@ -3,14 +3,18 @@
 import { signOutCurrentUser } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 
-export function SignOutButton() {
+type SignOutButtonProps = {
+  className?: string;
+};
+
+export function SignOutButton({ className }: SignOutButtonProps = {}) {
   async function handleClick() {
     await signOutCurrentUser();
     window.location.reload();
   }
 
   return (
-    <Button variant="outline" onClick={handleClick}>
+    <Button className={className} variant="outline" onClick={handleClick}>
       Abmelden
     </Button>
   );
