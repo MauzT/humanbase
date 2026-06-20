@@ -34,6 +34,7 @@ export type HumanbaseJsonExport = {
     externalProvider: string | null;
     externalId: string | null;
     lastSyncedAt: string | null;
+    isFavorite: boolean;
     createdAt: string;
     updatedAt: string;
   }[];
@@ -137,6 +138,7 @@ export async function buildUserJsonExport(
       lastSyncedAt: contact.lastSyncedAt
         ? toIsoString(contact.lastSyncedAt)
         : null,
+      isFavorite: contact.isFavorite,
       createdAt: toIsoString(contact.createdAt),
       updatedAt: toIsoString(contact.updatedAt),
     })),

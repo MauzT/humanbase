@@ -27,6 +27,11 @@ export type GooglePerson = {
       default?: boolean;
     }
   > | null;
+  memberships?: Array<{
+    contactGroupMembership?: {
+      contactGroupResourceName?: string | null;
+    } | null;
+  }> | null;
 };
 
 type GoogleConnectionsResponse = {
@@ -40,6 +45,7 @@ export type ImportedGoogleContact = {
   email: string | null;
   phone: string | null;
   avatarUrl: string | null;
+  isFavorite: boolean;
 };
 
 export type GoogleContactsImportResult = {
@@ -75,6 +81,12 @@ export function toImportedGoogleContact(
   );
   const displayName =
     primaryName?.displayName?.trim() || email || phone || "Unbenannter Kontakt";
+  const isFavorite =
+    person.memberships?.some(
+      ({ contactGroupMembership }) =>
+        contactGroupMembership?.contactGroupResourceName ===
+        "contactGroups/starred",
+    ) ?? false;
 
   return {
     externalId,
@@ -82,6 +94,7 @@ export function toImportedGoogleContact(
     email,
     phone,
     avatarUrl,
+    isFavorite,
   };
 }
 
@@ -97,7 +110,7 @@ export async function fetchGooglePeopleConnections(
     const url = new URL(PEOPLE_API_CONNECTIONS_URL);
     url.searchParams.set(
       "personFields",
-      "names,emailAddresses,phoneNumbers,photos",
+      "names,emailAddresses,phoneNumbers,photos,memberships",
     );
     url.searchParams.set("pageSize", "1000");
 
@@ -178,6 +191,7 @@ export async function importGooglePeopleForUser(
             externalProvider: "google",
             externalId: contact.externalId,
             lastSyncedAt: syncedAt,
+            isFavorite: contact.isFavorite,
           },
           update: {
             displayName: contact.displayName,
@@ -186,6 +200,7 @@ export async function importGooglePeopleForUser(
             avatarUrl: contact.avatarUrl,
             source: "google",
             lastSyncedAt: syncedAt,
+            isFavorite: contact.isFavorite,
           },
         }),
       ),

@@ -152,18 +152,56 @@ Status: abgeschlossen.
 
 Ziel: Komfortfunktionen erst nach stabilem Kern und erprobten Backups ergänzen.
 
+## Phase 8.1: Einstellungen und Schnellzugriff
+
+Status: abgeschlossen.
+
+- geschützte Einstellungsseite für Daten, Kontakte und Konto
+- Google-Kontakte-Import in die Einstellungen verlagern
+- JSON-Export in die Einstellungen verlagern
+- Abmelden in die Einstellungen verlagern
+- kompaktes Zahnrad-Menü auf der Timeline ergänzen
+- Einstellungen, Kontakte-Import, JSON-Export und Abmelden auch über das
+  Zahnrad-Menü erreichbar machen
+- Menü per erneutem Klick, Außenklick und Escape schließen
+- Import-Erfolge und OAuth-Fehler auf der Einstellungsseite anzeigen
+
+## Phase 8.2: Tags und Notizerstellung verbessern
+
+Status: abgeschlossen.
+
+- eigene Tag-Verwaltung ergänzen
+- Tags mit Name und Farbe erstellen
+- doppelte Tag-Namen verhindern
+- Nutzung eines Tags durch Notizen anzeigen
+- Tags nach Bestätigung löschen, ohne die verknüpften Notizen zu löschen
+- Tags direkt im Notizdialog suchen und neu erstellen
+- neu erstellte Tags direkt für die Notiz auswählen
+- Kontakte im Notizdialog nach Name, E-Mail oder Telefonnummer durchsuchen
+- ausgewählte Kontakte und Tags kompakt als entfernbare Auswahl anzeigen
+- vollständige Kontaktliste in einem begrenzten Bereich scrollbar machen
+- Google-Favoriten aus der People API importieren und oben anzeigen
+- ohne Google-Favoriten die häufigsten und zuletzt verwendeten Kontakte
+  priorisieren
+- Kontakte und Tags auf größeren Bildschirmen nebeneinander anzeigen
+- Aktionsleiste des Notizdialogs vom scrollbaren Inhalt trennen
+- Datum über einen zusätzlichen „Heute“-Button setzen
+
+## Weitere mögliche Phase-8-Funktionen
+
 - KI-Zusammenfassungen
 - semantische Suche
-- Einstellungen hinzufügen mit Dark Mode
-- Kontaktsuche erleichtern
-- Kontakte mit hinterlegten Profilbildern importieren
-- Login mit Email Konto ohne Google ermöglichen über supabase (inclusive Passwort vergessen)
+- Dark Mode in den Einstellungen
+- importierte Kontakt-Profilbilder in der UI anzeigen
+- Kontakte manuell hinzufügen und verwalten
+- Login mit E-Mail-Konto ohne Google über Supabase inklusive
+  „Passwort vergessen“
 - Notizvorlage erstellen
-- Widerherstellung durch JSON ermöglichen
-- Verknüpfung zu Kalender: Beim Scrollen durch die Timeline soll auf der linken Seite immer ein Kalender sein, der den zugehörigen Monat anzeigt (personalisierbar absdchaltbar in Einstellungen)
+- Wiederherstellung durch JSON ermöglichen
+- Kalender neben der Timeline anzeigen, der beim Scrollen den zugehörigen
+  Monat zeigt und in den Einstellungen deaktiviert werden kann
 - Lange Notizen abschneiden und ausklappbar machen
 - Filtern auch nach mehreren Kontakten und Tags gleichzeitig ermöglichen
-- Tags und Kontakte hinzufügen erleichtern
 - Erinnerungen
 - Gesprächsvorbereitung
 - umfangreichere Kontakthistorie

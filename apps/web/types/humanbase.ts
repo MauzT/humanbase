@@ -19,6 +19,7 @@ export type Contact = {
   externalProvider?: string;
   externalId?: string;
   lastSyncedAt?: string;
+  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
 };

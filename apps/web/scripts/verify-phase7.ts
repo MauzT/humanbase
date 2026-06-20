@@ -30,6 +30,13 @@ async function main() {
       resourceName: "people/c123",
       names: [{ displayName: "Old Name", metadata: { primary: true } }],
       emailAddresses: [{ value: "old@example.com" }],
+      memberships: [
+        {
+          contactGroupMembership: {
+            contactGroupResourceName: "contactGroups/starred",
+          },
+        },
+      ],
     });
 
     assert(mapped?.displayName === "Old Name", "Primary name should be mapped.");
@@ -37,6 +44,7 @@ async function main() {
       mapped?.externalId === "people/c123",
       "Google resource name should be the external id.",
     );
+    assert(mapped.isFavorite, "Starred Google contacts should be mapped.");
 
     const requestedUrls: string[] = [];
     const pages = [
@@ -77,6 +85,13 @@ async function main() {
           names: [{ displayName: "Old Name" }],
           emailAddresses: [{ value: "old@example.com" }],
           phoneNumbers: [{ value: "+49 123" }],
+          memberships: [
+            {
+              contactGroupMembership: {
+                contactGroupResourceName: "contactGroups/starred",
+              },
+            },
+          ],
         },
         {},
       ],
@@ -90,6 +105,13 @@ async function main() {
           resourceName: "people/c123",
           names: [{ displayName: "Updated Name" }],
           emailAddresses: [{ value: "new@example.com" }],
+          memberships: [
+            {
+              contactGroupMembership: {
+                contactGroupResourceName: "contactGroups/starred",
+              },
+            },
+          ],
         },
       ],
       syncedAt,
@@ -110,7 +132,8 @@ async function main() {
       contacts[0].source === "google" &&
         contacts[0].externalProvider === "google" &&
         contacts[0].externalId === "people/c123" &&
-        contacts[0].lastSyncedAt?.toISOString() === syncedAt.toISOString(),
+        contacts[0].lastSyncedAt?.toISOString() === syncedAt.toISOString() &&
+        contacts[0].isFavorite,
       "Imported contacts should retain Google provenance and sync time.",
     );
     assert(

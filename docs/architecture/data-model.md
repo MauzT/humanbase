@@ -64,6 +64,7 @@ Contact
   externalProvider?
   externalId?
   lastSyncedAt?
+  isFavorite
   createdAt
   updatedAt
 
@@ -92,6 +93,7 @@ NoteTag
 - `externalProvider`: zum Beispiel `google`
 - `externalId`: ID des Kontakts beim externen Anbieter
 - `lastSyncedAt`: Zeitpunkt des letzten Imports oder Abgleichs
+- `isFavorite`: Mitgliedschaft in der Google-Systemgruppe `starred`
 
 Phase 7 verwendet einen expliziten read-only Import aus der Google People API.
 Google-Tokens werden nicht dauerhaft gespeichert. Wiederholte Importe

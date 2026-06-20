@@ -97,6 +97,7 @@ export async function getContactsForUser(userId: string): Promise<Contact[]> {
     externalProvider: contact.externalProvider ?? undefined,
     externalId: contact.externalId ?? undefined,
     lastSyncedAt: contact.lastSyncedAt?.toISOString(),
+    isFavorite: contact.isFavorite,
     createdAt: contact.createdAt.toISOString(),
     updatedAt: contact.updatedAt.toISOString(),
   }));

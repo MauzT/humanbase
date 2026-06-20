@@ -4,11 +4,13 @@ import { useMemo, useState } from "react";
 
 import {
   createNoteForCurrentUser,
+  createTagForCurrentUser,
   deleteNoteForCurrentUser,
   updateNoteForCurrentUser,
 } from "@/app/actions";
 import { NoteForm, type NoteFormInput } from "@/components/note-form";
 import { NotesTimeline } from "@/components/notes-timeline";
+import { TagManager } from "@/components/tag-manager";
 import { TimelineFilters } from "@/components/timeline-filters";
 import { Button } from "@/components/ui/button";
 import { filterNotes } from "@/lib/filter-notes";
@@ -23,13 +25,15 @@ type HumanbaseTimelineProps = {
 export function HumanbaseTimeline({
   notes: initialNotes,
   contacts,
-  tags,
+  tags: initialTags,
 }: HumanbaseTimelineProps) {
   const [notes, setNotes] = useState(initialNotes);
+  const [tags, setTags] = useState(initialTags);
   const [query, setQuery] = useState("");
   const [selectedContactId, setSelectedContactId] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
+  const [isTagManagerOpen, setIsTagManagerOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [saveError, setSaveError] = useState("");
   const [isSavingNote, setIsSavingNote] = useState(false);
@@ -47,6 +51,49 @@ export function HumanbaseTimeline({
       }),
     [notes, contacts, tags, query, selectedContactId, selectedTagId],
   );
+  const featuredContacts = useMemo(() => {
+    const googleFavorites = contacts.filter((contact) => contact.isFavorite);
+
+    if (googleFavorites.length > 0) {
+      return {
+        ids: googleFavorites.map(({ id }) => id),
+        label: "Google-Favoriten",
+      };
+    }
+
+    const usage = new Map<string, { count: number; lastUsedAt: string }>();
+
+    for (const note of notes) {
+      for (const contactId of note.contactIds) {
+        const current = usage.get(contactId);
+        usage.set(contactId, {
+          count: (current?.count ?? 0) + 1,
+          lastUsedAt:
+            !current || note.date > current.lastUsedAt
+              ? note.date
+              : current.lastUsedAt,
+        });
+      }
+    }
+
+    return {
+      ids: contacts
+        .filter((contact) => usage.has(contact.id))
+        .sort((first, second) => {
+          const firstUsage = usage.get(first.id)!;
+          const secondUsage = usage.get(second.id)!;
+
+          return (
+            secondUsage.count - firstUsage.count ||
+            secondUsage.lastUsedAt.localeCompare(firstUsage.lastUsedAt) ||
+            first.displayName.localeCompare(second.displayName, "de")
+          );
+        })
+        .slice(0, 5)
+        .map(({ id }) => id),
+      label: "Häufig verwendet",
+    };
+  }, [contacts, notes]);
 
   function clearFilters() {
     setQuery("");
@@ -164,21 +211,76 @@ export function HumanbaseTimeline({
     }
   }
 
+  function addTag(tag: Tag) {
+    setTags((currentTags) =>
+      [...currentTags, tag].sort((first, second) =>
+        first.name.localeCompare(second.name, "de"),
+      ),
+    );
+  }
+
+  async function createTag(name: string) {
+    const result = await createTagForCurrentUser({
+      name,
+      color: "#276956",
+    });
+
+    if (result.ok) {
+      addTag(result.tag);
+    }
+
+    return result;
+  }
+
+  function removeTag(tagId: string) {
+    setTags((currentTags) => currentTags.filter((tag) => tag.id !== tagId));
+    setNotes((currentNotes) =>
+      currentNotes.map((note) => ({
+        ...note,
+        tagIds: note.tagIds.filter((currentTagId) => currentTagId !== tagId),
+      })),
+    );
+
+    if (selectedTagId === tagId) {
+      setSelectedTagId("");
+    }
+  }
+
   return (
     <>
+      {isTagManagerOpen ? (
+        <TagManager
+          tags={tags}
+          notes={notes}
+          onClose={() => setIsTagManagerOpen(false)}
+          onTagCreated={addTag}
+          onTagDeleted={removeTag}
+        />
+      ) : null}
+
       {isNoteFormOpen ? (
         <NoteForm
           key={editingNote?.id ?? "new"}
           contacts={contacts}
+          featuredContactIds={featuredContacts.ids}
+          featuredContactsLabel={featuredContacts.label}
           tags={tags}
           note={editingNote ?? undefined}
+          onCreateTag={createTag}
           onSubmit={saveNote}
           onCancel={closeNoteForm}
           submitError={saveError}
           isSubmitting={isSavingNote}
         />
       ) : (
-        <div className="mb-5 flex sm:mb-6 sm:justify-end">
+        <div className="mb-5 grid grid-cols-2 gap-2 sm:mb-6 sm:flex sm:justify-end">
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => setIsTagManagerOpen(true)}
+          >
+            Tags verwalten
+          </Button>
           <Button className="w-full sm:w-auto" onClick={openCreateForm}>
             Neue Notiz
           </Button>

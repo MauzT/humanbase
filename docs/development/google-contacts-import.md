@@ -15,6 +15,8 @@ Google-Access- noch Refresh-Tokens.
 4. Humanbase liest alle Seiten von `people/me/connections` aus der People API.
 5. Kontakte werden anhand von `userId`, `externalProvider` und `externalId`
    lokal erstellt oder aktualisiert.
+6. Die Mitgliedschaft in der Google-Systemgruppe `starred` wird als
+   Favoritenmerkmal übernommen.
 
 Ein erneuter Import ist idempotent. Lokal angelegte Kontakte werden nicht mit
 Google-Kontakten anhand von Name, E-Mail oder Telefonnummer zusammengefuehrt.
@@ -51,3 +53,4 @@ OAuth-Dialog muss zusaetzlich einmal im Browser durchlaufen werden.
 - keine Schreib-Scopes
 - keine Loeschung lokaler Kontakte, wenn sie bei Google verschwinden
 - keine dauerhaft gespeicherten Google-Tokens
+- Google-Favoriten werden beim nächsten manuellen Import aktualisiert

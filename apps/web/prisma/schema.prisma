@@ -45,6 +45,7 @@ model Contact {
   externalProvider String?
   externalId       String?
   lastSyncedAt     DateTime?
+  isFavorite       Boolean       @default(false)
   notes            NoteContact[]
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt

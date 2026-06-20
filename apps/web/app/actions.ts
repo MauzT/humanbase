@@ -14,6 +14,12 @@ import {
   type UpdateNoteResult,
 } from "@/lib/note-service";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  createTagForUser,
+  deleteTagForUser,
+  type CreateTagResult,
+  type DeleteTagResult,
+} from "@/lib/tag-service";
 import type { Note } from "@/types/humanbase";
 
 type CreateNoteInput = Pick<
@@ -144,6 +150,47 @@ export async function deleteNoteForCurrentUser(noteId: string) {
   }
 
   const result = await deleteNoteForUser(user.id, noteId);
+
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function createTagForCurrentUser(input: {
+  name: string;
+  color?: string;
+}) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies CreateTagResult;
+  }
+
+  const result = await createTagForUser(user.id, input);
+
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function deleteTagForCurrentUser(tagId: string) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies DeleteTagResult;
+  }
+
+  const result = await deleteTagForUser(user.id, tagId);
 
   revalidatePath("/");
 
