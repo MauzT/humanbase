@@ -10,6 +10,8 @@ node_modules/
 
 # Next.js
 .next/
+apps/web/playwright-report/
+apps/web/test-results/
 out/
 next-env.d.ts
 

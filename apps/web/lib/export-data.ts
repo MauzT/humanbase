@@ -1,60 +1,12 @@
 import "server-only";
 
 import { DEFAULT_DEVELOPMENT_USER_ID } from "@/lib/default-user";
+import {
+  HUMANBASE_JSON_EXPORT_FORMAT,
+  HUMANBASE_JSON_EXPORT_VERSION,
+  type HumanbaseJsonExport,
+} from "@/lib/json-export-format";
 import { prisma } from "@/lib/prisma";
-
-export type HumanbaseJsonExport = {
-  metadata: {
-    format: "humanbase-json-export";
-    version: 1;
-    exportedAt: string;
-  };
-  user: {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  notes: {
-    id: string;
-    userId: string;
-    title: string;
-    content: string;
-    date: string;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  contacts: {
-    id: string;
-    userId: string;
-    displayName: string;
-    email: string | null;
-    phone: string | null;
-    avatarUrl: string | null;
-    source: string;
-    externalProvider: string | null;
-    externalId: string | null;
-    lastSyncedAt: string | null;
-    isFavorite: boolean;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  tags: {
-    id: string;
-    userId: string;
-    name: string;
-    color: string | null;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  noteContacts: {
-    noteId: string;
-    contactId: string;
-  }[];
-  noteTags: {
-    noteId: string;
-    tagId: string;
-  }[];
-};
 
 function toIsoString(value: Date) {
   return value.toISOString();
@@ -107,8 +59,8 @@ export async function buildUserJsonExport(
 
   return {
     metadata: {
-      format: "humanbase-json-export",
-      version: 1,
+      format: HUMANBASE_JSON_EXPORT_FORMAT,
+      version: HUMANBASE_JSON_EXPORT_VERSION,
       exportedAt: new Date().toISOString(),
     },
     user: {

@@ -47,6 +47,55 @@ Die Struktur kann mit folgendem Befehl geprueft werden:
 npm.cmd run verify:phase3c
 ```
 
+## JSON-Wiederherstellung in der App
+
+Ein Humanbase-JSON-Export der Version 1 kann auf der geschuetzten
+Einstellungsseite wiederhergestellt werden. Die Funktion ist bewusst nicht im
+Schnellzugriffsmenue verfuegbar.
+
+Vor der Wiederherstellung:
+
+1. Einen aktuellen JSON-Export als Sicherheitskopie herunterladen.
+2. Unter `Einstellungen` die lokale JSON-Datei auswaehlen.
+3. Exportzeitpunkt und angezeigte Datensatzanzahlen pruefen.
+4. Die vollstaendige Ueberschreibung mit `WIEDERHERSTELLEN` bestaetigen.
+5. Erst danach `Aktuelle Daten ersetzen` ausfuehren.
+
+Die Wiederherstellung ersetzt ausschliesslich Notizen, Kontakte, Tags und deren
+Beziehungen des angemeldeten Humanbase-Nutzers. Der Humanbase-`User`, seine
+E-Mail und die Supabase-Authentifizierungszuordnung bleiben erhalten.
+
+Vor dem ersten Schreibzugriff werden Format, Version, UUIDs, Datumswerte,
+Eindeutigkeiten und alle Beziehungen validiert. Importierte Datensatz-IDs
+werden neu erzeugt und die Beziehungen auf diese neuen IDs abgebildet. Der
+vollstaendige Ersatz erfolgt in einer serialisierbaren PostgreSQL-Transaktion.
+Bei einem Validierungs- oder Datenbankfehler bleiben die bisherigen Daten
+unveraendert.
+
+Fruehe Exporte der Version 1 enthalten das spaeter hinzugekommene Kontaktfeld
+`isFavorite` noch nicht. Solche Exporte bleiben kompatibel; fehlende
+Favoriteninformationen werden als `false` wiederhergestellt.
+
+Zusaetzliche Schutzmassnahmen:
+
+- nur `.json`-Dateien
+- maximal 10 MB Dateigroesse
+- erlaubte Humanbase-Authentifizierung erforderlich
+- POST-Anfragen nur vom Humanbase-Ursprung
+- keine Protokollierung des JSON-Dateiinhalts
+
+Die Restore-Logik kann mit folgendem Befehl gegen temporaere Testnutzer
+verifiziert werden:
+
+```powershell
+npm.cmd run verify:phase8.5
+```
+
+Der Test prueft einen erfolgreichen Vollersatz, die Erhaltung der
+Authentifizierungszuordnung, ID-Neuzuordnung, Beziehungen, Ablehnung
+ungueltiger Dateien und den vollstaendigen Transaktions-Rollback bei einem
+Datenbankfehler.
+
 ## PostgreSQL-Dump
 
 Ein PostgreSQL-Dump ist die bevorzugte technische Sicherung fuer eine spaetere

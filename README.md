@@ -123,6 +123,22 @@ Phase 5 kann lokal mit folgendem Befehl geprüft werden:
 npm.cmd run verify:phase5
 ```
 
+Die Browser-Smoke-Tests können aus `apps/web` mit Playwright ausgeführt werden:
+
+```powershell
+npm.cmd run test:e2e
+```
+
+Für den interaktiven Playwright-Testmodus:
+
+```powershell
+npm.cmd run test:e2e:ui
+```
+
+Beide Befehle erstellen zuerst einen Produktionsbuild und starten Humanbase
+isoliert unter `http://127.0.0.1:3100`. Der normale E2E-Lauf beendet Server und
+Browser nach dem Test automatisch.
+
 Ein manueller JSON-Export kann so erstellt werden:
 
 ```powershell

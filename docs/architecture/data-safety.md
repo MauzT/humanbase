@@ -54,6 +54,12 @@ eine App-level Allowlist blockiert. Phase 7 fordert den
 `contacts.readonly`-Scope nur bei einem expliziten Import an, schreibt nichts zu
 Google zurueck und speichert keine Google-Provider-Tokens.
 
+Phase 8.5 ergaenzt die benutzergesteuerte JSON-Wiederherstellung. Der Import
+validiert den gesamten Export vor dem Schreiben, ersetzt nur die Daten des
+angemeldeten Nutzers und verwendet eine serialisierbare Transaktion. Der
+Authentifizierungsdatensatz wird nicht importiert oder ueberschrieben. Fehler
+fuehren zu einem vollstaendigen Rollback.
+
 ## Phase-4-Sicherheitsnotiz
 
 Fuer Phase 4 sind mindestens SSL fuer PostgreSQL-Verbindungen, starke

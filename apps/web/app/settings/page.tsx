@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { GoogleContactsImportButton } from "@/components/google-contacts-import-button";
+import { JsonRestoreForm } from "@/components/json-restore-form";
 import { SignOutButton } from "@/components/sign-out-button";
 import { getCurrentAuthState } from "@/lib/auth/supabase-user";
 
@@ -102,6 +103,18 @@ export default async function Settings({ searchParams }: SettingsProps) {
               JSON exportieren
             </Link>
           </div>
+        </section>
+
+        <section className="rounded-2xl border border-[#d8a06a] bg-[var(--card)] p-5 sm:p-6">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Daten wiederherstellen
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+            Ersetze deinen aktuellen Humanbase-Datenstand durch eine lokale
+            JSON-Sicherung. Diese Funktion ist wegen ihrer Tragweite nur hier
+            in den Einstellungen verfügbar.
+          </p>
+          <JsonRestoreForm />
         </section>
 
         <section className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 sm:p-6">

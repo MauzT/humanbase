@@ -207,6 +207,28 @@ Status: abgeschlossen.
 - Karten nicht auf die Höhe benachbarter Notizen strecken
 - leere Kontakt- und Tag-Bereiche ohne zusätzlichen Abstand ausblenden
 
+## Phase 8.5: Datenwiederherstellung durch JSON
+
+Status: abgeschlossen.
+
+- lokale Humanbase-JSON-Exporte ausschließlich in den Einstellungen auswählen
+- Exportformat, Version, IDs, Datumswerte, Eindeutigkeiten und Beziehungen vor
+  jeder Datenänderung validieren
+- deutlich erklären, dass der aktuelle Datenstand vollständig überschrieben
+  wird
+- eine aktuelle JSON-Sicherheitskopie vor der Wiederherstellung empfehlen
+- Überschreibung durch die Eingabe `WIEDERHERSTELLEN` explizit bestätigen
+- Notizen, Kontakte, Tags und Beziehungen des angemeldeten Nutzers atomar
+  ersetzen
+- importierte Datensatz-IDs neu zuordnen und Beziehungen entsprechend abbilden
+- Humanbase-Nutzer, E-Mail und Supabase-Authentifizierungszuordnung erhalten
+- bei Validierungs- oder Datenbankfehlern alle bestehenden Daten unverändert
+  lassen
+- Dateigröße begrenzen und den geschützten Import gegen fremde Ursprünge
+  absichern
+- erfolgreichen Restore, ungültige Dateien und Transaktions-Rollback über
+  `npm.cmd run verify:phase8.5` prüfen
+
 ## Weitere mögliche Phase-8-Funktionen
 
 - KI-Zusammenfassungen
@@ -217,7 +239,6 @@ Status: abgeschlossen.
 - Login mit E-Mail-Konto ohne Google über Supabase inklusive
   „Passwort vergessen“
 - Notizvorlage erstellen
-- Wiederherstellung durch JSON ermöglichen
 - Kalender neben der Timeline anzeigen, der beim Scrollen den zugehörigen
   Monat zeigt und in den Einstellungen deaktiviert werden kann
 - Filtern auch nach mehreren Kontakten und Tags gleichzeitig ermöglichen
