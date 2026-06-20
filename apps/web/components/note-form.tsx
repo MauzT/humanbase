@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { ContactAvatar } from "@/components/contact-avatar";
 import type { Contact, Note, Tag } from "@/types/humanbase";
 
 import { Button } from "@/components/ui/button";
@@ -370,6 +371,10 @@ export function NoteForm({
                       className="inline-flex min-h-9 max-w-full cursor-pointer items-center gap-2 rounded-full bg-[var(--accent-soft)] px-3 py-1.5 text-left text-xs font-semibold text-[var(--accent)]"
                       title={`${contact.displayName} entfernen`}
                     >
+                      <ContactAvatar
+                        contact={contact}
+                        className="size-6 text-[0.65rem]"
+                      />
                       <span className="truncate">{contact.displayName}</span>
                       <span aria-hidden="true">×</span>
                     </button>
@@ -407,9 +412,7 @@ export function NoteForm({
                             onClick={() => addContact(contact.id)}
                             className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-[var(--accent-soft)]"
                           >
-                            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent-soft)] text-sm text-[var(--accent)]">
-                              ★
-                            </span>
+                            <ContactAvatar contact={contact} />
                             <span className="min-w-0">
                               <span className="block truncate text-sm font-semibold">
                                 {contact.displayName}
@@ -440,11 +443,7 @@ export function NoteForm({
                         onClick={() => addContact(contact.id)}
                         className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-[var(--accent-soft)]"
                       >
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent-soft)] text-xs font-bold text-[var(--accent)]">
-                          {contact.displayName
-                            .slice(0, 1)
-                            .toLocaleUpperCase("de")}
-                        </span>
+                        <ContactAvatar contact={contact} />
                         <span className="min-w-0">
                           <span className="block truncate text-sm font-semibold">
                             {contact.displayName}

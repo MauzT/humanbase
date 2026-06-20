@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { ContactAvatar } from "@/components/contact-avatar";
 import type { Contact, Note, Tag } from "@/types/humanbase";
 
 import { Button } from "@/components/ui/button";
@@ -166,8 +167,9 @@ export function NoteCard({
               key={contact.id}
               type="button"
               onClick={() => onContactClick(contact.id)}
-              className="inline-flex min-h-11 max-w-full cursor-pointer items-center rounded-full bg-[var(--accent-soft)] px-3 py-2 text-left text-xs font-semibold text-[var(--accent)] transition hover:bg-[#cfe3db]"
+              className="inline-flex min-h-11 max-w-full cursor-pointer items-center gap-2 rounded-full bg-[var(--accent-soft)] py-2 pr-3 pl-2 text-left text-xs font-semibold text-[var(--accent)] transition hover:bg-[#cfe3db]"
             >
+              <ContactAvatar contact={contact} className="size-7" />
               {contact.displayName}
             </button>
           ))}

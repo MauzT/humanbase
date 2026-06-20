@@ -60,7 +60,10 @@ Jede Notiz hat ein Datum. Die Timeline ist die zentrale Ansicht.
 
 ### 2. Kontakte als Kontext
 
-Notizen können mit Kontakten verknüpft werden. Später soll ein read-only Import aus Google Contacts möglich sein. Zunächst bleiben Kontakte normale Humanbase-Datensätze.
+Notizen können mit Kontakten verknüpft werden. Google Kontakte ist die einzige
+operative Kontaktquelle. Humanbase importiert Kontakte ausschließlich lesend,
+hält dafür stabile interne IDs und bewahrt die Beziehungen zu Notizen. Eine
+manuelle Kontaktverwaltung in Humanbase ist nicht vorgesehen.
 
 ### 3. Tags statt Ordner
 

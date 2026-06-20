@@ -60,7 +60,7 @@ export default async function Settings({ searchParams }: SettingsProps) {
           Einstellungen
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base">
-          Verwalte deine Kontakte, deine Daten und dein Konto.
+          Synchronisiere deine Kontakte und verwalte deine Daten und dein Konto.
         </p>
       </header>
 

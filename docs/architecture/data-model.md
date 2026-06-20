@@ -87,9 +87,11 @@ NoteTag
 
 ## Kontakte und Google-Import
 
-`Contact` wurde in Phase 3A so vorbereitet, dass importierte Kontakte normale Humanbase-Kontakte bleiben:
+`Contact` wurde in Phase 3A so vorbereitet, dass importierte Kontakte stabile
+Humanbase-Datensätze bleiben:
 
-- `source`: zum Beispiel `manual` oder `google`
+- `source`: für neue operative Kontakte `google`; `manual` bleibt nur für
+  historische Seed- und Backup-Kompatibilität erhalten
 - `externalProvider`: zum Beispiel `google`
 - `externalId`: ID des Kontakts beim externen Anbieter
 - `lastSyncedAt`: Zeitpunkt des letzten Imports oder Abgleichs
@@ -98,6 +100,9 @@ NoteTag
 Phase 7 verwendet einen expliziten read-only Import aus der Google People API.
 Google-Tokens werden nicht dauerhaft gespeichert. Wiederholte Importe
 aktualisieren Kontakte anhand von `userId`, `externalProvider` und `externalId`.
+Dabei bleibt `Contact.id` unverändert, sodass `NoteContact`-Beziehungen erhalten
+bleiben. Humanbase erstellt oder bearbeitet Kontakte nicht manuell und löscht
+keine lokalen Kontakte, nur weil sie in einem späteren Google-Import fehlen.
 
 ## Hinweise zu Phase 1 und Phase 2
 

@@ -74,6 +74,15 @@ Phase 7 ist abgeschlossen:
 - Herkunft und Importzeitpunkt in `Contact` dokumentiert
 - lokale Verifikation über `npm.cmd run verify:phase7`
 
+Phase 8.6 ist abgeschlossen:
+
+- Google Kontakte als einzige operative Kontaktquelle
+- idempotente Aktualisierung mit stabiler interner Kontakt-ID
+- erhaltene Notiz-Kontakt-Beziehungen und keine Löschung bei fehlenden
+  Google-Einträgen
+- schreibgeschütztes Kontaktbuch und Anzeige importierter Profilbilder
+- lokale Verifikation über `npm.cmd run verify:phase8.6`
+
 Noch nicht enthalten:
 
 - Cloud-Deployment der Web-App

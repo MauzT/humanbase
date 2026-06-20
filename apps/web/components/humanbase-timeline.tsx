@@ -8,6 +8,7 @@ import {
   deleteNoteForCurrentUser,
   updateNoteForCurrentUser,
 } from "@/app/actions";
+import { ContactBook } from "@/components/contact-book";
 import { NoteForm, type NoteFormInput } from "@/components/note-form";
 import { NotesTimeline } from "@/components/notes-timeline";
 import { TagManager } from "@/components/tag-manager";
@@ -33,6 +34,7 @@ export function HumanbaseTimeline({
   const [selectedContactId, setSelectedContactId] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
+  const [isContactBookOpen, setIsContactBookOpen] = useState(false);
   const [isTagManagerOpen, setIsTagManagerOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [saveError, setSaveError] = useState("");
@@ -258,6 +260,13 @@ export function HumanbaseTimeline({
         />
       ) : null}
 
+      {isContactBookOpen ? (
+        <ContactBook
+          contacts={contacts}
+          onClose={() => setIsContactBookOpen(false)}
+        />
+      ) : null}
+
       {isNoteFormOpen ? (
         <NoteForm
           key={editingNote?.id ?? "new"}
@@ -281,7 +290,17 @@ export function HumanbaseTimeline({
           >
             Tags verwalten
           </Button>
-          <Button className="w-full sm:w-auto" onClick={openCreateForm}>
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => setIsContactBookOpen(true)}
+          >
+            Kontaktbuch
+          </Button>
+          <Button
+            className="col-span-2 w-full sm:w-auto"
+            onClick={openCreateForm}
+          >
             Neue Notiz
           </Button>
         </div>

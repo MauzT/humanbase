@@ -20,7 +20,18 @@ Google-Access- noch Refresh-Tokens.
 
 Ein erneuter Import ist idempotent. Lokal angelegte Kontakte werden nicht mit
 Google-Kontakten anhand von Name, E-Mail oder Telefonnummer zusammengefuehrt.
-Damit vermeidet Humanbase unsichere automatische Zuordnungen.
+Damit vermeidet Humanbase unsichere automatische Zuordnungen. Humanbase bietet
+keine manuelle Kontaktanlage mehr an; vorhandene historische oder
+wiederhergestellte Datensaetze bleiben aus Kompatibilitaetsgruenden erhalten.
+
+Beim erneuten Import bleibt die bestehende Humanbase-`Contact.id` stabil.
+Mutable Google-Felder werden aktualisiert, vorhandene `NoteContact`-Beziehungen
+bleiben erhalten und lokal gespeicherte Kontakte werden nicht geloescht, wenn
+sie in einem spaeteren Google-Import fehlen.
+
+Google-Profilbilder werden ueber `photos` importiert. Die UI zeigt das Bild,
+wenn es geladen werden kann, und verwendet andernfalls den bisherigen
+Buchstaben-Avatar.
 
 ## Google Cloud und Supabase einrichten
 
@@ -46,6 +57,12 @@ npm.cmd run verify:phase7
 Das Skript prueft Feldabbildung, People-API-Paginierung, idempotente Upserts,
 Google-Herkunftsfelder und die Begrenzung auf den Humanbase-Nutzer. Der echte
 OAuth-Dialog muss zusaetzlich einmal im Browser durchlaufen werden.
+
+Phase 8.6 prueft die erweiterten Bestandsgarantien:
+
+```powershell
+npm.cmd run verify:phase8.6
+```
 
 ## Grenzen
 

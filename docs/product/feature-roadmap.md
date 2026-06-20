@@ -229,13 +229,29 @@ Status: abgeschlossen.
 - erfolgreichen Restore, ungültige Dateien und Transaktions-Rollback über
   `npm.cmd run verify:phase8.5` prüfen
 
+## Phase 8.6: Google-Kontakte als einzige Kontaktquelle
+
+Status: abgeschlossen.
+
+- keine manuelle Erstellung oder Bearbeitung von Kontakten in Humanbase
+- Google Kontakte bleibt die einzige operative Quelle für Kontakte
+- wiederholte Importe anhand von `userId`, `externalProvider` und `externalId`
+  dem bestehenden Humanbase-Kontakt zuordnen
+- die interne `Contact.id` bei erneuten Importen stabil halten
+- Name, E-Mail, Telefonnummer, Profilbild, Favoritenstatus und
+  Synchronisationszeitpunkt aus Google aktualisieren
+- alle vorhandenen `NoteContact`-Beziehungen erhalten
+- Kontakte nicht löschen, wenn sie in einem späteren Google-Import fehlen
+- ein schreibgeschütztes Kontaktbuch neben der Tag-Verwaltung bereitstellen
+- Google-Profilbilder anzeigen und ohne Bild auf den Buchstaben-Avatar
+  zurückfallen
+- Sync-Verhalten über `npm.cmd run verify:phase8.6` prüfen
+
 ## Weitere mögliche Phase-8-Funktionen
 
 - KI-Zusammenfassungen
 - semantische Suche
 - Dark Mode in den Einstellungen
-- importierte Kontakt-Profilbilder in der UI anzeigen
-- Kontakte manuell hinzufügen und verwalten
 - Login mit E-Mail-Konto ohne Google über Supabase inklusive
   „Passwort vergessen“
 - Notizvorlage erstellen
