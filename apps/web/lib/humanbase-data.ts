@@ -2,7 +2,7 @@ import "server-only";
 
 import { DEFAULT_DEVELOPMENT_USER_ID } from "@/lib/default-user";
 import { prisma } from "@/lib/prisma";
-import type { Contact, Note, Tag } from "@/types/humanbase";
+import type { Contact, Note, NoteTemplate, Tag } from "@/types/humanbase";
 
 export type NoteContactRelationship = {
   noteId: string;
@@ -16,6 +16,7 @@ export type NoteTagRelationship = {
 
 export type TimelineData = {
   notes: Note[];
+  noteTemplates: NoteTemplate[];
   contacts: Contact[];
   tags: Tag[];
 };
@@ -79,6 +80,27 @@ export async function getNotesForUser(userId: string): Promise<Note[]> {
 
 export function getNotesForDefaultDevelopmentUser(): Promise<Note[]> {
   return getNotesForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
+export async function getNoteTemplatesForUser(
+  userId: string,
+): Promise<NoteTemplate[]> {
+  const templates = await prisma.noteTemplate.findMany({
+    where: { userId },
+    orderBy: [{ name: "asc" }, { createdAt: "asc" }],
+  });
+
+  return templates.map((template) => ({
+    id: template.id,
+    name: template.name,
+    questions: template.questions,
+    createdAt: template.createdAt.toISOString(),
+    updatedAt: template.updatedAt.toISOString(),
+  }));
+}
+
+export function getNoteTemplatesForDefaultDevelopmentUser() {
+  return getNoteTemplatesForUser(DEFAULT_DEVELOPMENT_USER_ID);
 }
 
 export async function getContactsForUser(userId: string): Promise<Contact[]> {
@@ -167,13 +189,14 @@ export function getNoteTagsForDefaultDevelopmentUser(): Promise<
 export async function getTimelineDataForUser(
   userId: string,
 ): Promise<TimelineData> {
-  const [notes, contacts, tags] = await Promise.all([
+  const [notes, noteTemplates, contacts, tags] = await Promise.all([
     getNotesForUser(userId),
+    getNoteTemplatesForUser(userId),
     getContactsForUser(userId),
     getTagsForUser(userId),
   ]);
 
-  return { notes, contacts, tags };
+  return { notes, noteTemplates, contacts, tags };
 }
 
 export function getTimelineDataForDefaultDevelopmentUser(): Promise<

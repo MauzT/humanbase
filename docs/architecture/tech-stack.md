@@ -39,7 +39,7 @@ Google Cloud SQL oder ein anderer Managed-PostgreSQL-Anbieter bleibt ein möglic
 
 ## Datenportabilität
 
-- JSON-Export für Notizen, Kontakte, Tags und Beziehungen
+- JSON-Export für Notizen, Notizvorlagen, Kontakte, Tags und Beziehungen
 - optional CSV-Export
 - dokumentierte PostgreSQL-Dumps
 - dokumentierter Restore-Prozess

@@ -9,6 +9,14 @@ export type Note = {
   updatedAt: string;
 };
 
+export type NoteTemplate = {
+  id: string;
+  name: string;
+  questions: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Contact = {
   id: string;
   displayName: string;

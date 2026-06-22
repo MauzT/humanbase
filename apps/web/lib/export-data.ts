@@ -28,34 +28,39 @@ export async function buildUserJsonExport(
     throw new Error(missingUserMessage);
   }
 
-  const [notes, contacts, tags, noteContacts, noteTags] = await Promise.all([
-    prisma.note.findMany({
-      where: { userId },
-      orderBy: [{ date: "desc" }, { createdAt: "desc" }, { id: "asc" }],
-    }),
-    prisma.contact.findMany({
-      where: { userId },
-      orderBy: [{ displayName: "asc" }, { id: "asc" }],
-    }),
-    prisma.tag.findMany({
-      where: { userId },
-      orderBy: [{ name: "asc" }, { id: "asc" }],
-    }),
-    prisma.noteContact.findMany({
-      where: {
-        note: { userId },
-        contact: { userId },
-      },
-      orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
-    }),
-    prisma.noteTag.findMany({
-      where: {
-        note: { userId },
-        tag: { userId },
-      },
-      orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
-    }),
-  ]);
+  const [notes, noteTemplates, contacts, tags, noteContacts, noteTags] =
+    await Promise.all([
+      prisma.note.findMany({
+        where: { userId },
+        orderBy: [{ date: "desc" }, { createdAt: "desc" }, { id: "asc" }],
+      }),
+      prisma.noteTemplate.findMany({
+        where: { userId },
+        orderBy: [{ name: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+      }),
+      prisma.contact.findMany({
+        where: { userId },
+        orderBy: [{ displayName: "asc" }, { id: "asc" }],
+      }),
+      prisma.tag.findMany({
+        where: { userId },
+        orderBy: [{ name: "asc" }, { id: "asc" }],
+      }),
+      prisma.noteContact.findMany({
+        where: {
+          note: { userId },
+          contact: { userId },
+        },
+        orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
+      }),
+      prisma.noteTag.findMany({
+        where: {
+          note: { userId },
+          tag: { userId },
+        },
+        orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
+      }),
+    ]);
 
   return {
     metadata: {
@@ -109,6 +114,14 @@ export async function buildUserJsonExport(
     noteTags: noteTags.map(({ noteId, tagId }) => ({
       noteId,
       tagId,
+    })),
+    noteTemplates: noteTemplates.map((template) => ({
+      id: template.id,
+      userId: template.userId,
+      name: template.name,
+      questions: template.questions,
+      createdAt: toIsoString(template.createdAt),
+      updatedAt: toIsoString(template.updatedAt),
     })),
   };
 }

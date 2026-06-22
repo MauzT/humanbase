@@ -26,6 +26,7 @@ async function main() {
     JSON.stringify(
       {
         notes: exportData.notes.length,
+        noteTemplates: exportData.noteTemplates.length,
         contacts: exportData.contacts.length,
         tags: exportData.tags.length,
         noteContacts: exportData.noteContacts.length,

@@ -13,6 +13,13 @@ import {
   type DeleteNoteResult,
   type UpdateNoteResult,
 } from "@/lib/note-service";
+import {
+  createNoteTemplateForUser,
+  deleteNoteTemplateForUser,
+  updateNoteTemplateForUser,
+  type DeleteNoteTemplateResult,
+  type SaveNoteTemplateResult,
+} from "@/lib/note-template-service";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   createTagForUser,
@@ -151,6 +158,67 @@ export async function deleteNoteForCurrentUser(noteId: string) {
 
   const result = await deleteNoteForUser(user.id, noteId);
 
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function createNoteTemplateForCurrentUser(input: {
+  name: string;
+  questions: string[];
+}) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies SaveNoteTemplateResult;
+  }
+
+  const result = await createNoteTemplateForUser(user.id, input);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function updateNoteTemplateForCurrentUser(input: {
+  id: string;
+  name: string;
+  questions: string[];
+}) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies SaveNoteTemplateResult;
+  }
+
+  const result = await updateNoteTemplateForUser(user.id, input);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function deleteNoteTemplateForCurrentUser(templateId: string) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies DeleteNoteTemplateResult;
+  }
+
+  const result = await deleteNoteTemplateForUser(user.id, templateId);
   revalidatePath("/");
 
   return result;

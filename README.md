@@ -83,6 +83,14 @@ Phase 8.6 ist abgeschlossen:
 - schreibgeschütztes Kontaktbuch und Anzeige importierter Profilbilder
 - lokale Verifikation über `npm.cmd run verify:phase8.6`
 
+Phase 8.7 ist abgeschlossen:
+
+- nutzereigene Notizvorlagen mit geordneten Fragen
+- Erstellen, Bearbeiten, Sortieren und Löschen von Vorlagen
+- Übernahme der Fragen als editierbare Struktur in neue Notizen
+- Vorlagen im portablen JSON-Export und Restore
+- lokale Verifikation über `npm.cmd run verify:phase8.7`
+
 Noch nicht enthalten:
 
 - Cloud-Deployment der Web-App
@@ -130,6 +138,12 @@ Phase 5 kann lokal mit folgendem Befehl geprüft werden:
 
 ```powershell
 npm.cmd run verify:phase5
+```
+
+Phase 8.7 kann lokal mit folgendem Befehl geprüft werden:
+
+```powershell
+npm.cmd run verify:phase8.7
 ```
 
 Die Browser-Smoke-Tests können aus `apps/web` mit Playwright ausgeführt werden:

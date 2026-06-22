@@ -2,12 +2,13 @@
 
 ## Überblick
 
-Humanbase basiert langfristig auf vier Kernentitäten:
+Humanbase basiert langfristig auf fünf Kernentitäten:
 
 - `User`
 - `Note`
 - `Contact`
 - `Tag`
+- `NoteTemplate`
 
 Eine `Note` kann mehrere `Contact`- und mehrere `Tag`-Datensätze haben. Diese Beziehungen werden in PostgreSQL über explizite Join-Tabellen modelliert:
 
@@ -76,6 +77,14 @@ Tag
   createdAt
   updatedAt
 
+NoteTemplate
+  id
+  userId
+  name
+  questions[]
+  createdAt
+  updatedAt
+
 NoteContact
   noteId
   contactId
@@ -84,6 +93,16 @@ NoteTag
   noteId
   tagId
 ```
+
+## Notizvorlagen
+
+`NoteTemplate` gehört wie Notizen, Kontakte und Tags genau einem Nutzer. Die
+Fragen werden als geordnete PostgreSQL-Textliste gespeichert, weil sie nur
+gemeinsam mit der Vorlage gelesen und geschrieben werden und keine eigenen
+Beziehungen benötigen. Beim Anwenden einer Vorlage wird keine dauerhafte
+Beziehung zur Notiz erzeugt: Die Fragen werden als normaler, vollständig
+editierbarer Text in den Notizinhalt übernommen. Dadurch bleiben bestehende
+Notizen auch nach dem Ändern oder Löschen einer Vorlage unverändert.
 
 ## Kontakte und Google-Import
 

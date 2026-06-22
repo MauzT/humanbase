@@ -40,7 +40,7 @@ Humanbase reduziert Lock-in durch:
 - PostgreSQL als Standarddatenbank
 - Prisma-Migrationen
 - normale SQL-Relationen
-- JSON-Export für Notizen, Kontakte, Tags und Beziehungen
+- JSON-Export für Notizen, Notizvorlagen, Kontakte, Tags und Beziehungen
 - optionalen CSV-Export für einfache Weiterverarbeitung
 - dokumentierte Migration zu einem anderen Managed-PostgreSQL-Anbieter
 

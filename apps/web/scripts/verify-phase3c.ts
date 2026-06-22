@@ -7,6 +7,7 @@ type VerificationResult = {
   exportFormat: string;
   exportVersion: number;
   noteContacts: number;
+  noteTemplates: number;
   noteTags: number;
   notes: number;
   relationshipsReferenceKnownRecords: boolean;
@@ -37,9 +38,18 @@ async function main() {
     "Export should include the default development user.",
   );
 
-  const [noteCount, contactCount, tagCount, noteContactCount, noteTagCount] =
-    await Promise.all([
+  const [
+    noteCount,
+    noteTemplateCount,
+    contactCount,
+    tagCount,
+    noteContactCount,
+    noteTagCount,
+  ] = await Promise.all([
       prisma.note.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
+      prisma.noteTemplate.count({
+        where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      }),
       prisma.contact.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
       prisma.tag.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
       prisma.noteContact.count({
@@ -57,6 +67,10 @@ async function main() {
     ]);
 
   assert(exportData.notes.length === noteCount, "Exported note count differs.");
+  assert(
+    exportData.noteTemplates.length === noteTemplateCount,
+    "Exported note-template count differs.",
+  );
   assert(
     exportData.contacts.length === contactCount,
     "Exported contact count differs.",
@@ -76,6 +90,12 @@ async function main() {
     "Every exported note should belong to the default development user.",
   );
   assert(
+    exportData.noteTemplates.every(
+      ({ userId }) => userId === DEFAULT_DEVELOPMENT_USER_ID,
+    ),
+    "Every exported note template should belong to the default development user.",
+  );
+  assert(
     exportData.contacts.every(
       ({ userId }) => userId === DEFAULT_DEVELOPMENT_USER_ID,
     ),
@@ -89,6 +109,10 @@ async function main() {
   assert(
     hasOnlyUniqueValues(exportData.notes.map(({ id }) => id)),
     "Exported note IDs should be unique.",
+  );
+  assert(
+    hasOnlyUniqueValues(exportData.noteTemplates.map(({ id }) => id)),
+    "Exported note-template IDs should be unique.",
   );
   assert(
     hasOnlyUniqueValues(exportData.contacts.map(({ id }) => id)),
@@ -120,6 +144,7 @@ async function main() {
     exportFormat: exportData.metadata.format,
     exportVersion: exportData.metadata.version,
     noteContacts: exportData.noteContacts.length,
+    noteTemplates: exportData.noteTemplates.length,
     noteTags: exportData.noteTags.length,
     notes: exportData.notes.length,
     relationshipsReferenceKnownRecords,

@@ -75,6 +75,32 @@ Akzeptanzkriterien:
 
 Als Nutzer möchte ich eine Notiz löschen können, wenn sie nicht mehr benötigt wird.
 
+## Phase 8.7: Notizvorlagen
+
+### Vorlage verwalten
+
+Als Nutzer möchte ich eigene Vorlagen mit wiederkehrenden Fragen erstellen,
+bearbeiten, sortieren und löschen können, damit ich häufige Notizarten
+einheitlich vorbereiten kann.
+
+Akzeptanzkriterien:
+
+- jede Vorlage hat einen eindeutigen Namen und mindestens eine Frage
+- Fragen können hinzugefügt, entfernt und neu angeordnet werden
+- das Löschen einer Vorlage verändert bereits erstellte Notizen nicht
+
+### Vorlage für eine Notiz verwenden
+
+Als Nutzer möchte ich beim Erstellen einer Notiz eine Vorlage auswählen, damit
+die vorbereiteten Fragen als Struktur im Inhalt erscheinen.
+
+Akzeptanzkriterien:
+
+- Vorlagen stehen nur beim Erstellen einer neuen Notiz zur Auswahl
+- die Fragen werden in ihrer gespeicherten Reihenfolge eingefügt
+- eingefügter Text bleibt frei bearbeitbar
+- bestehender Inhalt wird nur nach Bestätigung ersetzt
+
 ## Später
 
 - persistente Speicherung mit PostgreSQL und Prisma

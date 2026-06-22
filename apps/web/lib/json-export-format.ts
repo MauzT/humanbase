@@ -22,6 +22,14 @@ export type HumanbaseJsonExport = {
     createdAt: string;
     updatedAt: string;
   }[];
+  noteTemplates: {
+    id: string;
+    userId: string;
+    name: string;
+    questions: string[];
+    createdAt: string;
+    updatedAt: string;
+  }[];
   contacts: {
     id: string;
     userId: string;

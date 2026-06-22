@@ -24,6 +24,7 @@ export type ValidatedHumanbaseJsonExport = HumanbaseJsonExport & {
 export type JsonRestoreResult = {
   exportedAt: string;
   notes: number;
+  noteTemplates: number;
   contacts: number;
   tags: number;
   noteContacts: number;
@@ -207,6 +208,72 @@ function parseNotes(
   });
 }
 
+function parseNoteTemplates(
+  value: unknown,
+  exportedUserId: string,
+): HumanbaseJsonExport["noteTemplates"] {
+  // Version 1 exports from before Phase 8.7 do not contain templates.
+  if (value === undefined) {
+    return [];
+  }
+
+  return requireArray(value, "noteTemplates").map((entry, index) => {
+    const template = requireRecord(entry, `noteTemplates[${index}]`);
+    const userId = requireUuid(
+      template.userId,
+      `noteTemplates[${index}].userId`,
+    );
+    const name = requireString(
+      template.name,
+      `noteTemplates[${index}].name`,
+    );
+    const questions = requireArray(
+      template.questions,
+      `noteTemplates[${index}].questions`,
+    ).map((question, questionIndex) => {
+      const parsedQuestion = requireString(
+        question,
+        `noteTemplates[${index}].questions[${questionIndex}]`,
+      );
+
+      if (!parsedQuestion.trim() || parsedQuestion.length > 200) {
+        fail(
+          `noteTemplates[${index}].questions[${questionIndex}] ist ungültig.`,
+        );
+      }
+
+      return parsedQuestion;
+    });
+
+    if (userId !== exportedUserId) {
+      fail(`noteTemplates[${index}] gehört nicht zum exportierten Nutzer.`);
+    }
+
+    if (!name.trim() || name.length > 80) {
+      fail(`noteTemplates[${index}].name ist ungültig.`);
+    }
+
+    if (questions.length === 0 || questions.length > 30) {
+      fail(`noteTemplates[${index}].questions ist ungültig.`);
+    }
+
+    return {
+      id: requireUuid(template.id, `noteTemplates[${index}].id`),
+      userId,
+      name,
+      questions,
+      createdAt: requireIsoDateTime(
+        template.createdAt,
+        `noteTemplates[${index}].createdAt`,
+      ),
+      updatedAt: requireIsoDateTime(
+        template.updatedAt,
+        `noteTemplates[${index}].updatedAt`,
+      ),
+    };
+  });
+}
+
 function parseContacts(
   value: unknown,
   exportedUserId: string,
@@ -354,10 +421,16 @@ function parseNoteTags(value: unknown): HumanbaseJsonExport["noteTags"] {
 
 function validateUniquenessAndRelationships(data: HumanbaseJsonExport) {
   const noteIds = data.notes.map(({ id }) => id);
+  const noteTemplateIds = data.noteTemplates.map(({ id }) => id);
   const contactIds = data.contacts.map(({ id }) => id);
   const tagIds = data.tags.map(({ id }) => id);
 
   requireUnique(noteIds, "notes.id");
+  requireUnique(noteTemplateIds, "noteTemplates.id");
+  requireUnique(
+    data.noteTemplates.map(({ name }) => name.toLocaleLowerCase("de-DE")),
+    "noteTemplates.name",
+  );
   requireUnique(contactIds, "contacts.id");
   requireUnique(tagIds, "tags.id");
   requireUnique(
@@ -412,6 +485,7 @@ export function validateHumanbaseJsonExport(
     metadata,
     user,
     notes: parseNotes(root.notes, user.id),
+    noteTemplates: parseNoteTemplates(root.noteTemplates, user.id),
     contacts: parseContacts(root.contacts, user.id),
     tags: parseTags(root.tags, user.id),
     noteContacts: parseNoteContacts(root.noteContacts),
@@ -428,6 +502,9 @@ export async function restoreValidatedUserJsonExport(
   data: ValidatedHumanbaseJsonExport,
 ): Promise<JsonRestoreResult> {
   const noteIdMap = new Map(data.notes.map(({ id }) => [id, randomUUID()]));
+  const noteTemplateIdMap = new Map(
+    data.noteTemplates.map(({ id }) => [id, randomUUID()]),
+  );
   const contactIdMap = new Map(
     data.contacts.map(({ id }) => [id, randomUUID()]),
   );
@@ -447,6 +524,7 @@ export async function restoreValidatedUserJsonExport(
       }
 
       await transaction.note.deleteMany({ where: { userId } });
+      await transaction.noteTemplate.deleteMany({ where: { userId } });
       await transaction.contact.deleteMany({ where: { userId } });
       await transaction.tag.deleteMany({ where: { userId } });
 
@@ -482,6 +560,19 @@ export async function restoreValidatedUserJsonExport(
             isFavorite: contact.isFavorite,
             createdAt: new Date(contact.createdAt),
             updatedAt: new Date(contact.updatedAt),
+          })),
+        });
+      }
+
+      if (data.noteTemplates.length > 0) {
+        await transaction.noteTemplate.createMany({
+          data: data.noteTemplates.map((template) => ({
+            id: noteTemplateIdMap.get(template.id)!,
+            userId,
+            name: template.name,
+            questions: template.questions,
+            createdAt: new Date(template.createdAt),
+            updatedAt: new Date(template.updatedAt),
           })),
         });
       }
@@ -527,6 +618,7 @@ export async function restoreValidatedUserJsonExport(
   return {
     exportedAt: data.metadata.exportedAt,
     notes: data.notes.length,
+    noteTemplates: data.noteTemplates.length,
     contacts: data.contacts.length,
     tags: data.tags.length,
     noteContacts: data.noteContacts.length,

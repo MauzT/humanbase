@@ -247,6 +247,23 @@ Status: abgeschlossen.
   zurückfallen
 - Sync-Verhalten über `npm.cmd run verify:phase8.6` prüfen
 
+## Phase 8.7: Notizvorlagen
+
+Status: abgeschlossen.
+
+- nutzereigene Notizvorlagen mit eindeutigem Namen erstellen
+- pro Vorlage eine geordnete Liste frei formulierbarer Fragen verwalten
+- Fragen hinzufügen, entfernen und neu anordnen
+- bestehende Vorlagen bearbeiten und löschen
+- Vorlagen beim Erstellen einer Notiz auswählen
+- Fragen als beschriftete Struktur in den Notizinhalt übernehmen
+- vorhandenen Notizinhalt nicht ohne Bestätigung überschreiben
+- Vorlagen in den portablen JSON-Export und die atomare Wiederherstellung
+  einbeziehen
+- ältere Version-1-Exporte ohne Vorlagen weiterhin akzeptieren
+- CRUD, Inhaltsformatierung und Export/Restore über
+  `npm.cmd run verify:phase8.7` prüfen
+
 ## Weitere mögliche Phase-8-Funktionen
 
 - KI-Zusammenfassungen
@@ -254,10 +271,10 @@ Status: abgeschlossen.
 - Dark Mode in den Einstellungen
 - Login mit E-Mail-Konto ohne Google über Supabase inklusive
   „Passwort vergessen“
-- Notizvorlage erstellen
 - Kalender neben der Timeline anzeigen, der beim Scrollen den zugehörigen
   Monat zeigt und in den Einstellungen deaktiviert werden kann
 - Filtern auch nach mehreren Kontakten und Tags gleichzeitig ermöglichen
+- mehr Schreibfunktionen wie fett, kursiv, YN Kästchen und Farben.
 - Erinnerungen
 - Gesprächsvorbereitung
 - umfangreichere Kontakthistorie

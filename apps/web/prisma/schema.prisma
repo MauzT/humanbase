@@ -12,6 +12,7 @@ model User {
   email              String?   @unique
   supabaseAuthUserId String?   @unique
   notes              Note[]
+  noteTemplates      NoteTemplate[]
   contacts           Contact[]
   tags               Tag[]
   createdAt          DateTime  @default(now())
@@ -31,6 +32,19 @@ model Note {
   updatedAt DateTime      @updatedAt
 
   @@index([userId, date])
+}
+
+model NoteTemplate {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  questions String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId, createdAt])
 }
 
 model Contact {

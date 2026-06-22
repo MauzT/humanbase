@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ContactAvatar } from "@/components/contact-avatar";
-import type { Contact, Note, Tag } from "@/types/humanbase";
+import { formatNoteTemplateContent } from "@/lib/format-note-template-content";
+import type { Contact, Note, NoteTemplate, Tag } from "@/types/humanbase";
 
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +17,7 @@ type NoteFormProps = {
   contacts: Contact[];
   featuredContactIds: string[];
   featuredContactsLabel: string;
+  noteTemplates: NoteTemplate[];
   tags: Tag[];
   note?: Note;
   onCreateTag: (name: string) => Promise<
@@ -44,6 +46,7 @@ export function NoteForm({
   contacts,
   featuredContactIds,
   featuredContactsLabel,
+  noteTemplates,
   tags,
   note,
   onCreateTag,
@@ -61,6 +64,7 @@ export function NoteForm({
     note?.contactIds ?? [],
   );
   const [tagIds, setTagIds] = useState<string[]>(note?.tagIds ?? []);
+  const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [contactQuery, setContactQuery] = useState("");
   const [tagQuery, setTagQuery] = useState("");
   const [isCreatingTag, setIsCreatingTag] = useState(false);
@@ -165,6 +169,30 @@ export function NoteForm({
   function addTag(tagId: string) {
     setTagIds((currentIds) => [...currentIds, tagId]);
     setTagQuery("");
+  }
+
+  function applyTemplate(templateId: string) {
+    const template = noteTemplates.find(
+      (currentTemplate) => currentTemplate.id === templateId,
+    );
+
+    if (!template) {
+      setSelectedTemplateId("");
+      return;
+    }
+
+    if (
+      content.trim() &&
+      !window.confirm(
+        "Den vorhandenen Notizinhalt durch diese Vorlage ersetzen?",
+      )
+    ) {
+      return;
+    }
+
+    setContent(formatNoteTemplateContent(template));
+    setSelectedTemplateId(template.id);
+    setError("");
   }
 
   async function createAndSelectTag() {
@@ -297,6 +325,30 @@ export function NoteForm({
           onSubmit={handleSubmit}
         >
           <div className="grid min-h-0 flex-1 gap-5 overflow-y-auto px-4 py-5 sm:px-5">
+          {!note && noteTemplates.length > 0 ? (
+            <label className="grid gap-2 rounded-2xl border border-[var(--border)] bg-[var(--background)] p-4">
+              <span className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase">
+                Vorlage verwenden
+              </span>
+              <select
+                value={selectedTemplateId}
+                onChange={(event) => applyTemplate(event.target.value)}
+                className={inputClasses}
+              >
+                <option value="">Vorlage auswählen …</option>
+                {noteTemplates.map((template) => (
+                  <option key={template.id} value={template.id}>
+                    {template.name} ({template.questions.length}{" "}
+                    {template.questions.length === 1 ? "Frage" : "Fragen"})
+                  </option>
+                ))}
+              </select>
+              <span className="text-xs leading-5 text-[var(--muted)]">
+                Die Fragen werden als Struktur in den Inhalt eingefügt.
+              </span>
+            </label>
+          ) : null}
+
           <label className="grid gap-2">
             <span className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase">
               Titel

@@ -29,6 +29,7 @@ function assert(condition: boolean, message: string): asserts condition {
 function dataFingerprint(data: HumanbaseJsonExport) {
   return JSON.stringify({
     notes: data.notes,
+    noteTemplates: data.noteTemplates,
     contacts: data.contacts,
     tags: data.tags,
     noteContacts: data.noteContacts,
@@ -125,6 +126,9 @@ async function main() {
 
     const sourceExport = await buildUserJsonExport(sourceUserId);
     const legacyVersion1Export = structuredClone(sourceExport);
+    delete (
+      legacyVersion1Export as Partial<HumanbaseJsonExport>
+    ).noteTemplates;
     const legacyContact = legacyVersion1Export.contacts[0] as {
       isFavorite?: boolean;
     };

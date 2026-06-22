@@ -10,30 +10,36 @@ import {
 } from "@/app/actions";
 import { ContactBook } from "@/components/contact-book";
 import { NoteForm, type NoteFormInput } from "@/components/note-form";
+import { NoteTemplateManager } from "@/components/note-template-manager";
 import { NotesTimeline } from "@/components/notes-timeline";
 import { TagManager } from "@/components/tag-manager";
 import { TimelineFilters } from "@/components/timeline-filters";
 import { Button } from "@/components/ui/button";
 import { filterNotes } from "@/lib/filter-notes";
-import type { Contact, Note, Tag } from "@/types/humanbase";
+import type { Contact, Note, NoteTemplate, Tag } from "@/types/humanbase";
 
 type HumanbaseTimelineProps = {
   notes: Note[];
+  noteTemplates: NoteTemplate[];
   contacts: Contact[];
   tags: Tag[];
 };
 
 export function HumanbaseTimeline({
   notes: initialNotes,
+  noteTemplates: initialNoteTemplates,
   contacts,
   tags: initialTags,
 }: HumanbaseTimelineProps) {
   const [notes, setNotes] = useState(initialNotes);
+  const [noteTemplates, setNoteTemplates] = useState(initialNoteTemplates);
   const [tags, setTags] = useState(initialTags);
   const [query, setQuery] = useState("");
   const [selectedContactId, setSelectedContactId] = useState("");
   const [selectedTagId, setSelectedTagId] = useState("");
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
+  const [isNoteTemplateManagerOpen, setIsNoteTemplateManagerOpen] =
+    useState(false);
   const [isContactBookOpen, setIsContactBookOpen] = useState(false);
   const [isTagManagerOpen, setIsTagManagerOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
@@ -248,8 +254,42 @@ export function HumanbaseTimeline({
     }
   }
 
+  function addNoteTemplate(template: NoteTemplate) {
+    setNoteTemplates((currentTemplates) =>
+      [...currentTemplates, template].sort((first, second) =>
+        first.name.localeCompare(second.name, "de"),
+      ),
+    );
+  }
+
+  function updateNoteTemplate(template: NoteTemplate) {
+    setNoteTemplates((currentTemplates) =>
+      currentTemplates
+        .map((currentTemplate) =>
+          currentTemplate.id === template.id ? template : currentTemplate,
+        )
+        .sort((first, second) => first.name.localeCompare(second.name, "de")),
+    );
+  }
+
+  function removeNoteTemplate(templateId: string) {
+    setNoteTemplates((currentTemplates) =>
+      currentTemplates.filter((template) => template.id !== templateId),
+    );
+  }
+
   return (
     <>
+      {isNoteTemplateManagerOpen ? (
+        <NoteTemplateManager
+          templates={noteTemplates}
+          onClose={() => setIsNoteTemplateManagerOpen(false)}
+          onTemplateCreated={addNoteTemplate}
+          onTemplateUpdated={updateNoteTemplate}
+          onTemplateDeleted={removeNoteTemplate}
+        />
+      ) : null}
+
       {isTagManagerOpen ? (
         <TagManager
           tags={tags}
@@ -273,6 +313,7 @@ export function HumanbaseTimeline({
           contacts={contacts}
           featuredContactIds={featuredContacts.ids}
           featuredContactsLabel={featuredContacts.label}
+          noteTemplates={noteTemplates}
           tags={tags}
           note={editingNote ?? undefined}
           onCreateTag={createTag}
@@ -283,6 +324,13 @@ export function HumanbaseTimeline({
         />
       ) : (
         <div className="mb-5 grid grid-cols-2 gap-2 sm:mb-6 sm:flex sm:justify-end">
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => setIsNoteTemplateManagerOpen(true)}
+          >
+            Vorlagen
+          </Button>
           <Button
             variant="outline"
             className="w-full sm:w-auto"
@@ -298,7 +346,7 @@ export function HumanbaseTimeline({
             Kontaktbuch
           </Button>
           <Button
-            className="col-span-2 w-full sm:w-auto"
+            className="w-full sm:w-auto"
             onClick={openCreateForm}
           >
             Neue Notiz

@@ -36,6 +36,7 @@ Das Exportformat enthaelt:
 - Metadaten mit Format, Version und Exportzeitpunkt
 - den aktuellen Entwicklungsnutzer
 - Notizen
+- Notizvorlagen mit ihren geordneten Fragen
 - Kontakte inklusive spaeterer Importfelder
 - Tags
 - Note-Contact-Beziehungen
@@ -61,8 +62,8 @@ Vor der Wiederherstellung:
 4. Die vollstaendige Ueberschreibung mit `WIEDERHERSTELLEN` bestaetigen.
 5. Erst danach `Aktuelle Daten ersetzen` ausfuehren.
 
-Die Wiederherstellung ersetzt ausschliesslich Notizen, Kontakte, Tags und deren
-Beziehungen des angemeldeten Humanbase-Nutzers. Der Humanbase-`User`, seine
+Die Wiederherstellung ersetzt ausschliesslich Notizen, Notizvorlagen, Kontakte,
+Tags und deren Beziehungen des angemeldeten Humanbase-Nutzers. Der Humanbase-`User`, seine
 E-Mail und die Supabase-Authentifizierungszuordnung bleiben erhalten.
 
 Vor dem ersten Schreibzugriff werden Format, Version, UUIDs, Datumswerte,
