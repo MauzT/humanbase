@@ -24,6 +24,12 @@ Damit vermeidet Humanbase unsichere automatische Zuordnungen. Humanbase bietet
 keine manuelle Kontaktanlage mehr an; vorhandene historische oder
 wiederhergestellte Datensaetze bleiben aus Kompatibilitaetsgruenden erhalten.
 
+Phase 8.8 ergaenzt davon getrennt Humanbase-eigene Kontaktbeziehungen. Diese
+Beziehungen koennen zunaechst nur als Platzhalter mit optionalem Namen oder
+Notiz existieren und spaeter manuell mit einem importierten Google-Kontakt
+verknuepft werden. Das aendert die Google-Kontakte selbst nicht und schreibt
+nichts zu Google zurueck.
+
 Beim erneuten Import bleibt die bestehende Humanbase-`Contact.id` stabil.
 Mutable Google-Felder werden aktualisiert, vorhandene `NoteContact`-Beziehungen
 bleiben erhalten und lokal gespeicherte Kontakte werden nicht geloescht, wenn

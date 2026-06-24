@@ -17,7 +17,8 @@
     "verify:phase7": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase7.ts",
     "verify:phase8.5": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase8-5.ts",
     "verify:phase8.6": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase8-6.ts",
-    "verify:phase8.7": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase8-7.ts"
+    "verify:phase8.7": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase8-7.ts",
+    "verify:phase8.8": "node --conditions=react-server --import dotenv/config --import tsx scripts/verify-phase8-8.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

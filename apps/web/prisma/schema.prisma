@@ -14,6 +14,7 @@ model User {
   notes              Note[]
   noteTemplates      NoteTemplate[]
   contacts           Contact[]
+  contactRelationships ContactRelationship[]
   tags               Tag[]
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
@@ -61,11 +62,34 @@ model Contact {
   lastSyncedAt     DateTime?
   isFavorite       Boolean       @default(false)
   notes            NoteContact[]
+  relationshipsFrom ContactRelationship[] @relation("RelationshipSource")
+  relationshipsTo   ContactRelationship[] @relation("RelationshipTarget")
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
   @@index([userId, displayName])
   @@unique([userId, externalProvider, externalId])
+}
+
+model ContactRelationship {
+  id                  String   @id @default(uuid()) @db.Uuid
+  userId              String   @db.Uuid
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fromContactId       String   @db.Uuid
+  fromContact         Contact  @relation("RelationshipSource", fields: [fromContactId], references: [id], onDelete: Cascade)
+  toContactId         String?  @db.Uuid
+  toContact           Contact? @relation("RelationshipTarget", fields: [toContactId], references: [id], onDelete: SetNull)
+  relatedName         String?
+  relationType        String
+  inverseRelationType String?
+  category            String
+  note                String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId, fromContactId])
+  @@index([userId, toContactId])
+  @@index([userId, category])
 }
 
 model Tag {

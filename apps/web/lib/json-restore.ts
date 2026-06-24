@@ -2,6 +2,7 @@ import "server-only";
 
 import { randomUUID } from "node:crypto";
 
+import { isContactRelationshipCategory } from "@/lib/contact-relationship-options";
 import {
   HUMANBASE_JSON_EXPORT_FORMAT,
   HUMANBASE_JSON_EXPORT_VERSION,
@@ -26,6 +27,7 @@ export type JsonRestoreResult = {
   notes: number;
   noteTemplates: number;
   contacts: number;
+  contactRelationships: number;
   tags: number;
   noteContacts: number;
   noteTags: number;
@@ -349,6 +351,109 @@ function parseContacts(
   });
 }
 
+function parseContactRelationships(
+  value: unknown,
+  exportedUserId: string,
+): HumanbaseJsonExport["contactRelationships"] {
+  // Version 1 exports from before Phase 8.8 do not contain relationships.
+  if (value === undefined) {
+    return [];
+  }
+
+  return requireArray(value, "contactRelationships").map((entry, index) => {
+    const relationship = requireRecord(
+      entry,
+      `contactRelationships[${index}]`,
+    );
+    const userId = requireUuid(
+      relationship.userId,
+      `contactRelationships[${index}].userId`,
+    );
+    const fromContactId = requireUuid(
+      relationship.fromContactId,
+      `contactRelationships[${index}].fromContactId`,
+    );
+    const toContactId =
+      relationship.toContactId === null
+        ? null
+        : requireUuid(
+            relationship.toContactId,
+            `contactRelationships[${index}].toContactId`,
+          );
+    const relatedName = requireNullableString(
+      relationship.relatedName,
+      `contactRelationships[${index}].relatedName`,
+    );
+    const relationType = requireString(
+      relationship.relationType,
+      `contactRelationships[${index}].relationType`,
+    );
+    const inverseRelationType = requireNullableString(
+      relationship.inverseRelationType,
+      `contactRelationships[${index}].inverseRelationType`,
+    );
+    const category = requireString(
+      relationship.category,
+      `contactRelationships[${index}].category`,
+    );
+    const note = requireNullableString(
+      relationship.note,
+      `contactRelationships[${index}].note`,
+    );
+
+    if (userId !== exportedUserId) {
+      fail(`contactRelationships[${index}] gehÃ¶rt nicht zum exportierten Nutzer.`);
+    }
+
+    if (toContactId !== null && toContactId === fromContactId) {
+      fail(`contactRelationships[${index}] verweist doppelt auf denselben Kontakt.`);
+    }
+
+    if (!relationType.trim() || relationType.length > 60) {
+      fail(`contactRelationships[${index}].relationType ist ungÃ¼ltig.`);
+    }
+
+    if (
+      inverseRelationType !== null &&
+      (!inverseRelationType.trim() || inverseRelationType.length > 60)
+    ) {
+      fail(`contactRelationships[${index}].inverseRelationType ist ungÃ¼ltig.`);
+    }
+
+    if (!isContactRelationshipCategory(category)) {
+      fail(`contactRelationships[${index}].category ist ungÃ¼ltig.`);
+    }
+
+    if (relatedName !== null && (!relatedName.trim() || relatedName.length > 120)) {
+      fail(`contactRelationships[${index}].relatedName ist ungÃ¼ltig.`);
+    }
+
+    if (note !== null && (!note.trim() || note.length > 500)) {
+      fail(`contactRelationships[${index}].note ist ungÃ¼ltig.`);
+    }
+
+    return {
+      id: requireUuid(relationship.id, `contactRelationships[${index}].id`),
+      userId,
+      fromContactId,
+      toContactId,
+      relatedName,
+      relationType,
+      inverseRelationType,
+      category,
+      note,
+      createdAt: requireIsoDateTime(
+        relationship.createdAt,
+        `contactRelationships[${index}].createdAt`,
+      ),
+      updatedAt: requireIsoDateTime(
+        relationship.updatedAt,
+        `contactRelationships[${index}].updatedAt`,
+      ),
+    };
+  });
+}
+
 function parseTags(
   value: unknown,
   exportedUserId: string,
@@ -423,6 +528,7 @@ function validateUniquenessAndRelationships(data: HumanbaseJsonExport) {
   const noteIds = data.notes.map(({ id }) => id);
   const noteTemplateIds = data.noteTemplates.map(({ id }) => id);
   const contactIds = data.contacts.map(({ id }) => id);
+  const contactRelationshipIds = data.contactRelationships.map(({ id }) => id);
   const tagIds = data.tags.map(({ id }) => id);
 
   requireUnique(noteIds, "notes.id");
@@ -432,6 +538,7 @@ function validateUniquenessAndRelationships(data: HumanbaseJsonExport) {
     "noteTemplates.name",
   );
   requireUnique(contactIds, "contacts.id");
+  requireUnique(contactRelationshipIds, "contactRelationships.id");
   requireUnique(tagIds, "tags.id");
   requireUnique(
     data.tags.map(({ name }) => name.toLocaleLowerCase("de-DE")),
@@ -462,6 +569,19 @@ function validateUniquenessAndRelationships(data: HumanbaseJsonExport) {
   const knownContactIds = new Set(contactIds);
   const knownTagIds = new Set(tagIds);
 
+  data.contactRelationships.forEach(
+    ({ fromContactId, toContactId }, index) => {
+      if (
+        !knownContactIds.has(fromContactId) ||
+        (toContactId !== null && !knownContactIds.has(toContactId))
+      ) {
+        fail(
+          `contactRelationships[${index}] verweist auf einen unbekannten Kontakt.`,
+        );
+      }
+    },
+  );
+
   data.noteContacts.forEach(({ noteId, contactId }, index) => {
     if (!knownNoteIds.has(noteId) || !knownContactIds.has(contactId)) {
       fail(`noteContacts[${index}] verweist auf einen unbekannten Datensatz.`);
@@ -487,6 +607,10 @@ export function validateHumanbaseJsonExport(
     notes: parseNotes(root.notes, user.id),
     noteTemplates: parseNoteTemplates(root.noteTemplates, user.id),
     contacts: parseContacts(root.contacts, user.id),
+    contactRelationships: parseContactRelationships(
+      root.contactRelationships,
+      user.id,
+    ),
     tags: parseTags(root.tags, user.id),
     noteContacts: parseNoteContacts(root.noteContacts),
     noteTags: parseNoteTags(root.noteTags),
@@ -508,6 +632,9 @@ export async function restoreValidatedUserJsonExport(
   const contactIdMap = new Map(
     data.contacts.map(({ id }) => [id, randomUUID()]),
   );
+  const contactRelationshipIdMap = new Map(
+    data.contactRelationships.map(({ id }) => [id, randomUUID()]),
+  );
   const tagIdMap = new Map(data.tags.map(({ id }) => [id, randomUUID()]));
 
   await prisma.$transaction(
@@ -525,6 +652,7 @@ export async function restoreValidatedUserJsonExport(
 
       await transaction.note.deleteMany({ where: { userId } });
       await transaction.noteTemplate.deleteMany({ where: { userId } });
+      await transaction.contactRelationship.deleteMany({ where: { userId } });
       await transaction.contact.deleteMany({ where: { userId } });
       await transaction.tag.deleteMany({ where: { userId } });
 
@@ -560,6 +688,26 @@ export async function restoreValidatedUserJsonExport(
             isFavorite: contact.isFavorite,
             createdAt: new Date(contact.createdAt),
             updatedAt: new Date(contact.updatedAt),
+          })),
+        });
+      }
+
+      if (data.contactRelationships.length > 0) {
+        await transaction.contactRelationship.createMany({
+          data: data.contactRelationships.map((relationship) => ({
+            id: contactRelationshipIdMap.get(relationship.id)!,
+            userId,
+            fromContactId: contactIdMap.get(relationship.fromContactId)!,
+            toContactId: relationship.toContactId
+              ? contactIdMap.get(relationship.toContactId)!
+              : null,
+            relatedName: relationship.relatedName,
+            relationType: relationship.relationType,
+            inverseRelationType: relationship.inverseRelationType,
+            category: relationship.category,
+            note: relationship.note,
+            createdAt: new Date(relationship.createdAt),
+            updatedAt: new Date(relationship.updatedAt),
           })),
         });
       }
@@ -620,6 +768,7 @@ export async function restoreValidatedUserJsonExport(
     notes: data.notes.length,
     noteTemplates: data.noteTemplates.length,
     contacts: data.contacts.length,
+    contactRelationships: data.contactRelationships.length,
     tags: data.tags.length,
     noteContacts: data.noteContacts.length,
     noteTags: data.noteTags.length,

@@ -65,6 +65,11 @@ operative Kontaktquelle. Humanbase importiert Kontakte ausschließlich lesend,
 hält dafür stabile interne IDs und bewahrt die Beziehungen zu Notizen. Eine
 manuelle Kontaktverwaltung in Humanbase ist nicht vorgesehen.
 
+Humanbase darf aber eigene Beziehungserinnerungen rund um diese Kontakte
+speichern: Familie, Freunde, Kolleginnen und Kollegen, Mentoren, unbekannte
+Angehörige oder andere Personen, die noch nicht als Google-Kontakt existieren.
+Diese Beziehungsebene wird nicht zu Google zurückgeschrieben.
+
 ### 3. Tags statt Ordner
 
 Notizen werden nicht in Ordner einsortiert. Mehrere Tags erlauben verschiedene Themen und Kontexte gleichzeitig.

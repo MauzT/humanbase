@@ -101,6 +101,61 @@ Akzeptanzkriterien:
 - eingefügter Text bleibt frei bearbeitbar
 - bestehender Inhalt wird nur nach Bestätigung ersetzt
 
+## Phase 8.8: Kontaktprofile und Beziehungsnetz
+
+### Kontaktprofil ansehen
+
+Als Nutzer möchte ich einen Kontakt im Kontaktbuch öffnen können, damit ich
+neben den importierten Google-Daten auch die wichtigsten Beziehungen dieser
+Person sehe.
+
+Akzeptanzkriterien:
+
+- ein Kontaktprofil zeigt Name, Kontaktwege und Synchronisationshinweis
+- Beziehungen werden nach Kategorien wie Familie, Freunde, Arbeit,
+  Ausbildung und Sonstiges gruppiert
+- verknüpfte Kontakte können aus einer Beziehung heraus geöffnet werden
+- Beziehungen ohne Namen werden trotzdem sichtbar angezeigt
+
+### Beziehung strukturiert erfassen
+
+Als Nutzer möchte ich Beziehungen zu einer Person strukturiert speichern
+können, damit Informationen wie „Bruder, ist 9 Jahre älter“ nicht nur in einer
+losen Notiz stehen.
+
+Akzeptanzkriterien:
+
+- eine Beziehung hat eine Kategorie und eine Beziehungsart
+- eine Beziehung kann auf einen bestehenden Kontakt verweisen
+- eine Beziehung kann ohne bestehenden Kontakt gespeichert werden
+- eine Beziehung kann auch ohne bekannten Namen gespeichert werden
+- eine Beziehung kann eine kurze Zusatznotiz enthalten
+
+### Platzhalter später verknüpfen
+
+Als Nutzer möchte ich eine zunächst unverbundene Beziehung später mit einem
+importierten Google-Kontakt verknüpfen können, damit früher gespeichertes
+Wissen nicht verloren geht.
+
+Akzeptanzkriterien:
+
+- unverbundene Beziehungen können mit bestehenden Kontakten verknüpft werden
+- die Zusatznotiz bleibt beim Verknüpfen erhalten
+- die Beziehung erscheint danach auf beiden Kontaktprofilen
+- Humanbase schreibt diese Information nicht zu Google zurück
+
+### Gegenrichtung sehen
+
+Als Nutzer möchte ich eine verknüpfte Beziehung auch aus Sicht der anderen
+Person sehen können, damit ich das Beziehungsnetz nicht doppelt pflegen muss.
+
+Akzeptanzkriterien:
+
+- eine gespeicherte Beziehung erzeugt keine doppelte Datenzeile
+- symmetrische Beziehungen werden auf beiden Profilen gleich angezeigt
+- asymmetrische Beziehungen können eine Gegenbeziehung anzeigen, zum Beispiel
+  Mentor und Mentee
+
 ## Später
 
 - persistente Speicherung mit PostgreSQL und Prisma

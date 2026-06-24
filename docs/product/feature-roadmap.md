@@ -264,6 +264,28 @@ Status: abgeschlossen.
 - CRUD, Inhaltsformatierung und Export/Restore über
   `npm.cmd run verify:phase8.7` prüfen
 
+## Phase 8.8: Kontaktprofile und Beziehungsnetz
+
+Status: abgeschlossen.
+
+- Kontaktbuch zu einer Kontaktprofil-Ansicht ausbauen
+- Google Kontakte weiterhin als einzige operative Kontaktquelle behalten
+- Humanbase-eigene Beziehungen zwischen Kontakten speichern
+- unterschiedliche Beziehungskategorien wie Familie, Freunde, Arbeit,
+  Ausbildung und Sonstiges unterstützen
+- Beziehungen zu bestehenden Kontakten verknüpfen
+- Beziehungen auch ohne bekannten Namen oder ohne bestehenden Kontakt
+  speichern
+- optionale Notizen an Beziehungen speichern, zum Beispiel
+  „ist 9 Jahre älter“
+- Platzhalter-Beziehungen später mit importierten Google-Kontakten
+  verknüpfen
+- verknüpfte Beziehungen gegenseitig anzeigen, inklusive Gegenbeziehung
+- Kontaktbeziehungen in den portablen JSON-Export und die atomare
+  Wiederherstellung einbeziehen
+- CRUD, Nutzergrenzen, Export/Restore und ID-Neuzuordnung über
+  `npm.cmd run verify:phase8.8` prüfen
+
 ## Weitere mögliche Phase-8-Funktionen
 
 - KI-Zusammenfassungen

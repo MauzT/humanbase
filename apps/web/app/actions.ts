@@ -6,6 +6,14 @@ import { redirect } from "next/navigation";
 
 import { requireAllowedHumanbaseUser } from "@/lib/auth/supabase-user";
 import {
+  createContactRelationshipForUser,
+  deleteContactRelationshipForUser,
+  linkContactRelationshipForUser,
+  updateContactRelationshipForUser,
+  type DeleteContactRelationshipResult,
+  type SaveContactRelationshipResult,
+} from "@/lib/contact-relationship-service";
+import {
   createNoteForUser,
   deleteNoteForUser,
   updateNoteForUser,
@@ -35,6 +43,20 @@ type CreateNoteInput = Pick<
 >;
 
 type UpdateNoteInput = CreateNoteInput & Pick<Note, "id">;
+
+type ContactRelationshipInput = {
+  fromContactId: string;
+  toContactId?: string;
+  relatedName?: string;
+  relationType: string;
+  inverseRelationType?: string;
+  category: string;
+  note?: string;
+};
+
+type UpdateContactRelationshipInput = ContactRelationshipInput & {
+  id: string;
+};
 
 export async function signInWithGoogle() {
   const requestHeaders = await headers();
@@ -219,6 +241,90 @@ export async function deleteNoteTemplateForCurrentUser(templateId: string) {
   }
 
   const result = await deleteNoteTemplateForUser(user.id, templateId);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function createContactRelationshipForCurrentUser(
+  input: ContactRelationshipInput,
+) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies SaveContactRelationshipResult;
+  }
+
+  const result = await createContactRelationshipForUser(user.id, input);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function updateContactRelationshipForCurrentUser(
+  input: UpdateContactRelationshipInput,
+) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies SaveContactRelationshipResult;
+  }
+
+  const result = await updateContactRelationshipForUser(user.id, input);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function linkContactRelationshipForCurrentUser(input: {
+  id: string;
+  toContactId: string;
+}) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies SaveContactRelationshipResult;
+  }
+
+  const result = await linkContactRelationshipForUser(user.id, input);
+  revalidatePath("/");
+
+  return result;
+}
+
+export async function deleteContactRelationshipForCurrentUser(
+  relationshipId: string,
+) {
+  let user;
+
+  try {
+    user = await requireAllowedHumanbaseUser();
+  } catch {
+    return {
+      ok: false,
+      error: "Bitte melde dich erneut an.",
+    } satisfies DeleteContactRelationshipResult;
+  }
+
+  const result = await deleteContactRelationshipForUser(
+    user.id,
+    relationshipId,
+  );
   revalidatePath("/");
 
   return result;

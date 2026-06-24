@@ -28,6 +28,7 @@ async function main() {
         notes: exportData.notes.length,
         noteTemplates: exportData.noteTemplates.length,
         contacts: exportData.contacts.length,
+        contactRelationships: exportData.contactRelationships.length,
         tags: exportData.tags.length,
         noteContacts: exportData.noteContacts.length,
         noteTags: exportData.noteTags.length,

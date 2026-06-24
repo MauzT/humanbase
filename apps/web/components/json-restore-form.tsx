@@ -20,6 +20,7 @@ type RestorePreview = {
   notes: number;
   noteTemplates: number;
   contacts: number;
+  contactRelationships: number;
   tags: number;
   noteContacts: number;
   noteTags: number;
@@ -49,6 +50,8 @@ function getPreview(value: unknown): RestorePreview | null {
     (value.noteTemplates !== undefined &&
       !Array.isArray(value.noteTemplates)) ||
     !Array.isArray(value.contacts) ||
+    (value.contactRelationships !== undefined &&
+      !Array.isArray(value.contactRelationships)) ||
     !Array.isArray(value.tags) ||
     !Array.isArray(value.noteContacts) ||
     !Array.isArray(value.noteTags)
@@ -63,6 +66,9 @@ function getPreview(value: unknown): RestorePreview | null {
       ? value.noteTemplates.length
       : 0,
     contacts: value.contacts.length,
+    contactRelationships: Array.isArray(value.contactRelationships)
+      ? value.contactRelationships.length
+      : 0,
     tags: value.tags.length,
     noteContacts: value.noteContacts.length,
     noteTags: value.noteTags.length,
@@ -193,9 +199,10 @@ export function JsonRestoreForm() {
         className="rounded-xl border border-[#c97a30] bg-[#fff7ed] px-4 py-3 text-sm leading-6 text-[#7c3f12]"
       >
         <strong>Achtung: vollständige Überschreibung.</strong> Die Datei ersetzt
-        alle aktuellen Notizen, Notizvorlagen, Kontakte, Tags und deren
-        Verknüpfungen. Dein Konto und deine Anmeldung bleiben erhalten. Erstelle vorher über
-        „JSON exportieren“ eine aktuelle Sicherheitskopie.
+        alle aktuellen Notizen, Notizvorlagen, Kontakte, Kontaktbeziehungen,
+        Tags und deren Verknüpfungen. Dein Konto und deine Anmeldung bleiben
+        erhalten. Erstelle vorher über „JSON exportieren“ eine aktuelle
+        Sicherheitskopie.
       </div>
 
       <div>
@@ -238,6 +245,12 @@ export function JsonRestoreForm() {
             <div>
               <dt className="text-xs text-[var(--muted)]">Kontakte</dt>
               <dd className="font-semibold">{preview.contacts}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-[var(--muted)]">Beziehungen</dt>
+              <dd className="font-semibold">
+                {preview.contactRelationships}
+              </dd>
             </div>
             <div>
               <dt className="text-xs text-[var(--muted)]">Tags</dt>
@@ -297,8 +310,9 @@ export function JsonRestoreForm() {
           className="rounded-xl border border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-3 text-sm leading-6"
         >
           Wiederherstellung abgeschlossen: {success.notes} Notizen,{" "}
-          {success.noteTemplates} Vorlagen, {success.contacts} Kontakte und{" "}
-          {success.tags} Tags wurden wiederhergestellt.
+          {success.noteTemplates} Vorlagen, {success.contacts} Kontakte,{" "}
+          {success.contactRelationships} Beziehungen und {success.tags} Tags
+          wurden wiederhergestellt.
         </p>
       ) : null}
 

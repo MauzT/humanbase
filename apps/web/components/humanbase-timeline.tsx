@@ -16,12 +16,19 @@ import { TagManager } from "@/components/tag-manager";
 import { TimelineFilters } from "@/components/timeline-filters";
 import { Button } from "@/components/ui/button";
 import { filterNotes } from "@/lib/filter-notes";
-import type { Contact, Note, NoteTemplate, Tag } from "@/types/humanbase";
+import type {
+  Contact,
+  ContactRelationship,
+  Note,
+  NoteTemplate,
+  Tag,
+} from "@/types/humanbase";
 
 type HumanbaseTimelineProps = {
   notes: Note[];
   noteTemplates: NoteTemplate[];
   contacts: Contact[];
+  contactRelationships: ContactRelationship[];
   tags: Tag[];
 };
 
@@ -29,10 +36,14 @@ export function HumanbaseTimeline({
   notes: initialNotes,
   noteTemplates: initialNoteTemplates,
   contacts,
+  contactRelationships: initialContactRelationships,
   tags: initialTags,
 }: HumanbaseTimelineProps) {
   const [notes, setNotes] = useState(initialNotes);
   const [noteTemplates, setNoteTemplates] = useState(initialNoteTemplates);
+  const [contactRelationships, setContactRelationships] = useState(
+    initialContactRelationships,
+  );
   const [tags, setTags] = useState(initialTags);
   const [query, setQuery] = useState("");
   const [selectedContactId, setSelectedContactId] = useState("");
@@ -278,6 +289,33 @@ export function HumanbaseTimeline({
     );
   }
 
+  function saveContactRelationship(relationship: ContactRelationship) {
+    setContactRelationships((currentRelationships) => {
+      const relationshipExists = currentRelationships.some(
+        (currentRelationship) => currentRelationship.id === relationship.id,
+      );
+      const nextRelationships = relationshipExists
+        ? currentRelationships.map((currentRelationship) =>
+            currentRelationship.id === relationship.id
+              ? relationship
+              : currentRelationship,
+          )
+        : [...currentRelationships, relationship];
+
+      return nextRelationships.sort((first, second) =>
+        first.createdAt.localeCompare(second.createdAt),
+      );
+    });
+  }
+
+  function removeContactRelationship(relationshipId: string) {
+    setContactRelationships((currentRelationships) =>
+      currentRelationships.filter(
+        (relationship) => relationship.id !== relationshipId,
+      ),
+    );
+  }
+
   return (
     <>
       {isNoteTemplateManagerOpen ? (
@@ -303,6 +341,9 @@ export function HumanbaseTimeline({
       {isContactBookOpen ? (
         <ContactBook
           contacts={contacts}
+          contactRelationships={contactRelationships}
+          onRelationshipSaved={saveContactRelationship}
+          onRelationshipDeleted={removeContactRelationship}
           onClose={() => setIsContactBookOpen(false)}
         />
       ) : null}

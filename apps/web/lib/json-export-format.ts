@@ -45,6 +45,19 @@ export type HumanbaseJsonExport = {
     createdAt: string;
     updatedAt: string;
   }[];
+  contactRelationships: {
+    id: string;
+    userId: string;
+    fromContactId: string;
+    toContactId: string | null;
+    relatedName: string | null;
+    relationType: string;
+    inverseRelationType: string | null;
+    category: string;
+    note: string | null;
+    createdAt: string;
+    updatedAt: string;
+  }[];
   tags: {
     id: string;
     userId: string;

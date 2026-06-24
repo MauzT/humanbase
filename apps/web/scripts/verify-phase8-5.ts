@@ -31,6 +31,7 @@ function dataFingerprint(data: HumanbaseJsonExport) {
     notes: data.notes,
     noteTemplates: data.noteTemplates,
     contacts: data.contacts,
+    contactRelationships: data.contactRelationships,
     tags: data.tags,
     noteContacts: data.noteContacts,
     noteTags: data.noteTags,
@@ -129,6 +130,9 @@ async function main() {
     delete (
       legacyVersion1Export as Partial<HumanbaseJsonExport>
     ).noteTemplates;
+    delete (
+      legacyVersion1Export as Partial<HumanbaseJsonExport>
+    ).contactRelationships;
     const legacyContact = legacyVersion1Export.contacts[0] as {
       isFavorite?: boolean;
     };
@@ -172,6 +176,10 @@ async function main() {
 
     assert(restoreResult.notes === 1, "One note should be restored.");
     assert(restoreResult.contacts === 1, "One contact should be restored.");
+    assert(
+      restoreResult.contactRelationships === 0,
+      "Legacy exports should restore without contact relationships.",
+    );
     assert(restoreResult.tags === 1, "One tag should be restored.");
     assert(
       restoreResult.noteContacts === 1 && restoreResult.noteTags === 1,

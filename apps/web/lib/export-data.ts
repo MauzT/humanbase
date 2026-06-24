@@ -28,39 +28,53 @@ export async function buildUserJsonExport(
     throw new Error(missingUserMessage);
   }
 
-  const [notes, noteTemplates, contacts, tags, noteContacts, noteTags] =
-    await Promise.all([
-      prisma.note.findMany({
-        where: { userId },
-        orderBy: [{ date: "desc" }, { createdAt: "desc" }, { id: "asc" }],
-      }),
-      prisma.noteTemplate.findMany({
-        where: { userId },
-        orderBy: [{ name: "asc" }, { createdAt: "asc" }, { id: "asc" }],
-      }),
-      prisma.contact.findMany({
-        where: { userId },
-        orderBy: [{ displayName: "asc" }, { id: "asc" }],
-      }),
-      prisma.tag.findMany({
-        where: { userId },
-        orderBy: [{ name: "asc" }, { id: "asc" }],
-      }),
-      prisma.noteContact.findMany({
-        where: {
-          note: { userId },
-          contact: { userId },
-        },
-        orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
-      }),
-      prisma.noteTag.findMany({
-        where: {
-          note: { userId },
-          tag: { userId },
-        },
-        orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
-      }),
-    ]);
+  const [
+    notes,
+    noteTemplates,
+    contacts,
+    contactRelationships,
+    tags,
+    noteContacts,
+    noteTags,
+  ] = await Promise.all([
+    prisma.note.findMany({
+      where: { userId },
+      orderBy: [{ date: "desc" }, { createdAt: "desc" }, { id: "asc" }],
+    }),
+    prisma.noteTemplate.findMany({
+      where: { userId },
+      orderBy: [{ name: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+    }),
+    prisma.contact.findMany({
+      where: { userId },
+      orderBy: [{ displayName: "asc" }, { id: "asc" }],
+    }),
+    prisma.contactRelationship.findMany({
+      where: {
+        userId,
+        fromContact: { userId },
+      },
+      orderBy: [{ category: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+    }),
+    prisma.tag.findMany({
+      where: { userId },
+      orderBy: [{ name: "asc" }, { id: "asc" }],
+    }),
+    prisma.noteContact.findMany({
+      where: {
+        note: { userId },
+        contact: { userId },
+      },
+      orderBy: [{ noteId: "asc" }, { contactId: "asc" }],
+    }),
+    prisma.noteTag.findMany({
+      where: {
+        note: { userId },
+        tag: { userId },
+      },
+      orderBy: [{ noteId: "asc" }, { tagId: "asc" }],
+    }),
+  ]);
 
   return {
     metadata: {
@@ -98,6 +112,19 @@ export async function buildUserJsonExport(
       isFavorite: contact.isFavorite,
       createdAt: toIsoString(contact.createdAt),
       updatedAt: toIsoString(contact.updatedAt),
+    })),
+    contactRelationships: contactRelationships.map((relationship) => ({
+      id: relationship.id,
+      userId: relationship.userId,
+      fromContactId: relationship.fromContactId,
+      toContactId: relationship.toContactId,
+      relatedName: relationship.relatedName,
+      relationType: relationship.relationType,
+      inverseRelationType: relationship.inverseRelationType,
+      category: relationship.category,
+      note: relationship.note,
+      createdAt: toIsoString(relationship.createdAt),
+      updatedAt: toIsoString(relationship.updatedAt),
     })),
     tags: tags.map((tag) => ({
       id: tag.id,

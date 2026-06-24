@@ -38,6 +38,7 @@ Das Exportformat enthaelt:
 - Notizen
 - Notizvorlagen mit ihren geordneten Fragen
 - Kontakte inklusive spaeterer Importfelder
+- Kontaktbeziehungen inklusive Platzhaltern und verknuepften Kontakten
 - Tags
 - Note-Contact-Beziehungen
 - Note-Tag-Beziehungen
@@ -63,8 +64,9 @@ Vor der Wiederherstellung:
 5. Erst danach `Aktuelle Daten ersetzen` ausfuehren.
 
 Die Wiederherstellung ersetzt ausschliesslich Notizen, Notizvorlagen, Kontakte,
-Tags und deren Beziehungen des angemeldeten Humanbase-Nutzers. Der Humanbase-`User`, seine
-E-Mail und die Supabase-Authentifizierungszuordnung bleiben erhalten.
+Kontaktbeziehungen, Tags und deren Beziehungen des angemeldeten
+Humanbase-Nutzers. Der Humanbase-`User`, seine E-Mail und die
+Supabase-Authentifizierungszuordnung bleiben erhalten.
 
 Vor dem ersten Schreibzugriff werden Format, Version, UUIDs, Datumswerte,
 Eindeutigkeiten und alle Beziehungen validiert. Importierte Datensatz-IDs

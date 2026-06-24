@@ -32,6 +32,26 @@ export type Contact = {
   updatedAt: string;
 };
 
+export type ContactRelationshipCategory =
+  | "family"
+  | "friends"
+  | "work"
+  | "education"
+  | "other";
+
+export type ContactRelationship = {
+  id: string;
+  fromContactId: string;
+  toContactId?: string;
+  relatedName?: string;
+  relationType: string;
+  inverseRelationType?: string;
+  category: ContactRelationshipCategory;
+  note?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Tag = {
   id: string;
   name: string;

@@ -1,8 +1,15 @@
 import "server-only";
 
+import { toUiContactRelationship } from "@/lib/contact-relationship-service";
 import { DEFAULT_DEVELOPMENT_USER_ID } from "@/lib/default-user";
 import { prisma } from "@/lib/prisma";
-import type { Contact, Note, NoteTemplate, Tag } from "@/types/humanbase";
+import type {
+  Contact,
+  ContactRelationship,
+  Note,
+  NoteTemplate,
+  Tag,
+} from "@/types/humanbase";
 
 export type NoteContactRelationship = {
   noteId: string;
@@ -18,6 +25,7 @@ export type TimelineData = {
   notes: Note[];
   noteTemplates: NoteTemplate[];
   contacts: Contact[];
+  contactRelationships: ContactRelationship[];
   tags: Tag[];
 };
 
@@ -129,6 +137,24 @@ export function getContactsForDefaultDevelopmentUser(): Promise<Contact[]> {
   return getContactsForUser(DEFAULT_DEVELOPMENT_USER_ID);
 }
 
+export async function getContactRelationshipsForUser(
+  userId: string,
+): Promise<ContactRelationship[]> {
+  const relationships = await prisma.contactRelationship.findMany({
+    where: {
+      userId,
+      fromContact: { userId },
+    },
+    orderBy: [{ category: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+  });
+
+  return relationships.map(toUiContactRelationship);
+}
+
+export function getContactRelationshipsForDefaultDevelopmentUser() {
+  return getContactRelationshipsForUser(DEFAULT_DEVELOPMENT_USER_ID);
+}
+
 export async function getTagsForUser(userId: string): Promise<Tag[]> {
   const tags = await prisma.tag.findMany({
     where: { userId },
@@ -189,14 +215,16 @@ export function getNoteTagsForDefaultDevelopmentUser(): Promise<
 export async function getTimelineDataForUser(
   userId: string,
 ): Promise<TimelineData> {
-  const [notes, noteTemplates, contacts, tags] = await Promise.all([
-    getNotesForUser(userId),
-    getNoteTemplatesForUser(userId),
-    getContactsForUser(userId),
-    getTagsForUser(userId),
-  ]);
+  const [notes, noteTemplates, contacts, contactRelationships, tags] =
+    await Promise.all([
+      getNotesForUser(userId),
+      getNoteTemplatesForUser(userId),
+      getContactsForUser(userId),
+      getContactRelationshipsForUser(userId),
+      getTagsForUser(userId),
+    ]);
 
-  return { notes, noteTemplates, contacts, tags };
+  return { notes, noteTemplates, contacts, contactRelationships, tags };
 }
 
 export function getTimelineDataForDefaultDevelopmentUser(): Promise<

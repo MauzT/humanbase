@@ -4,6 +4,7 @@ import { prisma } from "../lib/prisma";
 
 type VerificationResult = {
   contacts: number;
+  contactRelationships: number;
   exportFormat: string;
   exportVersion: number;
   noteContacts: number;
@@ -42,29 +43,36 @@ async function main() {
     noteCount,
     noteTemplateCount,
     contactCount,
+    contactRelationshipCount,
     tagCount,
     noteContactCount,
     noteTagCount,
   ] = await Promise.all([
-      prisma.note.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
-      prisma.noteTemplate.count({
-        where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-      }),
-      prisma.contact.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
-      prisma.tag.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
-      prisma.noteContact.count({
-        where: {
-          note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-          contact: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-        },
-      }),
-      prisma.noteTag.count({
-        where: {
-          note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-          tag: { userId: DEFAULT_DEVELOPMENT_USER_ID },
-        },
-      }),
-    ]);
+    prisma.note.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
+    prisma.noteTemplate.count({
+      where: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+    }),
+    prisma.contact.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
+    prisma.contactRelationship.count({
+      where: {
+        userId: DEFAULT_DEVELOPMENT_USER_ID,
+        fromContact: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      },
+    }),
+    prisma.tag.count({ where: { userId: DEFAULT_DEVELOPMENT_USER_ID } }),
+    prisma.noteContact.count({
+      where: {
+        note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+        contact: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      },
+    }),
+    prisma.noteTag.count({
+      where: {
+        note: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+        tag: { userId: DEFAULT_DEVELOPMENT_USER_ID },
+      },
+    }),
+  ]);
 
   assert(exportData.notes.length === noteCount, "Exported note count differs.");
   assert(
@@ -74,6 +82,10 @@ async function main() {
   assert(
     exportData.contacts.length === contactCount,
     "Exported contact count differs.",
+  );
+  assert(
+    exportData.contactRelationships.length === contactRelationshipCount,
+    "Exported contact-relationship count differs.",
   );
   assert(exportData.tags.length === tagCount, "Exported tag count differs.");
   assert(
@@ -102,6 +114,12 @@ async function main() {
     "Every exported contact should belong to the default development user.",
   );
   assert(
+    exportData.contactRelationships.every(
+      ({ userId }) => userId === DEFAULT_DEVELOPMENT_USER_ID,
+    ),
+    "Every exported contact relationship should belong to the default development user.",
+  );
+  assert(
     exportData.tags.every(({ userId }) => userId === DEFAULT_DEVELOPMENT_USER_ID),
     "Every exported tag should belong to the default development user.",
   );
@@ -119,6 +137,10 @@ async function main() {
     "Exported contact IDs should be unique.",
   );
   assert(
+    hasOnlyUniqueValues(exportData.contactRelationships.map(({ id }) => id)),
+    "Exported contact-relationship IDs should be unique.",
+  );
+  assert(
     hasOnlyUniqueValues(exportData.tags.map(({ id }) => id)),
     "Exported tag IDs should be unique.",
   );
@@ -129,6 +151,11 @@ async function main() {
   const relationshipsReferenceKnownRecords =
     exportData.noteContacts.every(
       ({ noteId, contactId }) => noteIds.has(noteId) && contactIds.has(contactId),
+    ) &&
+    exportData.contactRelationships.every(
+      ({ fromContactId, toContactId }) =>
+        contactIds.has(fromContactId) &&
+        (toContactId === null || contactIds.has(toContactId)),
     ) &&
     exportData.noteTags.every(
       ({ noteId, tagId }) => noteIds.has(noteId) && tagIds.has(tagId),
@@ -141,6 +168,7 @@ async function main() {
 
   const result: VerificationResult = {
     contacts: exportData.contacts.length,
+    contactRelationships: exportData.contactRelationships.length,
     exportFormat: exportData.metadata.format,
     exportVersion: exportData.metadata.version,
     noteContacts: exportData.noteContacts.length,
